@@ -21,9 +21,9 @@ class App extends Component {
                 <div className="app__container">
                     <Switch>
                         <Route path='/' component={Auth} exact/>
-                        <Route path='/loans/:number' component={Loans}/>
-                        <Route path='/details-loan/:number' component={DetailsLoan}/>
+                        <Route path='/loans' component={Loans}/>
                         <Route path='/clients' component={Clients}/>
+                        <Route path='/details-loan/:number' component={DetailsLoan}/>
                         <Route path='/extract/:number' component={ClientInterface}/>
                     </Switch>
                 </div>

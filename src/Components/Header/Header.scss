@@ -1,0 +1,43 @@
+@import "../../css/mixins";
+
+.header {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__nav-bar {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__nav-item {
+    margin-bottom: 15px;
+    color: black !important;
+    font-size: 20px;
+    border-bottom: none;
+    @include animate();
+
+    &:hover {
+      @include animate-hover(1.07);
+    }
+
+    &_active {
+      font-weight: bold;
+    }
+  }
+
+  &__logout {
+    display: flex;
+    margin: auto auto 10px 20px;
+
+    i {
+      font-size: 30px !important;
+    }
+
+    p {
+      margin-left: 10px;
+      font-size: 20px;
+    }
+  }
+}

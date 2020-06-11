@@ -3,17 +3,31 @@
 
 .app {
   height: 100vh;
-  background-color: #fafafa;
+  background-color: #ededed ;
   overflow-y: scroll;
   display: flex;
-  flex-direction: column;
 
   input {
     height: 23px !important;
   }
 
+  a {
+    text-decoration: none !important;
+  }
 
-  .dagger {
+  &__menu {
+    flex: 1;
+    background-color: white;
+    margin: 20px;
+  }
+
+  &__container {
+    flex: 5;
+    background-color: white;
+    margin: 20px;
+  }
+
+  & .dagger {
     position: relative;
     width: 32px;
     height: 32px;
@@ -52,12 +66,20 @@
         transform: rotate(-45deg);
       }
     }
-
-    &_bold {
-      opacity: 1;
-    }
   }
 
+  & .fa-animate {
+    cursor: pointer;
+    font-size: 25px;
+    margin-left: auto;
+    color: gray !important;
+    @include animate();
+
+    &:hover {
+      @include animate-hover(1.15);
+      color: #555555 !important;
+    }
+  }
 
   ::-webkit-scrollbar {
     width: 5px;

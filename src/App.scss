@@ -1,0 +1,88 @@
+@import "css/normalize.css";
+@import "css/mixins";
+
+.app {
+  height: 100vh;
+  background-color: #fafafa;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+
+  input {
+    height: 23px !important;
+  }
+
+
+  .dagger {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    opacity: 0.3;
+    cursor: pointer;
+    @include animate();
+
+    &:hover {
+      @include animate-hover(1.13);
+      opacity: 0.6;
+    }
+
+    &:before, &:after {
+      position: absolute;
+      left: 15px;
+      content: ' ';
+      height: 20px;
+      width: 2px;
+      background-color: #333;
+    }
+
+    &_add {
+      &:before {
+        transform: rotate(90deg);
+      }
+    }
+
+    &_delete {
+      float: right;
+
+      &:before {
+        transform: rotate(45deg);
+      }
+
+      &:after {
+        transform: rotate(-45deg);
+      }
+    }
+
+    &_bold {
+      opacity: 1;
+    }
+  }
+
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #999;
+  }
+
+  ::-webkit-scrollbar-track-piece {
+    background-color: #ededed;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    height: 50px;
+    background-color: #666;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background-color: #999;
+  }
+
+  ::-webkit-resizer {
+    background-color: #666;
+  }
+}

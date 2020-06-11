@@ -1,0 +1,26 @@
+.loans {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  &__create-loan {
+    display: flex;
+    align-items: center;
+  }
+
+  &__find-loan {
+
+  }
+
+  &__income {
+    display: flex;
+
+    &-block {
+      display: flex;
+    }
+  }
+
+  &__overdue {
+    display: flex;
+  }
+}

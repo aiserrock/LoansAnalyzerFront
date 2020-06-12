@@ -25,3 +25,11 @@ export function post(path: string, data?: any, config): Promise {
 export function put(path: string, data?: any, config): Promise {
     return axios.put(url + path, data, config);
 }
+
+// Делете запрос к серверу с путём
+// @param {string} path - Путь запроса к серверу, указывается с / в начале
+// @param {any} data - данные для запроса
+// @return {Promise} - асинхронный запрос к сети
+export function del(path: string, config): Promise {
+    return axios.delete(url + path, config);
+}

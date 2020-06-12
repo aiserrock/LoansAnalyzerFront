@@ -8,10 +8,11 @@ import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 class Loans extends Component {
     constructor() {
         super()
-        this.loanInput = React.createRef()
+        this.findLoan = React.createRef()
+        this.selectSort = React.createRef()
         this.state = {
             payoutIsOpen: false,
-            createLoanIsOpen: false ,
+            createLoanIsOpen: false,
             paidItem: null,
             loans: [
                 {
@@ -80,7 +81,7 @@ class Loans extends Component {
 
     interactWithCreateLoan = () => {
         this.setState({
-            createLoanIsOpen: !this.state.createLoanIsOpen
+            createLoanIsOpen: !this.state.createLoanIsOpen,
         })
     }
 
@@ -90,50 +91,140 @@ class Loans extends Component {
         console.log(this.loanInput.current.value)
     }
 
+    renderFilters = () => {
+        return (
+            <div className={'loans-panel__panel'}>
+                <div className={'loans-panel__filters'}>
+                    <div className={'loans-panel__filters-title loans-panel__filters-title_h'}>
+                    <span>
+                        Фильтры
+                    </span>
+                    </div>
+                    <div className={'select'}>
+                        <select ref={this.selectSort} className="select__content">
+                            <option value={'ascendingOrder'}>Сначала новые</option>
+                            <option value={'descendingOrder'}>Сначала старые</option>
+                        </select>
+                    </div>
+
+                    <div className={'checkbox mb-3'}>
+                        <input ref={this.statusZero}
+                               type="checkbox" name="todo" defaultValue={'true'}/>
+                        <label className={'checkbox__label_mini'} htmlFor="todo">
+                            Активные
+                        </label>
+                    </div>
+                    <div className={'checkbox mb-3'}>
+                        <input ref={this.statusOne}
+                               type="checkbox" name="todo"/>
+                        <label className={'checkbox__label_mini'} htmlFor="todo">
+                            Просроченные
+                        </label>
+                    </div>
+                    <div className={'checkbox mb-3'}>
+                        <input ref={this.statusTwo}
+                               type="checkbox" name="todo"/>
+                        <label className={'checkbox__label_mini'} htmlFor="todo">
+                            Возвращённые
+                        </label>
+                    </div>
+                </div>
+                <div onClick={this.sort} className={'loans-panel__button'}>
+                    Поиск
+                </div>
+            </div>
+        )
+    }
+
+    renderOrderList = () => {
+        return (
+            <LoansList
+                loans={this.state.loans}
+                interactWithPayout={this.interactWithPayout}
+            />
+        )
+    }
+
     render() {
         return (
             <div className={'loans'}>
+                <h1 className={'mb-5'}>Займы</h1>
+
                 <div className="row">
-                    <div className="col-lg-2 col-md-1 col-sm-0"></div>
-                    <div className="col-lg-8 col-md-10 col-sm-12">
-                        <h1 className={'mb-5'}>Займы</h1>
-
-                        <div className="row">
-                            <div className="col-12 d-flex">
-                                <p>Полученный доход:  <span className={'text-primary'}>10000</span></p>
-                            </div>
-                            <div className=" col-12 d-flex">
-                                <p>Ожидаемый доход:   <span className={'text-success'}>+3500</span></p>
-                            </div>
-                            <div className="col-12 d-flex">
-                                <p>Просроченные займы:  <span className={'text-danger'}>10000</span></p>
-                            </div>
-                        </div>
-
-                        <br/>
-
-                        <div className="row">
-                            <div className="col-12">
-                                <div className={'loans__create-loan mb-3'}>
-                                    <p className={'mr-2'}>Создание нового займа</p>
-                                    <span onClick={this.interactWithCreateLoan} className={'dagger dagger_add'}></span>
-                                </div>
-                            </div>
-                            <div className="col-12">
-                                <div className={'loans__find-loan mb-3'}>
-                                    <label className={'mr-2'}>Поиск займа</label>
-                                    <input onChange={this.loansInputChanges} ref={this.loanInput} type="text"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <LoansList
-                            loans={this.state.loans}
-                            interactWithPayout={this.interactWithPayout}
-                        />
+                    <div className="col-12 d-flex">
+                        <p>Полученный доход: <span className={'text-primary'}>10000</span></p>
                     </div>
-                    <div className="col-lg-2 col-md-1 col-sm-0"></div>
+                    <div className=" col-12 d-flex">
+                        <p>Ожидаемый доход: <span className={'text-success'}>+3500</span></p>
+                    </div>
+                    <div className="col-12 d-flex">
+                        <p>Просроченные займы: <span className={'text-danger'}>10000</span></p>
+                    </div>
                 </div>
+
+                <br/>
+
+                <div className={'loans__create-loan mb-3'}>
+                    <p className={'mr-2'}>Создание нового займа</p>
+                    <span onClick={this.interactWithCreateLoan} className={'dagger dagger_add'}></span>
+                </div>
+
+
+                <div className={'loans-panel'}>
+                    <div className={'loans-panel__main'}>
+                        <div className={'loans-panel__search'}>
+                            <div className={'loans-panel__search-string'}>
+                                <input ref={this.findLoan} placeholder={'Поиск займа по'} type="text"/>
+                                <i className="fa fa-search fa-animate" aria-hidden="true" onClick={this.find}></i>
+                            </div>
+                            <div className={'loans-panel__search-select'}>
+                                <div className={'select'}>
+                                    <select ref={this.selectId} className="select__content">
+                                        <option value={'name'}>имени</option>
+                                        <option value={'number'}>номеру</option>
+                                        <option value={'id'}>id</option>
+                                    </select>
+                                </div>
+                                <div
+                                    onClick={this.interactWithMenu}
+                                    className="toggle-menu d-block d-sm-none">
+                                    ☰
+                                </div>
+                            </div>
+                        </div>
+                        <div className={'d-block d-sm-none'}>
+                            <div className={this.state.menuIsOpen ? 'loans-panel__menu-mobile' : 'd-none'}>
+                                {
+                                    this.renderFilters()
+                                }
+                            </div>
+                            {
+                                this.state.menuIsOpen
+                                    ? null
+                                    : <div className={'loans-panel__content'}>
+                                        {
+                                            this.renderOrderList()
+                                        }
+                                    </div>
+                            }
+                        </div>
+                        <div className={'d-none d-sm-block'}>
+                            <div className={'loans-panel__content'}>
+                                {
+                                    this.renderOrderList()
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={'loans-panel__menu d-none d-sm-block'}>
+                        {
+                            this.renderFilters()
+                        }
+                    </div>
+                </div>
+
+
                 <AppPayout
                     payoutIsOpen={this.state.payoutIsOpen}
                     paidItem={this.state.paidItem}

@@ -2,47 +2,9 @@ import React, {Component} from 'react'
 import './LoansList.scss'
 
 export default class LoansList extends Component {
-    state = {
-        currentListItem: 'active',
-    }
-
-    // Меняем активную вкладку
-    changeActiveItem = (e) => {
-        this.setState({
-            currentListItem: e.target.id,
-        })
-    }
-
     render() {
         return (
             <div className={'loans-list'}>
-                <div className={'selector'}>
-                    <div
-                        id={'active'}
-                        className={this.state.currentListItem === 'active'
-                            ? 'select select_active'
-                            : 'select'}
-                        onClick={this.changeActiveItem}>
-                        <span className={'non-click'}>Активные</span>
-                    </div>
-                    <div
-                        id={'overdue'}
-                        className={this.state.currentListItem === 'overdue'
-                            ? 'select select_active'
-                            : 'select'}
-                        onClick={this.changeActiveItem}>
-                        <span className={'non-click'}>Просроченные</span>
-                    </div>
-                    <div
-                        id={'returned'}
-                        className={this.state.currentListItem === 'returned'
-                            ? 'select select_active'
-                            : 'select'}
-                        onClick={this.changeActiveItem}>
-                        <span className={'non-click'}>Возвращённые</span>
-                    </div>
-                </div>
-
                 <div className={'loans-list__content'}>
                     {
                         this.props.loans.map(element => (

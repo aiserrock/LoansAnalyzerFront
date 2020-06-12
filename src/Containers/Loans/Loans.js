@@ -11,7 +11,7 @@ class Loans extends Component {
         this.loanInput = React.createRef()
         this.state = {
             payoutIsOpen: false,
-            createLoanIsOpen: true,
+            createLoanIsOpen: false ,
             paidItem: null,
             loans: [
                 {
@@ -97,22 +97,6 @@ class Loans extends Component {
                     <div className="col-lg-2 col-md-1 col-sm-0"></div>
                     <div className="col-lg-8 col-md-10 col-sm-12">
                         <h1 className={'mb-5'}>Займы</h1>
-                        <div className="row">
-                            <div className="col-12">
-                                <div className={'loans__find-loan mb-3'}>
-                                    <label className={'mr-2'}>Поиск займа</label>
-                                    <input onChange={this.loansInputChanges} ref={this.loanInput} type="text"/>
-                                </div>
-                            </div>
-                            <div className="col-12">
-                                <div className={'loans__create-loan mb-3'}>
-                                    <p className={'mr-2'}>Создание нового займа</p>
-                                    <span onClick={this.interactWithCreateLoan} className={'dagger dagger_add'}></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <br/>
 
                         <div className="row">
                             <div className="col-12 d-flex">
@@ -127,6 +111,21 @@ class Loans extends Component {
                         </div>
 
                         <br/>
+
+                        <div className="row">
+                            <div className="col-12">
+                                <div className={'loans__create-loan mb-3'}>
+                                    <p className={'mr-2'}>Создание нового займа</p>
+                                    <span onClick={this.interactWithCreateLoan} className={'dagger dagger_add'}></span>
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className={'loans__find-loan mb-3'}>
+                                    <label className={'mr-2'}>Поиск займа</label>
+                                    <input onChange={this.loansInputChanges} ref={this.loanInput} type="text"/>
+                                </div>
+                            </div>
+                        </div>
 
                         <LoansList
                             loans={this.state.loans}

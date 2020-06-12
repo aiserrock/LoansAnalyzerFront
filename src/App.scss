@@ -5,8 +5,21 @@
   background-color: #ededed ;
   display: flex;
 
-  input {
-    height: 23px !important;
+  & input, & textarea {
+    outline: 0 !important;
+    padding: 5px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    flex: 2;
+  }
+
+  & input {
+    height: 30px !important;
+    max-height: 40px;
+  }
+
+  & textarea {
+    resize: none;
   }
 
   a {

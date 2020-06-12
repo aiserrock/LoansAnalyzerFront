@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: 20px;
 
   &__logo {
     display: flex;
@@ -11,7 +12,6 @@
   }
 
   &__nav-bar {
-    padding: 20px;
     display: flex;
     flex-direction: column;
   }
@@ -34,7 +34,7 @@
 
   &__logout {
     display: flex;
-    margin: auto auto 10px 20px;
+    margin: auto auto 10px 0;
 
     i {
       font-size: 30px !important;

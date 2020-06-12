@@ -1,0 +1,10 @@
+@import "../../css/mixins";
+
+.create-loan {
+  @include modal();
+  width: 40vmax;
+  min-width: 400px;
+  height: 25vmax;
+  min-height: 250px;
+  display: flex;
+}

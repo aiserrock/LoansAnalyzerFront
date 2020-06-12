@@ -33,6 +33,7 @@
     margin: 20px;
     overflow-y: scroll;
     height: 95vh;
+    min-width: 44vmax;
   }
 
   & .dagger {
@@ -91,6 +92,16 @@
       @include animate-hover(1.15);
       color: #555555 !important;
     }
+  }
+
+  & .bg {
+    z-index: 9997;
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
   }
 
   ::-webkit-scrollbar {

@@ -56,7 +56,7 @@ export default class LoansList extends Component {
                                 </div>
                                 <div className={'loans-list__item-add'}>
                                     <p className={'mr-2'}>Добавить выплату</p>
-                                    <span onClick={this.addLoanHandler} className={'dagger dagger_add'}></span>
+                                    <span onClick={() => this.props.interactWithPayout(true, element)} className={'dagger dagger_add'}></span>
                                 </div>
                             </div>
                         ))

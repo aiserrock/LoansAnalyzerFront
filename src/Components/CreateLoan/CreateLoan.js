@@ -1,15 +1,11 @@
 import React, {Component} from 'react'
-import './AppPayout.scss'
+import './CreateLoan.scss'
 
-export default class AppPayout extends Component {
+export default class CreateLoan extends Component {
     constructor() {
         super();
         this.debt = React.createRef()
         this.interest = React.createRef()
-    }
-
-    onClose = () => {
-        this.props.interactWithPayout(false, null)
     }
 
     payed = () => {
@@ -17,13 +13,13 @@ export default class AppPayout extends Component {
     }
 
     render() {
-        if (this.props.payoutIsOpen) {
+        if (this.props.createLoanIsOpen) {
             return (
                 <>
-                    <div className={'add-payout'}>
-                        <span className="dagger dagger_delete" onClick={this.onClose}/>
+                    <div className={'create-loan'}>
+                        <span className="dagger dagger_delete" onClick={this.props.interactWithCreateLoan}/>
                         <div className="add-payout__content">
-                            <h4>Заёмщик: Имя </h4>
+                            <h4>Создать займ </h4>
                             <div className={'add-payout__input mb-2'}>
                                 <label htmlFor="">Долг</label>
                                 <input ref={this.debt} type="number"/>
@@ -37,7 +33,7 @@ export default class AppPayout extends Component {
                             </button>
                         </div>
                     </div>
-                    <div className={'bg'} onClick={this.onClose}/>
+                    <div className={'bg'} onClick={this.props.interactWithCreateLoan}/>
                 </>
             )
         } else

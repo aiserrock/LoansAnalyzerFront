@@ -7,7 +7,7 @@ export class UsersController {
     // Получение пользователя по его идентификатору
     // @param token - токен авторизации пользователя
     // @param id - идентификатор пользователя
-    // @return Возвращает список найденных займов
+    // @return Возвращает список найденных пользователей
     async getUserById(token: string, id: string) {
         try {
             let response = await get(`/users/${id}`,
@@ -25,7 +25,7 @@ export class UsersController {
     // @param token - токен авторизации пользователя
     // @param id - идентификатор пользователя
     // @param data - данные пользователя, которые надо обновить
-    // @return Возвращает список найденных займов
+    // @return Возвращает объект нового пользователя
     async updateUserById(token: string, id: string, data) {
         try {
             let response = await put(`/users/${id}`, data,

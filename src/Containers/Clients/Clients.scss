@@ -1,0 +1,10 @@
+.clients {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  font-size: 18px;
+
+  & .fa-pencil-square-o {
+    font-size: 25px;
+  }
+}

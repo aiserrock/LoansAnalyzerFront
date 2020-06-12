@@ -49,6 +49,15 @@
     min-width: 44vmax;
   }
 
+  & .button-section {
+    display: flex;
+
+    & button {
+      flex: 1;
+      margin-right: 10px;
+    }
+  }
+
   & .dagger {
     position: relative;
     width: 32px;

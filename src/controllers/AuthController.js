@@ -5,17 +5,21 @@ export class AuthController {
     // Делаем запрос аутентификации на сервере, с предоставленными логином
     // и паролем
     // @return json объект, содержащий токен и тип токена
+    // Если произошла ошибка, вернется null.
     async auth(password: string, login: string) {
-        let response = await post('/login',
-            {
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "data": `grant_type=&username=${login}&password=${password}`,
+        try {
+            let response = await post('/login', `username=${login}&password=${password}`,
+                {
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
                 }
-            }
-        );
+            );
 
-        return response.data;
+            return response.data;
+        } catch (e) {
+            return null;
+        }
     }
 }

@@ -5,6 +5,11 @@
   flex-direction: column;
   height: 100%;
 
+  &__logo {
+    display: flex;
+    justify-content: center;
+  }
+
   &__nav-bar {
     padding: 20px;
     display: flex;

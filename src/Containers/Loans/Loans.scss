@@ -1,7 +1,12 @@
 .loans {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 30px;
+  font-size: 18px;
+
+  & p {
+    white-space: nowrap;
+  }
 
   &__create-loan {
     display: flex;
@@ -10,17 +15,5 @@
 
   &__find-loan {
 
-  }
-
-  &__income {
-    display: flex;
-
-    &-block {
-      display: flex;
-    }
-  }
-
-  &__overdue {
-    display: flex;
   }
 }

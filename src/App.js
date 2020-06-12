@@ -14,18 +14,20 @@ class App extends Component {
     render(){
         return(
             <div className={'app'}>
-                <div className={'app__menu'}>
-                    <Header/>
-                </div>
-
                 <div className="app__container">
-                    <Switch>
-                        <Route path='/' component={Auth} exact/>
-                        <Route path='/loans' component={Loans}/>
-                        <Route path='/clients' component={Clients}/>
-                        <Route path='/details-loan/:number' component={DetailsLoan}/>
-                        <Route path='/extract/:number' component={ClientInterface}/>
-                    </Switch>
+                    <div className={'app__menu'}>
+                        <Header/>
+                    </div>
+
+                    <div className="app__content">
+                        <Switch>
+                            <Route path='/' component={Auth} exact/>
+                            <Route path='/loans' component={Loans}/>
+                            <Route path='/clients' component={Clients}/>
+                            <Route path='/details-loan/:number' component={DetailsLoan}/>
+                            <Route path='/extract/:number' component={ClientInterface}/>
+                        </Switch>
+                    </div>
                 </div>
             </div>
         )

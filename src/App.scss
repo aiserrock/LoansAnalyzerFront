@@ -2,9 +2,7 @@
 @import "css/mixins";
 
 .app {
-  height: 100vh;
   background-color: #ededed ;
-  overflow-y: scroll;
   display: flex;
 
   input {
@@ -15,16 +13,26 @@
     text-decoration: none !important;
   }
 
+  &__container {
+    overflow-y: hidden;
+    display: flex;
+    height: 100vh;
+    margin: auto;
+  }
+
   &__menu {
     flex: 1;
     background-color: white;
-    margin: 20px;
+    margin: 20px 0 20px 20px;
+    height: 95vh;
   }
 
-  &__container {
+  &__content {
     flex: 5;
     background-color: white;
     margin: 20px;
+    overflow-y: scroll;
+    height: 95vh;
   }
 
   & .dagger {
@@ -66,6 +74,10 @@
         transform: rotate(-45deg);
       }
     }
+  }
+
+  & .non-click {
+    pointer-events: none;
   }
 
   & .fa-animate {

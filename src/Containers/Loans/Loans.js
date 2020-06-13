@@ -212,8 +212,8 @@ class Loans extends Component {
                     </div>
                 </div>
                 <table className="table">
-                    <thead className="thead">
-                    <tr className={'table-dark'}>
+                    <thead>
+                    <tr className={'table_dark'}>
                         <th scope="col">Полученный доход</th>
                         <th scope="col">Ожидаемый доход</th>
                         <th scope="col">Просроченные займы</th>
@@ -225,9 +225,9 @@ class Loans extends Component {
                         <td><span className={'text-success'}>+3500</span></td>
                         <td><span className={'text-danger'}>10000</span></td>
                     </tr>
-
                     </tbody>
                 </table>
+
 
 
                 <AppPayout

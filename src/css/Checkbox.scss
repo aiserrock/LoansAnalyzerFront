@@ -55,8 +55,8 @@ $green: #06842c;
 
     &:checked {
       color: $white;
-      border-color: $green;
-      background: $green;
+      border-color: gray;
+      background: gray;
 
       &::before {
         opacity: 1;

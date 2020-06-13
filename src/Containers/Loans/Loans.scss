@@ -21,7 +21,7 @@
     height: 550px;
     display: flex;
     flex-direction: row;
-    @include border();
+    border: 1px solid lightgray;
     background-color: white;
 
     & input {

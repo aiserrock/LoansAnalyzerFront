@@ -86,7 +86,7 @@ class Clients extends Component {
 
                 <table className="table">
                     <thead className="thead">
-                    <tr className={'table-dark'}>
+                    <tr className={'table_dark'}>
                         <th scope="col">#</th>
                         <th scope="col">ФИО</th>
                         <th scope="col">Телефон</th>

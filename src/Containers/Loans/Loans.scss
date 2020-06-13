@@ -7,18 +7,18 @@
   font-size: 18px;
 
 
+  & .table {
+    width: 650px;
+
+  }
+
   & p {
     white-space: nowrap;
   }
 
-  &__create-loan {
-    display: flex;
-    align-items: center;
-  }
-
   &-panel {
     width: 650px;
-    height: 500px;
+    height: 550px;
     display: flex;
     flex-direction: row;
     @include border();

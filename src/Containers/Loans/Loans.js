@@ -150,25 +150,13 @@ class Loans extends Component {
             <div className={'loans'}>
                 <h1 className={'mb-5'}>Займы</h1>
 
-                <div className="row">
-                    <div className="col-12 d-flex">
-                        <p>Полученный доход: <span className={'text-primary'}>10000</span></p>
-                    </div>
-                    <div className=" col-12 d-flex">
-                        <p>Ожидаемый доход: <span className={'text-success'}>+3500</span></p>
-                    </div>
-                    <div className="col-12 d-flex">
-                        <p>Просроченные займы: <span className={'text-danger'}>10000</span></p>
-                    </div>
-                </div>
 
-                <br/>
-
-                <div className={'loans__create-loan mb-3'}>
-                    <p className={'mr-2'}>Создание нового займа</p>
-                    <span onClick={this.interactWithCreateLoan} className={'dagger dagger_add'}></span>
-                </div>
-
+                <button
+                    className={'btn btn-secondary mr-auto'}
+                    onClick={this.interactWithCreateLoan}
+                >
+                    Добавить займ
+                </button>
 
                 <div className={'loans-panel'}>
                     <div className={'loans-panel__main'}>
@@ -223,6 +211,23 @@ class Loans extends Component {
                         }
                     </div>
                 </div>
+                <table className="table">
+                    <thead className="thead">
+                    <tr className={'table-dark'}>
+                        <th scope="col">Полученный доход</th>
+                        <th scope="col">Ожидаемый доход</th>
+                        <th scope="col">Просроченные займы</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><span className={'text-primary'}>10000</span></td>
+                        <td><span className={'text-success'}>+3500</span></td>
+                        <td><span className={'text-danger'}>10000</span></td>
+                    </tr>
+
+                    </tbody>
+                </table>
 
 
                 <AppPayout

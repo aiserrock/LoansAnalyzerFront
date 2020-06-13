@@ -78,7 +78,7 @@ class Clients extends Component {
                 <h1 className={'mb-5'}>Клиенты</h1>
 
                 <button
-                    className={'btn btn-secondary ml-auto'}
+                    className={'btn btn-secondary mr-auto'}
                     onClick={() => this.interactWithClient(true, null)}
                 >
                     Добавить клиента

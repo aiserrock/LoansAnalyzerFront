@@ -21,9 +21,9 @@ export default class Header extends Component {
     render() {
         return (
             <div className={'header'}>
-                <div className={'header__logo'}>
+                <NavLink to={'/'} className={'header__logo'}>
                     <img src={img} alt="logo"/>
-                </div>
+                </NavLink>
 
                 <div className={'header__nav-bar'}>
                     <NavLink

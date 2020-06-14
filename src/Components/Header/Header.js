@@ -42,9 +42,9 @@ export default class Header extends Component {
                     </NavLink>
                 </div>
 
-                <div className={'header__logout'}>
-                    <i className="fa fa-sign-out fa-animate" aria-hidden="true" onClick={this.logout}></i>
-                    <p>Выйти</p>
+                <div className={'link'} onClick={this.logout}>
+                    <i className="fa fa-sign-out" aria-hidden="true" ></i>
+                    <span>Выйти</span>
                 </div>
             </div>
         )

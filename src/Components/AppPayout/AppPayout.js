@@ -22,13 +22,13 @@ export default class AppPayout extends Component {
                 <>
                     <div className={'add-payout'}>
                         <span className="dagger dagger_delete ml-auto" onClick={this.onClose}/>
-                        <div className="add-payout__content">
-                            <h4>Заёмщик: Имя </h4>
-                            <div className={'add-payout__input'}>
+                        <div className="input-section">
+                            <h4 className={'mb-4'}>Заёмщик: Имя </h4>
+                            <div className={'input-section__input'}>
                                 <label>Долг</label>
                                 <input ref={this.debt} type="number"/>
                             </div>
-                            <div className={'add-payout__input'}>
+                            <div className={'input-section__input'}>
                                 <label>Проценты</label>
                                 <input ref={this.interest} type="number"/>
                             </div>

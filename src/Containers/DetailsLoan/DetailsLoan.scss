@@ -1,0 +1,32 @@
+@import "../../css/mixins";
+
+.details-loan{
+  display: flex;
+  flex-direction: column;
+  padding: 30px 30px 0 30px;
+  font-size: 18px;
+
+
+
+
+  & .input-section {
+    max-width: 400px;
+  }
+
+  & .calendar-loan {
+    margin: auto;
+  }
+}
+
+@media (max-width: 730px){
+  & .input-section__input {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding-left: 10px;
+    margin-bottom: 20px !important;
+
+    & input, & textarea {
+      margin: 0 !important;
+    }
+  }
+}

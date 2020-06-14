@@ -3,7 +3,7 @@
 @import "css/checkbox";
 
 .app {
-  background-color: #ededed ;
+  background-color: #ededed;
   display: flex;
 
   & input, & textarea {
@@ -52,13 +52,34 @@
   & .button-section {
     display: flex;
 
-    & button {
+    & button, & a {
       flex: 1;
       margin-right: 10px;
     }
   }
 
-  .select {
+  & .input-section {
+    display: flex;
+    flex-direction: column;
+
+    &__input {
+      display: flex;
+      font-size: 20px;
+      align-items: center;
+      margin-bottom: 11px;
+    }
+
+    & label {
+      flex: 2;
+    }
+
+    & textarea, & input {
+      flex: 3;
+      margin-left: 10px;
+    }
+  }
+
+  & .select {
     &__content {
       font-size: 18px;
       display: block;
@@ -101,7 +122,7 @@
 
   & .table_dark {
     background-color: #6c757d;
-    border-color: #6c757d ;
+    border-color: #6c757d;
     color: white;
   }
 
@@ -143,6 +164,39 @@
       &:after {
         transform: rotate(-45deg);
       }
+    }
+  }
+
+  & .links {
+
+  }
+
+  & .link {
+    cursor: pointer;
+    color: #343a40 !important;
+    @include animate();
+    opacity: 0.8;
+
+    &:hover {
+      @include animate-hover(1.03);
+      opacity: 1;
+    }
+
+    &__question {
+      display: flex;
+      margin: auto 0 auto 0;
+      .fa {
+        margin-left: 0 !important;
+      }
+    }
+
+    & .fa {
+      font-size: 22px;
+    }
+
+    span {
+      margin-left: 15px;
+      font-size: 20px;
     }
   }
 

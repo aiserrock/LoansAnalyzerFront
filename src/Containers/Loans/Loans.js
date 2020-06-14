@@ -85,12 +85,6 @@ class Loans extends Component {
         })
     }
 
-
-    // Обработчик, ищет кредит
-    loansInputChanges = () => {
-        console.log(this.loanInput.current.value)
-    }
-
     renderFilters = () => {
         return (
             <div className={'loans-panel__panel'}>
@@ -152,7 +146,7 @@ class Loans extends Component {
 
 
                 <button
-                    className={'btn btn-secondary mr-auto'}
+                    className={'btn btn-outline-dark mr-auto'}
                     onClick={this.interactWithCreateLoan}
                 >
                     Добавить займ
@@ -170,7 +164,6 @@ class Loans extends Component {
                                     <select ref={this.selectId} className="select__content">
                                         <option value={'name'}>имени</option>
                                         <option value={'number'}>номеру</option>
-                                        <option value={'id'}>id</option>
                                     </select>
                                 </div>
                                 <div
@@ -213,7 +206,7 @@ class Loans extends Component {
                 </div>
                 <table className="table">
                     <thead>
-                    <tr className={'table_dark'}>
+                    <tr className={'table'}>
                         <th scope="col">Полученный доход</th>
                         <th scope="col">Ожидаемый доход</th>
                         <th scope="col">Просроченные займы</th>

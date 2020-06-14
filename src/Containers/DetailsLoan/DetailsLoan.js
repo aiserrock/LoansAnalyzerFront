@@ -6,6 +6,7 @@ import LoanInputs from '../../Components/CreateLoan/LoanInputs'
 import Tooltip from 'react-simple-tooltip'
 import {confirmAlert} from "react-confirm-alert"
 import AppPayout from '../../Components/AppPayout/AppPayout'
+import {NavLink} from 'react-router-dom'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -152,10 +153,10 @@ class DetailsLoan extends Component {
                 <div className="row">
                     <div className="col-lg-6 col-md-8 col-10">
                         <div className={'links'}>
-                            <div className={'link'}>
+                            <NavLink to={'/extract/extract1'} className={'link'}>
                                 <i className="fa fa-share-alt" aria-hidden="true"/>
                                 <span>Поделиться</span>
-                            </div>
+                            </NavLink>
                             <div className={'link'}>
                                 <i className="fa fa-plus" aria-hidden="true"/>
                                 <span>Составить график выплат</span>

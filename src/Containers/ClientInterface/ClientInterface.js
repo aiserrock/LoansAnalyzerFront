@@ -5,6 +5,7 @@ export default class ClientInterface extends Component {
     render(){
         return(
             <div className={''}>
+                Клинент
             </div>
         )
     }

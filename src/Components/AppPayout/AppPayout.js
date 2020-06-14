@@ -26,7 +26,7 @@ export default class AppPayout extends Component {
                             <h4 className={'mb-4'}>Заёмщик: Имя </h4>
                             <div className={'input-section__input'}>
                                 <label>Долг</label>
-                                <input ref={this.debt} type="number"/>
+                                <input defaultValue={this.props.isEdit ? this.props.paidItem.amount : null} ref={this.debt} type="number"/>
                             </div>
                             <div className={'input-section__input'}>
                                 <label>Проценты</label>

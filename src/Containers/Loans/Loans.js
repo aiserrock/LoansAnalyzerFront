@@ -224,6 +224,7 @@ class Loans extends Component {
 
 
                 <AppPayout
+                    isEdit={false}
                     payoutIsOpen={this.state.payoutIsOpen}
                     paidItem={this.state.paidItem}
                     interactWithPayout={this.interactWithPayout}

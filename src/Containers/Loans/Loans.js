@@ -14,6 +14,7 @@ class Loans extends Component {
             payoutIsOpen: false,
             createLoanIsOpen: false,
             paidItem: null,
+            menuIsOpen: false,
             loans: [
                 {
                     id: 'loan1',
@@ -83,6 +84,21 @@ class Loans extends Component {
         this.setState({
             createLoanIsOpen: !this.state.createLoanIsOpen,
         })
+    }
+
+    interactWithMenu = () => {
+        this.setState({
+            menuIsOpen: !this.state.menuIsOpen,
+        })
+    }
+
+    find = () => {
+
+    }
+
+    sort = () => {
+        const filters = []
+
     }
 
     renderFilters = () => {
@@ -157,7 +173,7 @@ class Loans extends Component {
                         <div className={'loans-panel__search'}>
                             <div className={'loans-panel__search-string'}>
                                 <input ref={this.findLoan} placeholder={'Поиск займа по'} type="text"/>
-                                <i className="fa fa-search fa-animate" aria-hidden="true" onClick={this.find}></i>
+                                <i className="fa fa-search fa-animate" aria-hidden="true" onClick={this.find}/>
                             </div>
                             <div className={'loans-panel__search-select'}>
                                 <div className={'select'}>
@@ -173,7 +189,7 @@ class Loans extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className={'d-block d-sm-none'}>
+                        <div className={`d-block d-sm-none`}>
                             <div className={this.state.menuIsOpen ? 'loans-panel__menu-mobile' : 'd-none'}>
                                 {
                                     this.renderFilters()

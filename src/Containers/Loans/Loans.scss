@@ -9,7 +9,6 @@
 
   & .table {
     width: 650px;
-
   }
 
   & p {
@@ -42,6 +41,7 @@
     &__menu-mobile {
       display: flex;
       flex-direction: column;
+      height: 500px;
     }
 
     &__search {
@@ -142,23 +142,8 @@
   }
 }
 
-@media (max-width: 650px) {
-  .loans-list {
-    width: 65vmax !important;
-    height: 565px;
-  }
-}
-
 @media (max-width: 500px) {
-  .loans-list {
-    font-size: 15px !important;
-    width: 53vmax !important;
-  }
-
-  .loans-list__main {
-  }
-
-  .loans-list__filters {
+  .loans-panel__filters {
     padding-bottom: 0;
     border-left: none;
 
@@ -167,7 +152,7 @@
     }
   }
 
-  .loans-list__search {
+  .loans-panel__search {
     flex-direction: column;
     height: 110px;
 
@@ -175,17 +160,21 @@
       border-left: none;
       border-top: 1px solid lightgray;
     }
-
-    & .select {
-      &__content {
-        padding: 10px;
-      }
-    }
   }
 }
 
-@media (min-height: 800px) and (max-width: 570px) {
-  .loans-list{
-    width: 44vmax !important;
+@media (max-width: 570px) {
+  .loans {
+    padding: 30px 10px !important;
+  }
+
+  .loans-panel {
+    width: 50vmax !important;
+  }
+}
+
+@media (max-width: 575px) {
+  & .table {
+    width: 400px !important;
   }
 }

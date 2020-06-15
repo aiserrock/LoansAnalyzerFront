@@ -14,7 +14,6 @@
   &__item {
     padding: 20px;
     margin: 0 5px 20px 0;
-    border-radius: 5px;
     background-color: #F0F0F0;
     @include animate();
     display: flex;
@@ -26,34 +25,4 @@
       align-items: center;
     }
   }
-
-  & .selector {
-    display: flex;
-    transform: translate(0, 1px);
-
-    & .select {
-      outline: 0 !important;
-      padding: 5px;
-      margin-right: 2px;
-      cursor: pointer;
-      border: 1px solid white;
-      border-top-right-radius: 7px;
-      border-top-left-radius: 7px;
-      font-size: 20px;
-      background-color: #F0F0F0;
-      @include animate();
-      white-space: nowrap;
-
-      &:hover {
-        @include animate-hover-color(1.03)
-      }
-
-      &_active {
-        background-color: #686868;
-        color: white;
-      }
-    }
-  }
-
-
 }

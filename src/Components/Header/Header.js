@@ -6,6 +6,13 @@ import {NavLink} from 'react-router-dom'
 export default class Header extends Component {
     state = {
         activeTab: '',
+        menuIsOpen: false,
+    }
+
+    interactWithMenu = () => {
+        this.setState({
+            menuIsOpen: !this.state.menuIsOpen,
+        })
     }
 
     changeActiveTab = (e) => {
@@ -18,6 +25,36 @@ export default class Header extends Component {
 
     }
 
+    renderNavMenu = () => {
+        return (
+            <>
+                <NavLink
+                    id={'loans'}
+                    onClick={this.changeActiveTab}
+                    className={`header__nav-item ${this.state.activeTab === 'loans' ? 'header__nav-item_active' : ''}`}
+                    to={'/loans'}>
+                    Займы
+                </NavLink>
+                <NavLink
+                    id={'clients'}
+                    onClick={this.changeActiveTab}
+                    className={`header__nav-item ${this.state.activeTab === 'clients' ? 'header__nav-item_active' : ''}`}
+                    to={'/clients'}>
+                    Клиенты
+                </NavLink>
+            </>
+        )
+    }
+
+    renderLogout = () => {
+        return (
+            <div className={'link'} onClick={this.logout}>
+                <i className="fa fa-sign-out" aria-hidden="true" ></i>
+                <span>Выйти</span>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className={'header'}>
@@ -25,27 +62,43 @@ export default class Header extends Component {
                     <img src={img} alt="logo"/>
                 </NavLink>
 
-                <div className={'header__nav-bar'}>
-                    <NavLink
-                        id={'loans'}
-                        onClick={this.changeActiveTab}
-                        className={`header__nav-item ${this.state.activeTab === 'loans' ? 'header__nav-item_active' : ''}`}
-                        to={'/loans'}>
-                        Займы
-                    </NavLink>
-                    <NavLink
-                        id={'clients'}
-                        onClick={this.changeActiveTab}
-                        className={`header__nav-item ${this.state.activeTab === 'clients' ? 'header__nav-item_active' : ''}`}
-                        to={'/clients'}>
-                        Клиенты
-                    </NavLink>
+                <div className={'d-none d-sm-block h'}>
+                    <div className="header__content">
+                        <div className={'header__nav-bar'}>
+                            {
+                                this.renderNavMenu()
+                            }
+                        </div>
+
+                        {
+                            this.renderLogout()
+                        }
+                    </div>
                 </div>
 
-                <div className={'link'} onClick={this.logout}>
-                    <i className="fa fa-sign-out" aria-hidden="true" ></i>
-                    <span>Выйти</span>
+                <div className={'header__mobile d-block d-sm-none'}>
+                    <div
+                        onClick={this.interactWithMenu}
+                        className="toggle-menu ">
+                        ☰
+                    </div>
+                    <div className={'mobile-content'}>
+                        {
+                            this.state.menuIsOpen
+                                ? <>
+                                    {
+                                        this.renderNavMenu()
+                                    }
+                                    {
+                                        this.renderLogout()
+                                    }
+                                </> : null
+                        }
+
+                    </div>
                 </div>
+
+
             </div>
         )
     }

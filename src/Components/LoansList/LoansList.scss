@@ -1,15 +1,12 @@
 @import "../../css/mixins";
 
 .loans-list {
-
-  &__content {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 490px;
-    padding: 5px;
-    max-width: 500px;
-    min-width: 430px;
-  }
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 490px;
+  padding: 5px;
+  max-width: 500px;
+  min-width: 430px;
 
   &__item {
     padding: 20px;

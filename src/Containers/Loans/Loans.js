@@ -5,6 +5,7 @@ import LoansList from '../../Components/LoansList/LoansList'
 import AppPayout from '../../Components/AppPayout/AppPayout'
 import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 import {Redirect} from 'react-router-dom'
+import {getLoans} from '../../store/loans/loansActions'
 
 class Loans extends Component {
     constructor() {
@@ -16,60 +17,7 @@ class Loans extends Component {
             createLoanIsOpen: false,
             paidItem: null,
             menuIsOpen: false,
-            loans: [
-                {
-                    id: 'loan1',
-                    amount: 10000,
-                    rate: 5,
-                    increased_rate: 10,
-                    goal: 'da',
-                    clients_id: 'client1',
-                    users_id: 'user1',
-                    created_at: '01.04.20',
-                    issued_at: 30,
-                    expiration_at: '01.05.20',
-                    status: 'fgd',
-                },
-                {
-                    id: 'loan2',
-                    amount: 10000,
-                    rate: 5,
-                    increased_rate: 10,
-                    goal: 'da',
-                    clients_id: 'client1',
-                    users_id: 'user1',
-                    created_at: '01.04.20',
-                    issued_at: 30,
-                    expiration_at: '01.05.20',
-                    status: 'fgd',
-                },
-                {
-                    id: 'loan3',
-                    amount: 10000,
-                    rate: 5,
-                    increased_rate: 10,
-                    goal: 'da',
-                    clients_id: 'client1',
-                    users_id: 'user1',
-                    created_at: '01.04.20',
-                    issued_at: 30,
-                    expiration_at: '01.05.20',
-                    status: 'fgd',
-                },
-                {
-                    id: 'loan4',
-                    amount: 10000,
-                    rate: 5,
-                    increased_rate: 10,
-                    goal: 'da',
-                    clients_id: 'client1',
-                    users_id: 'user1',
-                    created_at: '01.04.20',
-                    issued_at: 30,
-                    expiration_at: '01.05.20',
-                    status: 'fgd',
-                },
-            ],
+            curNumOfEl: 0,
         }
     }
 
@@ -93,12 +41,19 @@ class Loans extends Component {
         })
     }
 
-    find = () => {
+    increaseNumberElements = async () => {
+        await this.setState({
+            curNumOfEl: this.state.curNumOfEl + 4,
+        })
 
+        this.find()
+    }
+
+    find = () => {
+        this.props.getLoans(this.state.curNumOfEl, null)
     }
 
     sort = () => {
-        const filters = []
 
     }
 
@@ -150,8 +105,9 @@ class Loans extends Component {
     renderOrderList = () => {
         return (
             <LoansList
-                loans={this.state.loans}
+                loans={this.props.loans}
                 interactWithPayout={this.interactWithPayout}
+                increaseNumberElements={this.increaseNumberElements}
             />
         )
     }
@@ -261,12 +217,15 @@ class Loans extends Component {
 
 function mapStateToProps(state) {
     return {
-        isAuth: state.authReducer.isAuth
+        isAuth: state.authReducer.isAuth,
+        loans: state.loansReducer.loans
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    return {}
+    return {
+        getLoans: (skip, search) => dispatch(getLoans(skip, search)),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Loans)

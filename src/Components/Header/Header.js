@@ -50,7 +50,7 @@ export default class Header extends Component {
         else
             return (
                 <div className={'link'} onClick={this.props.logout}>
-                    <i className="fa fa-sign-out" aria-hidden="true" ></i>
+                    <i className="fa fa-sign-in" aria-hidden="true"/>
                     <span>Войти</span>
                 </div>
             )

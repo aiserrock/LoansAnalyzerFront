@@ -4,7 +4,7 @@ import {get, post, put, del} from "../http_client/LoansClient";
 // !!! Если была получена ошибка, то методы будут возвращать её код
 // 400 - не найдено, 409 - конфликт (уже есть клиент в базе)
 // 401 - ошибка авторизации, 404 - отсутствует, 422 - ошибка парсинга
-export class HistoryController {
+export default class HistoryController {
     // Получение истории займа
     // @param token - токен авторизации пользователя
     // @param id - row id займа

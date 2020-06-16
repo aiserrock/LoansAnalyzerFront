@@ -24,6 +24,10 @@
 
   a {
     text-decoration: none !important;
+    color: black;
+    &:hover {
+      color: black;
+    }
   }
 
   &__container {
@@ -126,6 +130,22 @@
     color: white;
   }
 
+  & .error {
+    opacity: 0.75;
+    font-weight: bold;
+    color: red;
+  }
+
+  & .input-error {
+    border: 1px solid red;
+  }
+
+  & .btn-outline-dark {
+    &:hover {
+      color: white;
+    }
+  }
+
   & .dagger {
     position: relative;
     width: 32px;
@@ -178,6 +198,10 @@
     color: #343a40 !important;
     @include animate();
     opacity: 0.8;
+
+    & a {
+      opacity: 0.8;
+    }
 
     &:hover {
       @include animate-hover(1.03);
@@ -245,6 +269,10 @@
   & .h {
     height: 100%;
     width: 100%;
+  }
+
+  & .hide {
+    display: none;
   }
 
   & .bg {

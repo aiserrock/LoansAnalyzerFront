@@ -1,12 +1,12 @@
 import {post} from "../http_client/LoansClient";
 
 // Контроллер для авторизации
-export class AuthController {
+export default class AuthController {
     // Делаем запрос аутентификации на сервере, с предоставленными логином
     // и паролем
     // @return json объект, содержащий токен и тип токена
     // Если произошла ошибка, вернется null.
-    async auth(password: string, login: string) {
+    async auth(login: string, password: string) {
         try {
             let response = await post('/login', `username=${login}&password=${password}`,
                 {

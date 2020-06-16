@@ -153,10 +153,12 @@ class DetailsLoan extends Component {
                 <div className="row">
                     <div className="col-lg-6 col-md-8 col-10">
                         <div className={'links'}>
-                            <NavLink to={'/extract/extract1'} className={'link'}>
-                                <i className="fa fa-share-alt" aria-hidden="true"/>
-                                <span>Поделиться</span>
-                            </NavLink>
+                            <div className={'link'}>
+                                <NavLink to={'/extract/extract1'} >
+                                    <i className="fa fa-share-alt" aria-hidden="true"/>
+                                    <span>Поделиться</span>
+                                </NavLink>
+                            </div>
                             <div className={'link'}>
                                 <i className="fa fa-plus" aria-hidden="true"/>
                                 <span>Составить график выплат</span>

@@ -21,10 +21,6 @@ export default class Header extends Component {
         })
     }
 
-    logout = () => {
-
-    }
-
     renderNavMenu = () => {
         return (
             <>
@@ -48,7 +44,7 @@ export default class Header extends Component {
 
     renderLogout = () => {
         return (
-            <div className={'link'} onClick={this.logout}>
+            <div className={'link'} onClick={this.props.logout}>
                 <i className="fa fa-sign-out" aria-hidden="true" ></i>
                 <span>Выйти</span>
             </div>
@@ -97,8 +93,6 @@ export default class Header extends Component {
 
                     </div>
                 </div>
-
-
             </div>
         )
     }

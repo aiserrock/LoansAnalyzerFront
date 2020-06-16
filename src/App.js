@@ -9,6 +9,8 @@ import Auth from './Containers/Auth/Auth'
 import Header from './Components/Header/Header'
 import {Route, Switch} from 'react-router-dom'
 import {connect} from 'react-redux'
+import {logout} from './Store/auth/authActions'
+
 
 
 class App extends Component {
@@ -17,7 +19,7 @@ class App extends Component {
             <div className={'app'}>
                 <div className="app__container">
                     <div className={'app__menu'}>
-                        <Header/>
+                        <Header logout={this.props.logout}/>
                     </div>
 
                     <div className="app__content">
@@ -43,7 +45,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return{
-
+        logout: () => dispatch(logout()),
     }
 }
 

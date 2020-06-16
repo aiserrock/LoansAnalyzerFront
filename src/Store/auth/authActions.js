@@ -1,17 +1,29 @@
 import {dispatchAction} from '../universalFunctions'
-import AuthController from '../../controllers/AuthController'
+import {post} from '../../http_client/LoansClient'
 import {AUTH_ERROR, AUTH_SUCCESS, AUTH_LOGOUT} from './actionTypes'
 
 
 export function auth(login, password) {
     return async (dispatch) => {
-        const data = await AuthController.prototype.auth((login, password))
+        try {
+            let response = await post('/login', `username=${login}&password=${password}`,
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                },
+            )
 
-        console.log(login, password, data)
-        if (data !== null) {
-            localStorage.setItem('data', JSON.stringify(data))
-            dispatch(dispatchAction(AUTH_SUCCESS, data))
-        } else {
+            const data = await response.data
+
+            if (data !== null) {
+                localStorage.setItem('data', JSON.stringify(data))
+                dispatch(dispatchAction(AUTH_SUCCESS, data))
+            } else {
+                dispatch(dispatchAction(AUTH_ERROR, null))
+            }
+        } catch (e) {
             dispatch(dispatchAction(AUTH_ERROR, null))
         }
     }

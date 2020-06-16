@@ -19,7 +19,7 @@ class App extends Component {
             <div className={'app'}>
                 <div className="app__container">
                     <div className={'app__menu'}>
-                        <Header logout={this.props.logout}/>
+                        <Header logout={this.props.logout} isAuth={this.props.isAuth}/>
                     </div>
 
                     <div className="app__content">
@@ -39,7 +39,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
     return{
-
+        isAuth: state.authReducer.isAuth
     }
 }
 

@@ -35,8 +35,6 @@ class Auth extends Component {
     render(){
         const isValid = !this.props.isError && this.state.loginIsValid && this.state.passwordIsValid
 
-        console.log()
-
         return(
             <div className={'auth'}>
               <div className="auth__content">
@@ -65,7 +63,7 @@ class Auth extends Component {
 
 function mapStateToProps(state) {
     return{
-        isError: state.authReducer.isError
+        isError: state.authReducer.isError,
     }
 }
 

@@ -19,11 +19,11 @@ export default function с(state = initialState, action) {
             }
         case AUTH_LOGOUT:
             return {
-                ...state, isAuth: false, data: {}
+                ...state, isAuth: false, data: {},
             }
         case AUTH_ERROR:
             return {
-                ...state, isError: true
+                ...state, isError: true,
             }
             return state
     }

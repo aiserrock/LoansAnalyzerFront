@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import './Auth.scss'
 import {connect} from 'react-redux'
-import {auth} from '../../Store/auth/authActions'
+import {auth} from '../../store/auth/authActions'
 
 class Auth extends Component {
     constructor() {

@@ -9,7 +9,7 @@ import Auth from './Containers/Auth/Auth'
 import Header from './Components/Header/Header'
 import {Route, Switch} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {logout} from './Store/auth/authActions'
+import {logout} from './store/auth/authActions'
 
 
 
@@ -38,6 +38,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log(state.authReducer)
     return{
         isAuth: state.authReducer.isAuth
     }

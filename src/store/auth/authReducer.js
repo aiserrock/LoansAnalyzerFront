@@ -10,7 +10,7 @@ const initialState = {
     isAuth: isAuth,
 }
 
-export default function с(state = initialState, action) {
+export default function authReducer(state = initialState, action) {
     switch (action.type) {
         default:
         case AUTH_SUCCESS:

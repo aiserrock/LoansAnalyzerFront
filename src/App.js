@@ -38,7 +38,6 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state.authReducer)
     return{
         isAuth: state.authReducer.isAuth
     }

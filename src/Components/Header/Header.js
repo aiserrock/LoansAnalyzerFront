@@ -22,7 +22,6 @@ export default class Header extends Component {
     }
 
     renderNavMenu = () => {
-        console.log('isAuth', this.props.isAuth)
         if(this.props.isAuth)
         {
             return (

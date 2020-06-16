@@ -4,6 +4,7 @@ import './Loans.scss'
 import LoansList from '../../Components/LoansList/LoansList'
 import AppPayout from '../../Components/AppPayout/AppPayout'
 import CreateLoan from '../../Components/CreateLoan/CreateLoan'
+import {Redirect} from 'react-router-dom'
 
 class Loans extends Component {
     constructor() {
@@ -156,106 +157,112 @@ class Loans extends Component {
     }
 
     render() {
-        return (
-            <div className={'loans'}>
-                <h1 className={'mb-5'}>Займы</h1>
+        if (this.props.isAuth) {
+            return (
+                <div className={'loans'}>
+                    <h1 className={'mb-5'}>Займы</h1>
 
 
-                <button
-                    className={'btn btn-outline-dark mr-auto'}
-                    onClick={this.interactWithCreateLoan}
-                >
-                    Добавить займ
-                </button>
+                    <button
+                        className={'btn btn-outline-dark mr-auto'}
+                        onClick={this.interactWithCreateLoan}
+                    >
+                        Добавить займ
+                    </button>
 
-                <div className={'loans-panel'}>
-                    <div className={'loans-panel__main'}>
-                        <div className={'loans-panel__search'}>
-                            <div className={'loans-panel__search-string'}>
-                                <input ref={this.findLoan} placeholder={'Поиск займа по'} type="text"/>
-                                <i className="fa fa-search fa-animate" aria-hidden="true" onClick={this.find}/>
-                            </div>
-                            <div className={'loans-panel__search-select'}>
-                                <div className={'select'}>
-                                    <select ref={this.selectId} className="select__content">
-                                        <option value={'name'}>имени</option>
-                                        <option value={'number'}>номеру</option>
-                                    </select>
+                    <div className={'loans-panel'}>
+                        <div className={'loans-panel__main'}>
+                            <div className={'loans-panel__search'}>
+                                <div className={'loans-panel__search-string'}>
+                                    <input ref={this.findLoan} placeholder={'Поиск займа по'} type="text"/>
+                                    <i className="fa fa-search fa-animate" aria-hidden="true" onClick={this.find}/>
                                 </div>
-                                <div
-                                    onClick={this.interactWithMenu}
-                                    className="toggle-menu d-block d-sm-none">
-                                    ☰
+                                <div className={'loans-panel__search-select'}>
+                                    <div className={'select'}>
+                                        <select ref={this.selectId} className="select__content">
+                                            <option value={'name'}>имени</option>
+                                            <option value={'number'}>номеру</option>
+                                        </select>
+                                    </div>
+                                    <div
+                                        onClick={this.interactWithMenu}
+                                        className="toggle-menu d-block d-sm-none">
+                                        ☰
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={`d-block d-sm-none`}>
+                                <div className={this.state.menuIsOpen ? 'loans-panel__menu-mobile' : 'd-none'}>
+                                    {
+                                        this.renderFilters()
+                                    }
+                                </div>
+                                {
+                                    this.state.menuIsOpen
+                                        ? null
+                                        : <div className={'loans-panel__content'}>
+                                            {
+                                                this.renderOrderList()
+                                            }
+                                        </div>
+                                }
+                            </div>
+                            <div className={'d-none d-sm-block'}>
+                                <div className={'loans-panel__content'}>
+                                    {
+                                        this.renderOrderList()
+                                    }
                                 </div>
                             </div>
                         </div>
-                        <div className={`d-block d-sm-none`}>
-                            <div className={this.state.menuIsOpen ? 'loans-panel__menu-mobile' : 'd-none'}>
-                                {
-                                    this.renderFilters()
-                                }
-                            </div>
+
+                        <div className={'loans-panel__menu d-none d-sm-block'}>
                             {
-                                this.state.menuIsOpen
-                                    ? null
-                                    : <div className={'loans-panel__content'}>
-                                        {
-                                            this.renderOrderList()
-                                        }
-                                    </div>
+                                this.renderFilters()
                             }
                         </div>
-                        <div className={'d-none d-sm-block'}>
-                            <div className={'loans-panel__content'}>
-                                {
-                                    this.renderOrderList()
-                                }
-                            </div>
-                        </div>
                     </div>
+                    <table className="table">
+                        <thead>
+                        <tr className={'table'}>
+                            <th scope="col">Полученный доход</th>
+                            <th scope="col">Ожидаемый доход</th>
+                            <th scope="col">Просроченные займы</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><span className={'text-primary'}>10000</span></td>
+                            <td><span className={'text-success'}>+3500</span></td>
+                            <td><span className={'text-danger'}>10000</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-                    <div className={'loans-panel__menu d-none d-sm-block'}>
-                        {
-                            this.renderFilters()
-                        }
-                    </div>
+
+
+                    <AppPayout
+                        isEdit={false}
+                        payoutIsOpen={this.state.payoutIsOpen}
+                        paidItem={this.state.paidItem}
+                        interactWithPayout={this.interactWithPayout}
+                    />
+                    <CreateLoan
+                        interactWithCreateLoan={this.interactWithCreateLoan}
+                        createLoanIsOpen={this.state.createLoanIsOpen}
+                    />
                 </div>
-                <table className="table">
-                    <thead>
-                    <tr className={'table'}>
-                        <th scope="col">Полученный доход</th>
-                        <th scope="col">Ожидаемый доход</th>
-                        <th scope="col">Просроченные займы</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><span className={'text-primary'}>10000</span></td>
-                        <td><span className={'text-success'}>+3500</span></td>
-                        <td><span className={'text-danger'}>10000</span></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-
-
-                <AppPayout
-                    isEdit={false}
-                    payoutIsOpen={this.state.payoutIsOpen}
-                    paidItem={this.state.paidItem}
-                    interactWithPayout={this.interactWithPayout}
-                />
-                <CreateLoan
-                    interactWithCreateLoan={this.interactWithCreateLoan}
-                    createLoanIsOpen={this.state.createLoanIsOpen}
-                />
-            </div>
-        )
+            )
+        }
+        else
+            return <Redirect to={'/'}/>
     }
 }
 
 function mapStateToProps(state) {
-    return {}
+    return {
+        isAuth: state.authReducer.isAuth
+    }
 }
 
 function mapDispatchToProps(dispatch) {

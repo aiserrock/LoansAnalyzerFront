@@ -12,7 +12,6 @@ const initialState = {
 
 export default function authReducer(state = initialState, action) {
     switch (action.type) {
-        default:
         case AUTH_SUCCESS:
             return {
                 ...state, isAuth: true, data: action.item, isError: false,
@@ -25,6 +24,7 @@ export default function authReducer(state = initialState, action) {
             return {
                 ...state, isError: true,
             }
+        default:
             return state
     }
 }

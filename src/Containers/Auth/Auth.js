@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './Auth.scss'
 import {connect} from 'react-redux'
 import {auth} from '../../store/auth/authActions'
+import {Redirect} from 'react-router-dom'
 
 class Auth extends Component {
     constructor() {
@@ -33,37 +34,46 @@ class Auth extends Component {
     }
 
     render(){
-        const isValid = !this.props.isError && this.state.loginIsValid && this.state.passwordIsValid
+        if (!this.props.isAuth) {
+            const isValid = !this.props.isError && this.state.loginIsValid && this.state.passwordIsValid
+            return(
+                <div className={'auth'}>
+                    <div className="auth__content">
+                        <h2 className={'mb-5'}>
+                            Авторизуйтесь
+                        </h2>
+                        <div className="input-section">
+                            <div className={'input-section__input'}>
+                                <label>Логин</label>
+                                <input ref={this.login} type="text"/>
+                            </div>
+                            <div className={'input-section__input'}>
+                                <label>Пароль</label>
+                                <input ref={this.password} type="password"/>
+                            </div>
+                            <small className={!isValid ? 'error' : 'hide'}>Неверный логин или пароль!</small>
+                            <button className={'btn btn-success mt-4 mr-auto'} onClick={this.tryToAuth}>
+                                Войти
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        else
+        {
+            return (
+                <Redirect  to={'/loans'}/>
+            )
+        }
 
-        return(
-            <div className={'auth'}>
-              <div className="auth__content">
-                  <h2 className={'mb-5'}>
-                      Авторизуйтесь
-                  </h2>
-                  <div className="input-section">
-                      <div className={'input-section__input'}>
-                          <label>Логин</label>
-                          <input ref={this.login} type="text"/>
-                      </div>
-                      <div className={'input-section__input'}>
-                          <label>Пароль</label>
-                          <input ref={this.password} type="password"/>
-                      </div>
-                      <small className={!isValid ? 'error' : 'hide'}>Неверный логин или пароль!</small>
-                      <button className={'btn btn-success mt-4 mr-auto'} onClick={this.tryToAuth}>
-                          Войти
-                      </button>
-                  </div>
-              </div>
-            </div>
-        )
     }
 }
 
 function mapStateToProps(state) {
     return{
         isError: state.authReducer.isError,
+        isAuth: state.authReducer.isAuth
     }
 }
 

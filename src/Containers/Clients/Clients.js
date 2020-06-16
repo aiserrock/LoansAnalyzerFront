@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {confirmAlert} from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import AddClient from '../../Components/AddClient/AddClient'
+import {Redirect} from 'react-router-dom'
 
 class Clients extends Component {
     state = {
@@ -73,59 +74,64 @@ class Clients extends Component {
     }
 
     render() {
-        return (
-            <div className={'clients'}>
-                <h1 className={'mb-5'}>Клиенты</h1>
+        if (this.props.isAuth)
+            return (
+                <div className={'clients'}>
+                    <h1 className={'mb-5'}>Клиенты</h1>
 
-                <button
-                    className={'btn btn-secondary mr-auto'}
-                    onClick={() => this.interactWithClient(true, null)}
-                >
-                    Добавить клиента
-                </button>
+                    <button
+                        className={'btn btn-secondary mr-auto'}
+                        onClick={() => this.interactWithClient(true, null)}
+                    >
+                        Добавить клиента
+                    </button>
 
-                <table className="table">
-                    <thead className="thead">
-                    <tr className={'table_dark'}>
-                        <th scope="col">#</th>
-                        <th scope="col">ФИО</th>
-                        <th scope="col">Телефон</th>
-                        <th scope="col">
-                            <i className="fa fa-pencil-square-o" aria-hidden="true"/>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        this.state.clients.map((element, index) => (
-                            <tr key={element.id}>
-                                <th scope="row">{index}</th>
-                                <td>{element.name}</td>
-                                <td>{element.phone}</td>
-                                <td>
-                                    <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
-                                       onClick={() => this.interactWithClient(true, element)}
-                                    />
-                                    <i className="fa fa-trash-o fa-animate" aria-hidden="true"
-                                       onClick={() => this.deleteHandler(element)}/>
-                                </td>
-                            </tr>
-                        ))
-                    }
-                    </tbody>
-                </table>
-                <AddClient
-                    interactWithClient={this.interactWithClient}
-                    clientEditIsOpen={this.state.clientEditIsOpen}
-                    editClient={this.state.editClient}
-                />
-            </div>
-        )
+                    <table className="table">
+                        <thead className="thead">
+                        <tr className={'table_dark'}>
+                            <th scope="col">#</th>
+                            <th scope="col">ФИО</th>
+                            <th scope="col">Телефон</th>
+                            <th scope="col">
+                                <i className="fa fa-pencil-square-o" aria-hidden="true"/>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            this.state.clients.map((element, index) => (
+                                <tr key={element.id}>
+                                    <th scope="row">{index}</th>
+                                    <td>{element.name}</td>
+                                    <td>{element.phone}</td>
+                                    <td>
+                                        <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
+                                           onClick={() => this.interactWithClient(true, element)}
+                                        />
+                                        <i className="fa fa-trash-o fa-animate" aria-hidden="true"
+                                           onClick={() => this.deleteHandler(element)}/>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                        </tbody>
+                    </table>
+                    <AddClient
+                        interactWithClient={this.interactWithClient}
+                        clientEditIsOpen={this.state.clientEditIsOpen}
+                        editClient={this.state.editClient}
+                    />
+                </div>
+            )
+        else
+            return <Redirect to={'/'}/>
     }
 }
 
 function mapStateToProps(state) {
-    return {}
+    return {
+        isAuth: state.authReducer.isAuth,
+    }
 }
 
 function mapDispatchToProps(dispatch) {

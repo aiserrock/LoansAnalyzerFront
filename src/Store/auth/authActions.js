@@ -11,7 +11,7 @@ export function auth(login, password) {
 
             console.log(login, password,data)
 
-            localStorage.setItem('id', JSON.stringify(''))
+            localStorage.setItem('data', JSON.stringify(data))
             dispatch(dispatchAction(AUTH_SUCCESS, data))
         }
         catch (e) {

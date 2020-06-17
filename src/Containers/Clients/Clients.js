@@ -5,58 +5,29 @@ import {confirmAlert} from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import AddClient from '../../Components/AddClient/AddClient'
 import {Redirect} from 'react-router-dom'
+import {createClient, updateClient, getClients, deleteClient} from '../../store/client/clientActions'
 
 class Clients extends Component {
     state = {
         clientEditIsOpen: false,
         editClient: null,
-        clients: [
-            {
-                id: 1,
-                name: 'Иван Иванович Иванов',
-                phone: '79999999999',
-                user_id: 'user-1',
-            },
-            {
-                id: 2,
-                name: 'Иван Иванович Иванов',
-                phone: '79999999999',
-                user_id: 'user-1',
-            },
-            {
-                id: 3,
-                name: 'Иван Иванович Иванов',
-                phone: '79999999999',
-                user_id: 'user-1',
-            },
-            {
-                id: 4,
-                name: 'Иван Иванович Иванов',
-                phone: '79999999999',
-                user_id: 'user-1',
-            },
-            {
-                id: 5,
-                name: 'Иван Иванович Иванов',
-                phone: '79999999999',
-                user_id: 'user-1',
-            },
-        ],
-
+        currentList: 0,
     }
 
-    deleteClient = (client) => {
-
+    componentDidMount(): void {
+        if(this.props.clients.length === 0)
+            this.props.getClients(0)
     }
 
-    deleteHandler = (client) => {
+
+    deleteHandler = (id) => {
         confirmAlert({
             title: 'Подтвердите действие',
             message: 'Вы уверены, что хотите удалить клиента?',
             buttons: [
                 {
                     label: 'Да',
-                    onClick: () => this.deleteClient(client),
+                    onClick: () => this.props.deleteClient(id),
                 },
                 {
                     label: 'Нет',
@@ -71,6 +42,14 @@ class Clients extends Component {
         this.setState({
             clientEditIsOpen: isOpen, editClient,
         })
+    }
+
+    backHandler = () => {
+
+    }
+
+    forwardHandler = () => {
+
     }
 
     render() {
@@ -99,27 +78,41 @@ class Clients extends Component {
                         </thead>
                         <tbody>
                         {
-                            this.state.clients.map((element, index) => (
-                                <tr key={element.id}>
-                                    <th scope="row">{index}</th>
-                                    <td>{element.name}</td>
-                                    <td>{element.phone}</td>
-                                    <td>
-                                        <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
-                                           onClick={() => this.interactWithClient(true, element)}
-                                        />
-                                        <i className="fa fa-trash-o fa-animate" aria-hidden="true"
-                                           onClick={() => this.deleteHandler(element)}/>
-                                    </td>
-                                </tr>
-                            ))
+                            this.props.clients.map((element, index) => {
+                                return (
+                                    <tr key={element.id}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>{element.name}</td>
+                                        <td>{element.phone}</td>
+                                        <td>
+                                            <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
+                                               onClick={() => this.interactWithClient(true, element)}
+                                            />
+                                            <i className="fa fa-trash-o fa-animate" aria-hidden="true"
+                                               onClick={() => this.deleteHandler(element.id)}/>
+                                        </td>
+                                    </tr>
+                                )
+                            })
                         }
                         </tbody>
                     </table>
+                    <div className="d-flex">
+                        <button className={'btn btn-secondary mr-auto'} onClick={this.backHandler}>
+                            <i className="fa fa-angle-left" aria-hidden="true"></i>
+                        </button>
+                        <button className={'btn btn-secondary ml-auto'} onClick={this.forwardHandler}>
+                            <i className="fa fa-angle-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
                     <AddClient
                         interactWithClient={this.interactWithClient}
                         clientEditIsOpen={this.state.clientEditIsOpen}
                         editClient={this.state.editClient}
+                        createClient={this.props.createClient}
+                        successChanged={this.props.successChanged}
+                        updateClient={this.props.updateClient}
                     />
                 </div>
             )
@@ -131,11 +124,18 @@ class Clients extends Component {
 function mapStateToProps(state) {
     return {
         isAuth: state.authReducer.isAuth,
+        clients: state.clientReducer.clients,
+        successChanged: state.clientReducer.successChanged,
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    return {}
+    return {
+        getClients: (skip) => dispatch(getClients(skip)),
+        createClient: (name, phone) => dispatch(createClient(name, phone)),
+        updateClient: (id, data) => dispatch(updateClient(id, data)),
+        deleteClient: (id) => dispatch(deleteClient(id))
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Clients)

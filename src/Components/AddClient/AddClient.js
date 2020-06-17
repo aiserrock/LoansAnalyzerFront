@@ -1,12 +1,9 @@
 import React, {Component} from 'react'
 import './AddClient.scss'
 import ClientInput from './ClientInputs'
+import {editClient} from '../../store/client/clientActions'
 
 export default class AddClient extends Component {
-    saveClient = () => {
-
-    }
-
     onClose = () => {
         this.props.interactWithClient(false, null)
     }
@@ -30,7 +27,11 @@ export default class AddClient extends Component {
                                 <ClientInput
                                     isEdit={isEdit}
                                     editClient={this.props.editClient}
-                                    saveClient={this.saveClient}/>
+                                    createClient={this.props.createClient}
+                                    successChanged={this.props.successChanged}
+                                    onClose={this.onClose}
+                                    updateClient={this.props.updateClient}
+                                />
                             </div>
                         </div>
                         <div className={'bg'} onClick={this.onClose}/>

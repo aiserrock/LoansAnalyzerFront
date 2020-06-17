@@ -4,7 +4,7 @@ import {dispatchAction} from '../universalFunctions'
 import {
     ERROR_CREATE_LOAN, ERROR_UPDATE_LOAN,
     FETCH_LIST_ERROR,
-    FETCH_LIST_SUCCESS,
+    FETCH_LIST_SUCCESS, RESET_LIST,
     SUCCESS_CREATE_LOAN,
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
@@ -48,5 +48,11 @@ export function updateLoan(id, data) {
             dispatch(dispatchAction(SUCCESS_UPDATE_LOAN, data))
         }
         else dispatch(dispatchAction(ERROR_UPDATE_LOAN, null))
+    }
+}
+
+export function resetList() {
+    return (dispatch) => {
+        dispatch(dispatchAction(RESET_LIST, null))
     }
 }

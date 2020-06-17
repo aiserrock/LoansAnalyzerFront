@@ -5,7 +5,7 @@ import LoansList from '../../Components/LoansList/LoansList'
 import AppPayout from '../../Components/AppPayout/AppPayout'
 import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 import {Redirect} from 'react-router-dom'
-import {getLoans} from '../../store/loans/loansActions'
+import {getLoans, resetList} from '../../store/loans/loansActions'
 
 class Loans extends Component {
     constructor() {
@@ -46,7 +46,7 @@ class Loans extends Component {
             curNumOfEl: this.state.curNumOfEl + 4,
         })
 
-        this.find()
+        this.props.getLoans(this.state.curNumOfEl, null)
     }
 
     find = () => {
@@ -225,6 +225,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         getLoans: (skip, search) => dispatch(getLoans(skip, search)),
+        resetList: () => dispatch(resetList())
     }
 }
 

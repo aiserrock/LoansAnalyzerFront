@@ -1,7 +1,7 @@
 import {
     ERROR_CREATE_LOAN, ERROR_UPDATE_LOAN,
     FETCH_LIST_ERROR,
-    FETCH_LIST_SUCCESS,
+    FETCH_LIST_SUCCESS, RESET_LIST,
     SUCCESS_CREATE_LOAN,
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
@@ -38,6 +38,10 @@ export default function loansReducer(state = initialState, action) {
         case SUCCESS_UPDATE_LOAN:
             return {
                 ...state, updateSuccess: true
+            }
+        case RESET_LIST:
+            return {
+                ...state, loans: []
             }
         default:
             return state

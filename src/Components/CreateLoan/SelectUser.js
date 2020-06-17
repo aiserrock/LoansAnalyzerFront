@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {getDate} from '../../store/universalFunctions'
 
 export default class SelectUser extends Component {
     constructor() {
@@ -10,24 +9,24 @@ export default class SelectUser extends Component {
                 {
                     id: 1,
                     name: 'Вася',
-                    phone: '799999999999'
+                    phone: '799999999999',
                 },
                 {
                     id: 2,
                     name: 'Вася',
-                    phone: '799999999999'
+                    phone: '799999999999',
                 },
                 {
                     id: 3,
                     name: 'Вася',
-                    phone: '799999999999'
+                    phone: '799999999999',
                 },
                 {
                     id: 4,
                     name: 'Вася',
-                    phone: '799999999999'
-                }
-            ]
+                    phone: '799999999999',
+                },
+            ],
         }
     }
 
@@ -47,7 +46,11 @@ export default class SelectUser extends Component {
                         className={'ml-0'}
                         onChange={this.findClient}
                         placeholder={'Начните вводить ФИО'}
-                        defaultValue={this.props.isEdit ? this.props.client.name : null}
+                        value={
+                            this.props.clientInfo !== null
+                                ? this.props.clientInfo.name
+                                : ''
+                        }
                         ref={this.name} type="text"/>
                 </div>
 
@@ -56,7 +59,7 @@ export default class SelectUser extends Component {
                         {
                             this.state.clients.map((client) => (
                                 <div key={client.id}
-                                     className={`loans-list__item ${this.props.clientInfo === client ? 'loans-list__item_active': ''}`}
+                                     className={`loans-list__item ${this.props.clientInfo === client ? 'loans-list__item_active' : ''}`}
                                      onClick={() => this.chooseClient(client)}>
                                     <div className="row non-click">
                                         <div className="col-md-7  col-xs-12"><b>{client.name}</b></div>
@@ -68,20 +71,23 @@ export default class SelectUser extends Component {
                     </div>
                 </div>
 
-                <div className="button-section">
-                    <button className={'btn btn-primary mt-4'} onClick={() => {
-                        this.props.changeWindow('date')
-                    }}>
-                        Назад<i className="fa fa-arrow-left ml-3" aria-hidden="true"/>
-                    </button>
-                    <button className={'btn btn-primary mt-4'} disabled={this.props.clientInfo === null}
-                            onClick={() => {
-                                this.props.changeWindow('input')
+                {
+                    this.props.isEdit
+                        ? null
+                        : <div className="button-section">
+                            <button className={'btn btn-primary mt-4'} onClick={() => {
+                                this.props.changeWindow('date')
                             }}>
-                        Далее<i className="fa fa-arrow-right ml-3" aria-hidden="true"/>
-                    </button>
-                </div>
-
+                                Назад<i className="fa fa-arrow-left ml-3" aria-hidden="true"/>
+                            </button>
+                            <button className={'btn btn-primary mt-4'} disabled={this.props.clientInfo === null}
+                                    onClick={() => {
+                                        this.props.changeWindow('input')
+                                    }}>
+                                Далее<i className="fa fa-arrow-right ml-3" aria-hidden="true"/>
+                            </button>
+                        </div>
+                }
             </div>
         )
     }

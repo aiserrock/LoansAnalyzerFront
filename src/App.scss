@@ -42,6 +42,7 @@
     background-color: white;
     margin: 20px 0 20px 20px;
     height: 95vh;
+    border-radius: 15px;
   }
 
   &__content {
@@ -51,6 +52,7 @@
     overflow-y: scroll;
     height: 95vh;
     min-width: 45vmax;
+    border-radius: 15px;
   }
 
   & .message {
@@ -349,11 +351,13 @@
 @media (max-width: 790px) {
   .app__content {
     margin: 10px 5px 10px 5px !important;
+    border-radius: 0;
   }
 
   .app__menu {
     margin: 5px 8px 0 5px;
     height: auto;
     flex: auto;
+    border-radius: 0;
   }
 }

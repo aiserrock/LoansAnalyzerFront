@@ -7,6 +7,8 @@ import Tooltip from 'react-simple-tooltip'
 import {confirmAlert} from 'react-confirm-alert'
 import AppPayout from '../../Components/AppPayout/AppPayout'
 import {NavLink, Redirect} from 'react-router-dom'
+import SelectUser from '../../Components/CreateLoan/SelectUser'
+import Table from '../../Components/Table/Table'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -19,6 +21,7 @@ class DetailsLoan extends Component {
             endDate: new Date(startDate).setDate(date.getDate() + 6),
             payoutIsOpen: false,
             paidItem: null,
+            displayedTen: [],
             loan: {
                 id: 'loan1',
                 amount: 10000,
@@ -32,7 +35,7 @@ class DetailsLoan extends Component {
                 expiration_at: '01.05.20',
                 status: 'fgd',
             },
-            client: {
+            clientInfo: {
                 id: 1,
                 name: 'Иван Иванович Иванов',
                 phone: '79999999999',
@@ -92,7 +95,17 @@ class DetailsLoan extends Component {
     }
 
     deletePayed = (payed) => {
+        console.log(payed)
+    }
 
+    selectClient = (client) => {
+        this.setState({clientInfo: client})
+    }
+
+    changeDisplayTen = (displayedTen) => {
+        this.setState({
+            displayedTen
+        })
     }
 
     deleteHandler = (payed) => {
@@ -120,6 +133,43 @@ class DetailsLoan extends Component {
         })
     }
 
+    renderTableBody = () => {
+        return (
+            <table className="table">
+                <thead className="thead">
+                <tr className={'table_dark'}>
+                    <th scope="col">#</th>
+                    <th scope="col">Дата платежа</th>
+                    <th scope="col">Сумма</th>
+                    <th scope="col">Тип</th>
+                    <th scope="col">
+                        <i className="fa fa-pencil-square-o" aria-hidden="true"/>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {
+                    this.state.loansHistory.map((element, index) => (
+                        <tr key={element.id}>
+                            <th scope="row">{index}</th>
+                            <td>{element.date}</td>
+                            <td>{element.amount}</td>
+                            <td>{element.type}</td>
+                            <td>
+                                <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
+                                   onClick={() => this.interactWithPayout(true, element)}
+                                />
+                                <i className="fa fa-trash-o fa-animate" aria-hidden="true"
+                                   onClick={() => this.deleteHandler(element)}/>
+                            </td>
+                        </tr>
+                    ))
+                }
+                </tbody>
+            </table>
+        )
+    }
+
     render() {
         if (this.props.isAuth)
             return (
@@ -131,11 +181,16 @@ class DetailsLoan extends Component {
                             <InputsDetails
                                 isEdit={true}
                                 loan={this.state.loan}
-                                client={this.state.client}
+                            />
+
+                            <SelectUser
+                                selectClient={this.selectClient}
+                                isEdit={true}
+                                clientInfo={this.state.clientInfo}
                             />
                         </div>
                         <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">
-                            <div className={'calendar-loan mb-3'}>
+                            <div className={'mb-3'}>
                                 <ReactLightCalendar
                                     startDate={this.state.startDate}
                                     endDate={this.state.endDate}
@@ -174,7 +229,7 @@ class DetailsLoan extends Component {
                             <Tooltip
                                 customCss={`white-space: nowrap;`}
                                 content="Здесь что-то должно быть написано, но я хз, что">
-                                <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"></i>
+                                <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"/>
                             </Tooltip>
                         </div>
                     </div>
@@ -185,38 +240,14 @@ class DetailsLoan extends Component {
                         История платежей
                     </h2>
 
-                    <table className="table">
-                        <thead className="thead">
-                        <tr className={'table_dark'}>
-                            <th scope="col">#</th>
-                            <th scope="col">Дата платежа</th>
-                            <th scope="col">Сумма</th>
-                            <th scope="col">Тип</th>
-                            <th scope="col">
-                                <i className="fa fa-pencil-square-o" aria-hidden="true"/>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            this.state.loansHistory.map((element, index) => (
-                                <tr key={element.id}>
-                                    <th scope="row">{index}</th>
-                                    <td>{element.date}</td>
-                                    <td>{element.amount}</td>
-                                    <td>{element.type}</td>
-                                    <td>
-                                        <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
-                                           onClick={() => this.interactWithPayout(true, element)}
-                                        />
-                                        <i className="fa fa-trash-o fa-animate" aria-hidden="true"
-                                           onClick={() => this.deleteHandler(element)}/>
-                                    </td>
-                                </tr>
-                            ))
-                        }
-                        </tbody>
-                    </table>
+                    <Table
+                        data={this.state.loansHistory}
+                        getData={() => {}}
+                        renderTableBody={this.renderTableBody}
+                        changeDisplayTen={this.changeDisplayTen}
+                        renderOptionButton={this.renderOptionButton}
+                    />
+
                     <AppPayout
                         isEdit={true}
                         payoutIsOpen={this.state.payoutIsOpen}
@@ -237,7 +268,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {}
+    return {
+
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailsLoan)

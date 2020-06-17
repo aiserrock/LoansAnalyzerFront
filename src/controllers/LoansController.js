@@ -8,19 +8,27 @@ export default class LoansController {
     // @param token - токен авторизации пользователя
     // @param skip - сколько записей пропустить, реализует пагинацию
     // @param search - строка поиска, если производится поиск, параметр опционален
+    // @param status - строка статуса займа, если нужна фильтрация, параметр опционален
     // @return Возвращает список найденных займов
     // Чтобы сделать отступ, указываем первые два параметра
     // Чтобы сделать поиск, указываем три параметра, при этом skip=null
-    async getLoans(token: string, skip = 0, search: string) {
+    async getLoans(token: string, skip = 0, search: string, status: string) {
         try {
-            let param = '';
+            let param = {};
             if (skip !== 0 && skip !== null) {
-                param = `?skip=${skip}`;
+                param['skip'] = skip;
             }
             if (search !== undefined && search !== null) {
-                param = `?search=${search}`;
+                param['search'] = search;
             }
-            let response = await get(`/loans/${param}`,
+            if (status !== undefined && status !== null) {
+                param['status'] = status;
+            }
+            let p = '';
+            if (Object.keys(param).length !== 0) {
+                p = `?${new URLSearchParams(param).toString()}`;
+            }
+            let response = await get(`/loans/${p}`,
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,

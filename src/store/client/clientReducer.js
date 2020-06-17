@@ -9,19 +9,19 @@ export default function clientReducer(state = initialState, action) {
     switch (action.type) {
         case GET_CLIENTS_SUCCESS:
             return {
-                ...state, clients: state.clients.concat(action.item)
+                ...state, clients: state.clients.concat(action.item),
             }
         case GET_CLIENTS_ERROR:
             return {
-                ...state, clients: []
+                ...state, clients: [],
             }
         case ERROR_CHANGE_C:
             return {
-                ...state, successChanged: false
+                ...state, successChanged: false,
             }
         case SUCCESS_CHANGE_C:
-            return  {
-                ...state, successChanged: true
+            return {
+                ...state, successChanged: true,
             }
         default:
             return state

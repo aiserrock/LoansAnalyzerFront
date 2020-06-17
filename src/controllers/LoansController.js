@@ -18,11 +18,11 @@ export default class LoansController {
             if (skip !== 0 && skip !== null) {
                 param['skip'] = skip;
             }
-            if (search !== undefined && search !== null) {
+            if (search !== undefined && search !== null && search !== '') {
                 param['search'] = search;
             }
             if (status !== undefined && status !== null) {
-                param['status'] = status;
+                param['status'] = status.toUpperCase();
             }
             let p = '';
             if (Object.keys(param).length !== 0) {

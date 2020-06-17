@@ -1,5 +1,5 @@
 import {
-    ERROR_CREATE_LOAN, ERROR_UPDATE_LOAN,
+    ERROR_CREATE_LOAN, ERROR_UPDATE_LOAN, FETCH_LIST_END,
     FETCH_LIST_ERROR,
     FETCH_LIST_SUCCESS, RESET_LIST,
     SUCCESS_CREATE_LOAN,
@@ -8,6 +8,7 @@ import {
 
 const initialState = {
     loans: [],
+    isEndOfList: true,
     isError: false,
     createSuccess: false,
     updateSuccess: false,
@@ -18,6 +19,10 @@ export default function loansReducer(state = initialState, action) {
         case FETCH_LIST_SUCCESS:
             return {
                 ...state, loans: state.loans.concat(action.item), isError: false,
+            }
+        case FETCH_LIST_END:
+            return {
+                ...state, isEndOfList: true,
             }
         case FETCH_LIST_ERROR:
             return {

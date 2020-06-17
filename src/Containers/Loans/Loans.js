@@ -6,12 +6,12 @@ import AppPayout from '../../Components/AppPayout/AppPayout'
 import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 import {Redirect} from 'react-router-dom'
 import {changeStatus, getLoans, resetList} from '../../store/loans/loansActions'
+import {debounce} from 'lodash'
 
 class Loans extends Component {
     constructor() {
         super()
         this.findLoan = React.createRef()
-        this.selectSort = React.createRef()
         this.state = {
             payoutIsOpen: false,
             createLoanIsOpen: false,
@@ -40,18 +40,36 @@ class Loans extends Component {
         })
     }
 
+    // Делаем поиск при старте или авторизации
+    componentDidMount() {
+        this.clearFind()
+    }
+
+    componentWillUnmount() {
+        this.debounceClearFind.cancel()
+    }
+
     // Меняем статус займов по радио кнопкам
     changeStatus = async (e) => {
         let status = e.target.id;
         if (status === 'without_status')
             status = null;
         await this.props.changeStatus(status)
+        await this.clearFind()
+    }
+
+    // Поиск с задержкой при вводе в текстовое поле
+    debounceClearFind = debounce(() => {
+        this.clearFind();
+    }, 300)
+
+    // Поиск с предварительной очисткой списка
+    clearFind = async () => {
         await this.props.resetList()
         await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.props.status)
     }
 
-
-    // Ведем поиск после нажатия на кнопку
+    // Ведем поиск при прокрутке списка
     find = async () => {
         await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.props.status)
     }
@@ -64,12 +82,6 @@ class Loans extends Component {
                     <span>
                         Фильтры
                     </span>
-                    </div>
-                    <div className={'select'}>
-                        <select ref={this.selectSort} className="select__content">
-                            <option value={'ascendingOrder'}>Сначала новые</option>
-                            <option value={'descendingOrder'}>Сначала старые</option>
-                        </select>
                     </div>
 
                     <div className={'checkbox mb-3'}>
@@ -94,7 +106,7 @@ class Loans extends Component {
                         </label>
                     </div>
                 </div>
-                <div onClick={this.find} className={'loans-panel__button'}>
+                <div onClick={this.clearFind} className={'loans-panel__button'}>
                     Поиск
                 </div>
             </div>
@@ -129,16 +141,11 @@ class Loans extends Component {
                         <div className={'loans-panel__main'}>
                             <div className={'loans-panel__search'}>
                                 <div className={'loans-panel__search-string'}>
-                                    <input ref={this.findLoan} placeholder={'Поиск займа по'} type="text"/>
-                                    <i className="fa fa-search fa-animate" aria-hidden="true" onClick={this.find}/>
+                                    <input ref={this.findLoan} placeholder={'Поиск займа по ФИО или телефону'}
+                                           onChange={this.debounceClearFind} type="text"/>
+                                    <i className="fa fa-search fa-animate" aria-hidden="true" onClick={this.clearFind}/>
                                 </div>
                                 <div className={'loans-panel__search-select'}>
-                                    <div className={'select'}>
-                                        <select ref={this.selectId} className="select__content">
-                                            <option value={'name'}>имени</option>
-                                            <option value={'number'}>номеру</option>
-                                        </select>
-                                    </div>
                                     <div
                                         onClick={this.interactWithMenu}
                                         className="toggle-menu d-block d-sm-none">

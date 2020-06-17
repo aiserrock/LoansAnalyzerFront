@@ -6,7 +6,8 @@ import {getDate} from '../../store/universalFunctions'
 export default class LoansList extends Component {
     onScroll = (e) => {
         if (e.target.offsetHeight + e.target.scrollTop === e.target.scrollHeight) {
-            this.props.increaseNumberElements()
+            if (this.props.increaseNumberElements !== null)
+                this.props.increaseNumberElements()
         }
     }
 
@@ -22,7 +23,8 @@ export default class LoansList extends Component {
                                     <div className="col-md-7  col-xs-12"><b>{element.client.name}</b></div>
                                     <div className="col-md-5  col-xs-12"><b>{element.client.phone}</b></div>
                                     <div className="col-md-5 col-xs-12">Выдано в {getDate(element.loan.issued_at)}</div>
-                                    <div className="col-md-7 col-xs-12">Истечение в {getDate(element.loan.expiration_at)}</div>
+                                    <div className="col-md-7 col-xs-12">Истечение
+                                        в {getDate(element.loan.expiration_at)}</div>
                                     <div className="col-md-7  col-xs-12">Сумма {element.loan.amount} р</div>
                                     <div className="col-md-5  col-xs-12">Ставка {element.loan.rate}%</div>
                                 </div>

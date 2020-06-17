@@ -9,6 +9,7 @@ import AppPayout from '../../Components/AppPayout/AppPayout'
 import {NavLink, Redirect} from 'react-router-dom'
 import SelectUser from '../../Components/CreateLoan/SelectUser'
 import Table from '../../Components/Table/Table'
+import {updateLoan} from '../../store/loans/loansActions'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -90,8 +91,15 @@ class DetailsLoan extends Component {
 
     onChange = (startDate, endDate) => this.setState({startDate, endDate})
 
-    saveChanged = () => {
-
+    saveChanged = (data) => {
+        data = {
+            ...data,
+            created_at: new Date(),
+            issued_at: this.state.startDate,
+            expiration_at: this.state.endDate,
+            clients_id: this.state.clientInfo.id
+        }
+        //this.props.updateLoan(data)
     }
 
     deletePayed = (payed) => {
@@ -269,7 +277,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-
+        updateLoan: (id, data) => dispatch(updateLoan(id, data))
     }
 }
 

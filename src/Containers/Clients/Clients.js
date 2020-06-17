@@ -109,6 +109,7 @@ class Clients extends Component {
                         getData={this.props.getClients}
                         renderTableBody={this.renderTableBody}
                         changeDisplayTen={this.changeDisplayTen}
+                        renderOptionButton={this.renderOptionButton}
                     />
 
                     <AddClient

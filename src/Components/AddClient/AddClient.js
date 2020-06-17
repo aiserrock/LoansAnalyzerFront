@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import './AddClient.scss'
 import ClientInput from './ClientInputs'
-import {editClient} from '../../store/client/clientActions'
 
 export default class AddClient extends Component {
     onClose = () => {

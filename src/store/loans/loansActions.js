@@ -9,10 +9,10 @@ import {
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
 
-export function getLoans(skip, search) {
+export function getLoans(skip, search, status) {
     return async (dispatch, getState) => {
         const token = getState().authReducer.data.access_token
-        const data = await LoansController.prototype.getLoans(token, skip, search)
+        const data = await LoansController.prototype.getLoans(token, skip, search, status)
 
         if(Array.isArray(data)) {
             const allData = []

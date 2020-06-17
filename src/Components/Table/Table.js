@@ -12,7 +12,7 @@ export default class Table extends Component {
             await this.props.getData(0)
         else
             this.setState({
-                currentNumberOfItems: Math.ceil(this.props.data.length/10)
+                currentNumberOfItems: Math.ceil(this.props.data.length / 10),
             })
         this.changeDisplayedTen()
     }
@@ -38,8 +38,7 @@ export default class Table extends Component {
             this.setState({
                 activeTen: ++this.state.activeTen,
             })
-        }
-        else
+        } else
             return null
         this.changeDisplayedTen()
     }
@@ -48,36 +47,32 @@ export default class Table extends Component {
         const num = this.state.activeTen * 10
         const displayedTen = []
         for (let i = num; i < num + 10; i++) {
-            if(this.props.data[i])
+            if (this.props.data[i])
                 displayedTen.push(this.props.data[i])
             else break
         }
         this.props.changeDisplayTen(displayedTen)
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <>
                 <div className="my-table">
                     {
                         this.props.renderTableBody()
                     }
                 </div>
-                {
-                    this.props.data.length < 10
-                        ? null
-                        :  <div className="d-flex">
-                            <button className={'btn btn-secondary mr-auto'} onClick={this.backHandler}>
-                                <i className="fa fa-angle-left" aria-hidden="true"/>
-                            </button>
-                            {
-                                this.props.renderOptionButton ? this.props.renderOptionButton() : null
-                            }
-                            <button className={'btn btn-secondary ml-auto'} onClick={this.forwardHandler}>
-                                <i className="fa fa-angle-right" aria-hidden="true"/>
-                            </button>
-                        </div>
-                }
+                <div className="d-flex">
+                    <button className={'btn btn-secondary mr-auto'} onClick={this.backHandler}>
+                        <i className="fa fa-angle-left" aria-hidden="true"/>
+                    </button>
+                    {
+                        this.props.renderOptionButton ? this.props.renderOptionButton() : null
+                    }
+                    <button className={'btn btn-secondary ml-auto'} onClick={this.forwardHandler}>
+                        <i className="fa fa-angle-right" aria-hidden="true"/>
+                    </button>
+                </div>
             </>
         )
     }

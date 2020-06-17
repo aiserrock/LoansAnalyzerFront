@@ -8,7 +8,7 @@ import {
 
 const initialState = {
     loans: [],
-    isEndOfList: true,
+    isEndOfList: false,
     isError: false,
     createSuccess: false,
     updateSuccess: false,

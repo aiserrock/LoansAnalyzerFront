@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import './CreateLoan.scss'
 import ReactLightCalendar from '@lls/react-light-calendar'
-import '@lls/react-light-calendar/dist/index.css'
-import LoanInputs from './LoanInputs'
+import InputsDetails from './InputsDetails'
+import SelectUser from './SelectUser'
 
 export default class CreateLoan extends Component {
     constructor() {
@@ -42,7 +42,7 @@ export default class CreateLoan extends Component {
                 <ReactLightCalendar startDate={this.state.startDate} endDate={this.state.endDate}
                                     onChange={this.onChange} range/>
                 <button className={'btn btn-primary mt-4'} onClick={() => {
-                    this.changeWindow('input')
+                    this.changeWindow('select')
                 }}>
                     Далее<i className="fa fa-arrow-right ml-3" aria-hidden="true"/>
                 </button>
@@ -64,14 +64,21 @@ export default class CreateLoan extends Component {
                                         ?
                                             <>
                                                 <h4 className={'mb-4'}>Укажите подробности</h4>
-                                                <LoanInputs
+                                                <InputsDetails
                                                     payed={this.payed}
                                                     changeWindow={this.changeWindow}
                                                     isEdit={false}
                                                 />
                                             </>
-                                        :
-                                            null
+                                            : this.state.currentWin === 'select'
+                                                ?
+                                                <>
+                                                    <h4 className={'mb-4'}>Укажите подробности</h4>
+                                                    <SelectUser
+                                                        changeWindow={this.changeWindow}
+                                                    />
+                                                </>
+                                                : null
                             }
                         </div>
                     </div>

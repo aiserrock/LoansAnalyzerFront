@@ -51,17 +51,17 @@ class Loans extends Component {
 
     // Меняем статус займов по радио кнопкам
     changeStatus = async (e) => {
-        let status = e.target.id;
+        let status = e.target.id
         if (status === 'without_status')
-            status = null;
+            status = null
         await this.props.changeStatus(status)
         await this.clearFind()
     }
 
     // Поиск с задержкой при вводе в текстовое поле
     debounceClearFind = debounce(() => {
-        this.clearFind();
-    }, 300)
+        this.clearFind()
+    }, 500)
 
     // Поиск с предварительной очисткой списка
     clearFind = async () => {
@@ -128,7 +128,6 @@ class Loans extends Component {
             return (
                 <div className={'loans'}>
                     <h1 className={'mb-5'}>Займы</h1>
-
 
                     <button
                         className={'btn btn-outline-dark mr-auto'}

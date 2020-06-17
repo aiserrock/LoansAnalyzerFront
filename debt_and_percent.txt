@@ -1,7 +1,7 @@
 CREATE VIEW `debt_and_percent` AS
 select loans_id,
-sum(CASE type when 1 then amount end) as 'amount_debt',
-sum(CASE type when 2 then amount end) as 'amount_percent'
+amount(CASE type when 1 then amount end) as 'amount_debt',
+amount(CASE type when 2 then amount end) as 'amount_percent'
 from devdb.pays 
 group by loans_id
 order by loans_id

@@ -68,7 +68,6 @@ class Clients extends Component {
 
     forwardHandler = async () => {
         const num = this.state.currentNumberOfItems * 10 + 10
-        console.log(num, this.props.clients.length)
         if (this.state.activeTen === this.state.currentNumberOfItems && this.props.clients.length >= num) {
             await this.props.getClients(num)
             this.setState({

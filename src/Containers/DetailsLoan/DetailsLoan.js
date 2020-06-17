@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import './DetailsLoan.scss'
 import {connect} from 'react-redux'
 import ReactLightCalendar from '@lls/react-light-calendar'
-import LoanInputs from '../../Components/CreateLoan/LoanInputs'
+import InputsDetails from '../../Components/CreateLoan/InputsDetails'
 import Tooltip from 'react-simple-tooltip'
 import {confirmAlert} from 'react-confirm-alert'
 import AppPayout from '../../Components/AppPayout/AppPayout'
@@ -128,7 +128,7 @@ class DetailsLoan extends Component {
 
                     <div className="row">
                         <div className="col-lg-7 col-12 order-lg-1  order-2">
-                            <LoanInputs
+                            <InputsDetails
                                 isEdit={true}
                                 loan={this.state.loan}
                                 client={this.state.client}

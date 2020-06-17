@@ -4,6 +4,7 @@ const data = localStorage.getItem('data') ? JSON.parse(localStorage.getItem('dat
 localStorage.setItem('data', JSON.stringify(data))
 const isAuth = data !== ''
 
+
 const initialState = {
     isError: false,
     data: data,

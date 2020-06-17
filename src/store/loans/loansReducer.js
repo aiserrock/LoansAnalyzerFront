@@ -1,4 +1,5 @@
 import {
+    CHANGE_STATUS,
     ERROR_CREATE_LOAN, ERROR_UPDATE_LOAN, FETCH_LIST_END,
     FETCH_LIST_ERROR,
     FETCH_LIST_SUCCESS, RESET_LIST,
@@ -11,6 +12,7 @@ const initialState = {
     isEndOfList: false,
     isError: false,
     createSuccess: false,
+    status: 'active',
     updateSuccess: false,
 }
 
@@ -43,6 +45,10 @@ export default function loansReducer(state = initialState, action) {
         case SUCCESS_UPDATE_LOAN:
             return {
                 ...state, updateSuccess: true
+            }
+        case CHANGE_STATUS:
+            return {
+                ...state, status: action.item,
             }
         case RESET_LIST:
             return {

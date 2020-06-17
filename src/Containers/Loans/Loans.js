@@ -5,7 +5,7 @@ import LoansList from '../../Components/LoansList/LoansList'
 import AppPayout from '../../Components/AppPayout/AppPayout'
 import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 import {Redirect} from 'react-router-dom'
-import {getLoans, resetList} from '../../store/loans/loansActions'
+import {changeStatus, getLoans, resetList} from '../../store/loans/loansActions'
 
 class Loans extends Component {
     constructor() {
@@ -17,7 +17,6 @@ class Loans extends Component {
             createLoanIsOpen: false,
             paidItem: null,
             menuIsOpen: false,
-            curNumOfEl: 0,
         }
     }
 
@@ -41,20 +40,20 @@ class Loans extends Component {
         })
     }
 
-    increaseNumberElements = async () => {
-        await this.setState({
-            curNumOfEl: this.state.curNumOfEl + 4,
-        })
-
-        this.props.getLoans(this.state.curNumOfEl, null)
+    // Меняем статус займов по радио кнопкам
+    changeStatus = async (e) => {
+        let status = e.target.id;
+        if (status === 'without_status')
+            status = null;
+        await this.props.changeStatus(status)
+        await this.props.resetList()
+        await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.props.status)
     }
 
-    find = () => {
-        this.props.getLoans(this.state.curNumOfEl, null)
-    }
 
-    sort = () => {
-
+    // Ведем поиск после нажатия на кнопку
+    find = async () => {
+        await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.props.status)
     }
 
     renderFilters = () => {
@@ -74,28 +73,28 @@ class Loans extends Component {
                     </div>
 
                     <div className={'checkbox mb-3'}>
-                        <input ref={this.statusZero}
-                               type="checkbox" name="todo" defaultValue={'true'}/>
+                        <input id="active" checked={this.props.status === 'active'}
+                               onChange={this.changeStatus} type="radio"/>
                         <label className={'checkbox__label_mini'} htmlFor="todo">
                             Активные
                         </label>
                     </div>
                     <div className={'checkbox mb-3'}>
-                        <input ref={this.statusOne}
-                               type="checkbox" name="todo"/>
+                        <input id="overdue" checked={this.props.status === 'overdue'}
+                               onChange={this.changeStatus} type="radio"/>
                         <label className={'checkbox__label_mini'} htmlFor="todo">
                             Просроченные
                         </label>
                     </div>
                     <div className={'checkbox mb-3'}>
-                        <input ref={this.statusTwo}
-                               type="checkbox" name="todo"/>
+                        <input id="archived" checked={this.props.status === 'archived'}
+                               onChange={this.changeStatus} type="radio"/>
                         <label className={'checkbox__label_mini'} htmlFor="todo">
                             Возвращённые
                         </label>
                     </div>
                 </div>
-                <div onClick={this.sort} className={'loans-panel__button'}>
+                <div onClick={this.find} className={'loans-panel__button'}>
                     Поиск
                 </div>
             </div>
@@ -107,7 +106,7 @@ class Loans extends Component {
             <LoansList
                 loans={this.props.loans}
                 interactWithPayout={this.interactWithPayout}
-                increaseNumberElements={this.increaseNumberElements}
+                increaseNumberElements={this.props.isEndOfList ? null : this.find}
             />
         )
     }
@@ -196,7 +195,6 @@ class Loans extends Component {
                     </table>
 
 
-
                     <AppPayout
                         isEdit={false}
                         payoutIsOpen={this.state.payoutIsOpen}
@@ -209,8 +207,7 @@ class Loans extends Component {
                     />
                 </div>
             )
-        }
-        else
+        } else
             return <Redirect to={'/'}/>
     }
 }
@@ -218,14 +215,17 @@ class Loans extends Component {
 function mapStateToProps(state) {
     return {
         isAuth: state.authReducer.isAuth,
-        loans: state.loansReducer.loans
+        loans: state.loansReducer.loans,
+        isEndOfList: state.loansReducer.isEndOfList,
+        status: state.loansReducer.status,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getLoans: (skip, search) => dispatch(getLoans(skip, search)),
-        resetList: () => dispatch(resetList())
+        getLoans: (skip, search, status) => dispatch(getLoans(skip, search, status)),
+        resetList: () => dispatch(resetList()),
+        changeStatus: (status) => dispatch(changeStatus(status)),
     }
 }
 

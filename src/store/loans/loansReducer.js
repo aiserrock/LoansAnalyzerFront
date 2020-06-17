@@ -46,7 +46,7 @@ export default function loansReducer(state = initialState, action) {
             }
         case RESET_LIST:
             return {
-                ...state, loans: []
+                ...state, loans: [], isEndOfList: false,
             }
         default:
             return state

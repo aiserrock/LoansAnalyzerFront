@@ -11,7 +11,6 @@ export default class LoansList extends Component {
         }
     }
 
-
     render() {
         return (
             <div className={'loans-list'} onScroll={this.onScroll}>

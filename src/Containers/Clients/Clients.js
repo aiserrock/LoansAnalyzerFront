@@ -18,10 +18,13 @@ class Clients extends Component {
     }
 
     componentDidMount = async () => {
-        if (this.props.clients.length === 0){
+        if (this.props.clients.length === 0)
             await this.props.getClients(0)
-            this.changeDisplayedTen()
-        }
+        else
+            this.setState({
+                currentNumberOfItems: Math.ceil(this.props.clients.length/10)
+            })
+        this.changeDisplayedTen()
     }
 
     deleteHandler = (id) => {
@@ -65,6 +68,7 @@ class Clients extends Component {
 
     forwardHandler = async () => {
         const num = this.state.currentNumberOfItems * 10 + 10
+        console.log(num, this.props.clients.length)
         if (this.state.activeTen === this.state.currentNumberOfItems && this.props.clients.length >= num) {
             await this.props.getClients(num)
             this.setState({
@@ -89,7 +93,6 @@ class Clients extends Component {
                 displayedTen.push(this.props.clients[i])
             else break
         }
-        console.log(displayedTen)
         this.setState({
             displayedTen
         })

@@ -2,11 +2,9 @@ import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
 import {dispatchAction} from '../universalFunctions'
 import {
-    CHANGE_STATUS,
-    ERROR_CREATE_LOAN, ERROR_UPDATE_LOAN, FETCH_LIST_END,
+    CHANGE_STATUS, ERROR_UPDATE_LOAN, FETCH_LIST_END,
     FETCH_LIST_ERROR,
     FETCH_LIST_SUCCESS, RESET_LIST,
-    SUCCESS_CREATE_LOAN,
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
 
@@ -39,8 +37,8 @@ export function createLoan(data) {
         const token = getState().authReducer.data.access_token
         const data = await LoansController.prototype.createLoan(token, data)
         if (Object.prototype.toString.call(data) === '[object Object]') {
-            dispatch(dispatchAction(SUCCESS_CREATE_LOAN, data))
-        } else dispatch(dispatchAction(ERROR_CREATE_LOAN, null))
+            dispatch(dispatchAction(SUCCESS_UPDATE_LOAN, data))
+        } else dispatch(dispatchAction(ERROR_UPDATE_LOAN, null))
     }
 }
 

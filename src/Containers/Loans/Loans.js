@@ -5,7 +5,7 @@ import LoansList from '../../Components/LoansList/LoansList'
 import AppPayout from '../../Components/AppPayout/AppPayout'
 import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 import {Redirect} from 'react-router-dom'
-import {changeStatus, getLoans, resetList} from '../../store/loans/loansActions'
+import {changeStatus, createLoan, getLoans, resetList} from '../../store/loans/loansActions'
 import {debounce} from 'lodash'
 
 class Loans extends Component {
@@ -51,17 +51,17 @@ class Loans extends Component {
 
     // Меняем статус займов по радио кнопкам
     changeStatus = async (e) => {
-        let status = e.target.id
+        let status = e.target.id;
         if (status === 'without_status')
-            status = null
+            status = null;
         await this.props.changeStatus(status)
         await this.clearFind()
     }
 
     // Поиск с задержкой при вводе в текстовое поле
     debounceClearFind = debounce(() => {
-        this.clearFind()
-    }, 500)
+        this.clearFind();
+    }, 300)
 
     // Поиск с предварительной очисткой списка
     clearFind = async () => {
@@ -84,27 +84,32 @@ class Loans extends Component {
                     </span>
                     </div>
 
-                    <div className={'checkbox mb-3'}>
-                        <input id="active" checked={this.props.status === 'active'}
-                               onChange={this.changeStatus} type="radio"/>
-                        <label className={'checkbox__label_mini'} htmlFor="todo">
-                            Активные
-                        </label>
-                    </div>
-                    <div className={'checkbox mb-3'}>
-                        <input id="overdue" checked={this.props.status === 'overdue'}
-                               onChange={this.changeStatus} type="radio"/>
-                        <label className={'checkbox__label_mini'} htmlFor="todo">
-                            Просроченные
-                        </label>
-                    </div>
-                    <div className={'checkbox mb-3'}>
-                        <input id="archived" checked={this.props.status === 'archived'}
-                               onChange={this.changeStatus} type="radio"/>
-                        <label className={'checkbox__label_mini'} htmlFor="todo">
-                            Возвращённые
-                        </label>
-                    </div>
+                    <label className="form-radio-hidden mt-4 mb-3">
+                        <input checked={this.props.status === 'active'}
+                               id="active"
+                               onChange={this.changeStatus}
+                               type="radio"/>
+                        <span className="radio"></span>
+                        <span className="text">Активные</span>
+                    </label>
+
+                    <label className="form-radio-hidden mb-3">
+                        <input checked={this.props.status === 'overdue'}
+                               id="overdue"
+                               onChange={this.changeStatus}
+                               type="radio"/>
+                        <span className="radio"></span>
+                        <span className="text">Просроченные</span>
+                    </label>
+
+                    <label className="form-radio-hidden">
+                        <input checked={this.props.status === 'archived'}
+                               id="archived"
+                               onChange={this.changeStatus}
+                               type="radio"/>
+                        <span className="radio"></span>
+                        <span className="text">Возвращённые</span>
+                    </label>
                 </div>
                 <div onClick={this.clearFind} className={'loans-panel__button'}>
                     Поиск
@@ -210,6 +215,8 @@ class Loans extends Component {
                     <CreateLoan
                         interactWithCreateLoan={this.interactWithCreateLoan}
                         createLoanIsOpen={this.state.createLoanIsOpen}
+                        changeSuccess={this.props.changeSuccess}
+                        createLoan={this.props.createLoan}
                     />
                 </div>
             )
@@ -224,6 +231,7 @@ function mapStateToProps(state) {
         loans: state.loansReducer.loans,
         isEndOfList: state.loansReducer.isEndOfList,
         status: state.loansReducer.status,
+        changeSuccess: state.loansReducer.changeSuccess
     }
 }
 
@@ -232,6 +240,7 @@ function mapDispatchToProps(dispatch) {
         getLoans: (skip, search, status) => dispatch(getLoans(skip, search, status)),
         resetList: () => dispatch(resetList()),
         changeStatus: (status) => dispatch(changeStatus(status)),
+        createLoan: (data) => dispatch(createLoan(data))
     }
 }
 

@@ -13,6 +13,7 @@ export default class CreateLoan extends Component {
             currentWin: 'date',
             startDate,
             endDate: new Date(startDate).setDate(date.getDate() + 6),
+            clientInfo: null
         }
     }
 
@@ -23,6 +24,10 @@ export default class CreateLoan extends Component {
         })
     }
 
+    selectClient = (client) => {
+        this.setState({clientInfo: client})
+    }
+
     onChange = (startDate, endDate) => this.setState({startDate, endDate})
 
     changeWindow = (win) => {
@@ -31,8 +36,16 @@ export default class CreateLoan extends Component {
         })
     }
 
-    payed = () => {
-
+    payed = (data) => {
+        data = {
+           ...data,
+            created_at: new Date(),
+            issued_at: this.state.startDate,
+            expiration_at: this.state.endDate,
+            clients_id: this.state.clientInfo.id
+        }
+        //this.props.createLoan(data)
+        this.onClose()
     }
 
     renderInputDate = () => {
@@ -68,16 +81,19 @@ export default class CreateLoan extends Component {
                                                     payed={this.payed}
                                                     changeWindow={this.changeWindow}
                                                     isEdit={false}
+                                                    changeSuccess={this.props.changeSuccess}
                                                 />
                                             </>
                                             : this.state.currentWin === 'select'
                                                 ?
-                                                <>
-                                                    <h4 className={'mb-4'}>Укажите подробности</h4>
+                                                <div className={'create-loan__select'}>
+                                                    <h4 className={'mb-4'}>Выберите заёмщика</h4>
                                                     <SelectUser
                                                         changeWindow={this.changeWindow}
+                                                        selectClient={this.selectClient}
+                                                        clientInfo={this.state.clientInfo}
                                                     />
-                                                </>
+                                                </div>
                                                 : null
                             }
                         </div>

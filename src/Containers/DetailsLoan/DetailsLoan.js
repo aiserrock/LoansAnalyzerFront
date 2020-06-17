@@ -10,6 +10,8 @@ import {NavLink, Redirect} from 'react-router-dom'
 import SelectUser from '../../Components/CreateLoan/SelectUser'
 import Table from '../../Components/Table/Table'
 import {updateLoan} from '../../store/loans/loansActions'
+import LoansController from '../../controllers/LoansController'
+import ClientController from '../../controllers/ClientController'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -23,25 +25,8 @@ class DetailsLoan extends Component {
             payoutIsOpen: false,
             paidItem: null,
             displayedTen: [],
-            loan: {
-                id: 'loan1',
-                amount: 10000,
-                rate: 5,
-                increased_rate: 10,
-                goal: 'da',
-                clients_id: 'client1',
-                users_id: 'user1',
-                created_at: '01.04.20',
-                issued_at: 30,
-                expiration_at: '01.05.20',
-                status: 'fgd',
-            },
-            clientInfo: {
-                id: 1,
-                name: 'Иван Иванович Иванов',
-                phone: '79999999999',
-                user_id: 'user-1',
-            },
+            loan: {},
+            client: null,
             loansHistory: [
                 {
                     id: 1,
@@ -91,13 +76,24 @@ class DetailsLoan extends Component {
 
     onChange = (startDate, endDate) => this.setState({startDate, endDate})
 
+    componentDidMount = async () => {
+        const id = this.props.match.params.number
+
+        const loan = await LoansController.prototype.getLoanById(this.props.token, id)
+        const client = await ClientController.prototype.getClientById(this.props.token, loan.clients_id)
+
+        this.setState({
+            loan, client, startDate: new Date(loan.issued_at).getTime(), endDate: new Date(loan.expiration_at).getTime()
+        })
+    }
+
     saveChanged = (data) => {
         data = {
             ...data,
             created_at: new Date(),
             issued_at: this.state.startDate,
             expiration_at: this.state.endDate,
-            clients_id: this.state.clientInfo.id
+            clients_id: this.state.client.id
         }
         //this.props.updateLoan(data)
     }
@@ -194,7 +190,7 @@ class DetailsLoan extends Component {
                             <SelectUser
                                 selectClient={this.selectClient}
                                 isEdit={true}
-                                clientInfo={this.state.clientInfo}
+                                clientInfo={this.state.client}
                             />
                         </div>
                         <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">
@@ -272,6 +268,7 @@ class DetailsLoan extends Component {
 function mapStateToProps(state) {
     return {
         isAuth: state.authReducer.isAuth,
+        token: state.authReducer.data.access_token
     }
 }
 

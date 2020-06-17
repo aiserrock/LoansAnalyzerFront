@@ -63,18 +63,21 @@ export default class Table extends Component {
                         this.props.renderTableBody()
                     }
                 </div>
-
-                <div className="d-flex">
-                    <button className={'btn btn-secondary mr-auto'} onClick={this.backHandler}>
-                        <i className="fa fa-angle-left" aria-hidden="true"/>
-                    </button>
-                    {
-                        this.props.renderOptionButton ? this.props.renderOptionButton() : null
-                    }
-                    <button className={'btn btn-secondary ml-auto'} onClick={this.forwardHandler}>
-                        <i className="fa fa-angle-right" aria-hidden="true"/>
-                    </button>
-                </div>
+                {
+                    this.props.data.length < 10
+                        ? null
+                        :  <div className="d-flex">
+                            <button className={'btn btn-secondary mr-auto'} onClick={this.backHandler}>
+                                <i className="fa fa-angle-left" aria-hidden="true"/>
+                            </button>
+                            {
+                                this.props.renderOptionButton ? this.props.renderOptionButton() : null
+                            }
+                            <button className={'btn btn-secondary ml-auto'} onClick={this.forwardHandler}>
+                                <i className="fa fa-angle-right" aria-hidden="true"/>
+                            </button>
+                        </div>
+                }
             </>
         )
     }

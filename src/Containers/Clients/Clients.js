@@ -18,10 +18,12 @@ class Clients extends Component {
     }
 
     componentDidMount = async () => {
-        if (this.props.clients.length === 0){
+        if (this.props.clients.length === 0)
             await this.props.getClients(0)
-            this.changeDisplayedTen()
-        }
+        this.setState({
+            activeTen: 0,
+        })
+        this.changeDisplayedTen()
     }
 
     deleteHandler = (id) => {
@@ -57,7 +59,7 @@ class Clients extends Component {
     backHandler = () => {
         if (this.state.activeTen > 0) {
             this.setState({
-                activeTen: --this.state.activeTen,
+                activeTen: this.state.activeTen - 1,
             })
             this.changeDisplayedTen()
         }
@@ -69,11 +71,11 @@ class Clients extends Component {
             await this.props.getClients(num)
             this.setState({
                 currentNumberOfItems: ++this.state.currentNumberOfItems,
-                activeTen: ++this.state.activeTen,
+                activeTen: this.state.activeTen + 1,
             })
         } else if (this.state.activeTen < this.state.currentNumberOfItems) {
             this.setState({
-                activeTen: ++this.state.activeTen,
+                activeTen: this.state.activeTen + 1,
             })
         }
         else
@@ -89,7 +91,6 @@ class Clients extends Component {
                 displayedTen.push(this.props.clients[i])
             else break
         }
-        console.log(displayedTen)
         this.setState({
             displayedTen
         })

@@ -46,11 +46,6 @@ export default class LoanInputs extends Component {
                         ref={this.term} type="number"/>
                 </div>
                 <div className={'input-section__input'}>
-                    <label>Доход</label>
-                    <input
-                        ref={this.income} type="number"/>
-                </div>
-                <div className={'input-section__input'}>
                     <label>Ставка</label>
                     <input
                         defaultValue={this.props.isEdit ? this.props.loan.rate  : null}

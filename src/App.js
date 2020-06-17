@@ -1,16 +1,16 @@
 import React, {Component} from 'react'
+import {Route, Switch} from 'react-router-dom'
+import {connect} from 'react-redux'
 import './App.scss'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'toasted-notes/src/styles.css';
+import Header from './Components/Header/Header'
 import Loans from './Containers/Loans/Loans'
 import DetailsLoan from './Containers/DetailsLoan/DetailsLoan'
 import Clients from './Containers/Clients/Clients'
 import ClientInterface from './Containers/ClientInterface/ClientInterface'
 import Auth from './Containers/Auth/Auth'
-import Header from './Components/Header/Header'
-import {Route, Switch} from 'react-router-dom'
-import {connect} from 'react-redux'
 import {logout} from './store/auth/authActions'
-
 
 
 class App extends Component {

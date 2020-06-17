@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import toaster from 'toasted-notes'
 
 export default class ClientInput extends Component {
     constructor() {
@@ -28,6 +29,10 @@ export default class ClientInput extends Component {
                     error: false,
                 })
                 this.props.onClose()
+                toaster.notify(`${this.props.isEdit ? 'Данные пользователя отредактированы' : 'Пользователь создан'}`, {
+                    position: 'bottom-right',
+                    duration: 3000,
+                })
             } else
                 this.setState({
                     error: true,

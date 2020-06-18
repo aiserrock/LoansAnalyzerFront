@@ -40,8 +40,8 @@ export default class CreateLoan extends Component {
         data = {
            ...data,
             created_at: new Date(),
-            issued_at: this.state.startDate,
-            expiration_at: this.state.endDate,
+            issued_at: new Date(this.state.startDate),
+            expiration_at: new Date(this.state.endDate),
             clients_id: this.state.clientInfo.id
         }
         //this.props.createLoan(data)

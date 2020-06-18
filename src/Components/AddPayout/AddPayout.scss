@@ -18,4 +18,14 @@
   & .input-section {
     margin: auto;
   }
+
+  & button {
+    white-space: nowrap;
+  }
+
+  & select {
+    padding: 5px;
+    border: 1px solid lightgray !important;
+    border-radius: 5px;
+  }
 }

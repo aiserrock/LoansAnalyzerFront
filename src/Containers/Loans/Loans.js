@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import './Loans.scss'
 import LoansList from '../../Components/LoansList/LoansList'
-import AppPayout from '../../Components/AppPayout/AppPayout'
+import AddPayout from '../../Components/AddPayout/AddPayout'
 import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 import {Redirect} from 'react-router-dom'
 import {changeStatus, createLoan, getLoans, resetList} from '../../store/loans/loansActions'
@@ -206,7 +206,7 @@ class Loans extends Component {
                     </table>
 
 
-                    <AppPayout
+                    <AddPayout
                         isEdit={false}
                         payoutIsOpen={this.state.payoutIsOpen}
                         paidItem={this.state.paidItem}

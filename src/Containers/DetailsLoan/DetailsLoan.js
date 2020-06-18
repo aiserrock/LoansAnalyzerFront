@@ -5,7 +5,7 @@ import ReactLightCalendar from '@lls/react-light-calendar'
 import InputsDetails from '../../Components/CreateLoan/InputsDetails'
 import Tooltip from 'react-simple-tooltip'
 import {confirmAlert} from 'react-confirm-alert'
-import AppPayout from '../../Components/AppPayout/AppPayout'
+import AddPayout from '../../Components/AddPayout/AddPayout'
 import {NavLink, Redirect} from 'react-router-dom'
 import SelectUser from '../../Components/CreateLoan/SelectUser'
 import Table from '../../Components/Table/Table'
@@ -252,7 +252,7 @@ class DetailsLoan extends Component {
                         renderOptionButton={this.renderOptionButton}
                     />
 
-                    <AppPayout
+                    <AddPayout
                         isEdit={true}
                         payoutIsOpen={this.state.payoutIsOpen}
                         paidItem={this.state.paidItem}

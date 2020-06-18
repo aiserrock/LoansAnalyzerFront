@@ -12,6 +12,7 @@ import Table from '../../Components/Table/Table'
 import {updateLoan} from '../../store/loans/loansActions'
 import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
+import toaster from 'toasted-notes'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -98,9 +99,6 @@ class DetailsLoan extends Component {
         //this.props.updateLoan(data)
     }
 
-    deletePayed = (payed) => {
-        console.log(payed)
-    }
 
     selectClient = (client) => {
         this.setState({clientInfo: client})
@@ -119,7 +117,12 @@ class DetailsLoan extends Component {
             buttons: [
                 {
                     label: 'Да',
-                    onClick: () => this.deletePayed(payed),
+                    onClick: () => {
+                        toaster.notify('Выплата удалена', {
+                            position: 'bottom-right',
+                            duration: 3000,
+                        })
+                    },
                 },
                 {
                     label: 'Нет',

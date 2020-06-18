@@ -9,14 +9,16 @@ export default class AddPayout extends Component {
         this.selectId = React.createRef()
         this.state = {
             currentWin: 'date',
-            startDate: new Date().getTime(),
-            endDate: new Date().getTime(),
+            date: new Date().getTime(),
             amountIsValid: true,
         }
     }
 
     onClose = () => {
         this.props.interactWithPayout(false, null)
+        this.setState({
+            date: new Date().getTime(),
+        })
     }
 
     changeWindow = (win) => {
@@ -34,19 +36,25 @@ export default class AddPayout extends Component {
             const data = {
                 amount: this.amount.current.value,
                 type: this.selectId.current.value,
-                data: new Date(this.state.startDate),
+                date: new Date(this.state.date),
                 loans_id: this.props.paidItem.loan.id
             }
-            console.log(data)
+            await this.props.createPayout(data)
+            if(this.props.payoutIsCreated) {
+                this.onClose()
+            }
         }
+    }
+
+    onChange = (date) => {
+        this.setState({date})
     }
 
     renderCalendar = () => {
         return (
             <>
                 <h4 className={'mb-4'}>Выберите дату платежа</h4>
-                <ReactLightCalendar startDate={this.state.startDate}
-                                    onChange={this.onChange}/>
+                <ReactLightCalendar startDate={this.state.date} onClickDate={this.onChange}/>
                 <button className={'btn btn-primary mt-4'} disabled={this.props.clientInfo === null}
                         onClick={() => {
                             this.changeWindow('input')
@@ -78,6 +86,7 @@ export default class AddPayout extends Component {
                         </select>
                     </div>
                 </div>
+                <small className={!this.props.payoutIsCreated ? 'hide mb-4' : 'error'}>Проверьте введённые данные!</small>
                 <div className={'button-section mt-4'}>
                     <button className={'btn btn-primary'} onClick={() => {
                         this.changeWindow('date')
@@ -90,11 +99,6 @@ export default class AddPayout extends Component {
                 </div>
             </>
         )
-    }
-
-    onChange = (startDate, endDate) => {
-        //console.log(startDate, endDate)
-        this.setState({startDate})
     }
 
     render() {

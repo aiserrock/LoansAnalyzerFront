@@ -7,6 +7,7 @@ import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 import {Redirect} from 'react-router-dom'
 import {changeStatus, createLoan, getLoans, resetList} from '../../store/loans/loansActions'
 import {debounce} from 'lodash'
+import {createPayout} from '../../store/history/historyActions'
 
 class Loans extends Component {
     constructor() {
@@ -89,7 +90,7 @@ class Loans extends Component {
                                id="active"
                                onChange={this.changeStatus}
                                type="radio"/>
-                        <span className="radio"></span>
+                        <span className="radio"/>
                         <span className="text">Активные</span>
                     </label>
 
@@ -98,7 +99,7 @@ class Loans extends Component {
                                id="overdue"
                                onChange={this.changeStatus}
                                type="radio"/>
-                        <span className="radio"></span>
+                        <span className="radio"/>
                         <span className="text">Просроченные</span>
                     </label>
 
@@ -107,7 +108,7 @@ class Loans extends Component {
                                id="archived"
                                onChange={this.changeStatus}
                                type="radio"/>
-                        <span className="radio"></span>
+                        <span className="radio"/>
                         <span className="text">Возвращённые</span>
                     </label>
                 </div>
@@ -211,12 +212,14 @@ class Loans extends Component {
                         payoutIsOpen={this.state.payoutIsOpen}
                         paidItem={this.state.paidItem}
                         interactWithPayout={this.interactWithPayout}
+                        createPayout={this.props.createPayout}
                     />
                     <CreateLoan
                         interactWithCreateLoan={this.interactWithCreateLoan}
                         createLoanIsOpen={this.state.createLoanIsOpen}
                         changeSuccess={this.props.changeSuccess}
                         createLoan={this.props.createLoan}
+                        payoutIsCreated={this.props.payoutIsCreated}
                     />
                 </div>
             )
@@ -231,7 +234,8 @@ function mapStateToProps(state) {
         loans: state.loansReducer.loans,
         isEndOfList: state.loansReducer.isEndOfList,
         status: state.loansReducer.status,
-        changeSuccess: state.loansReducer.changeSuccess
+        changeSuccess: state.loansReducer.changeSuccess,
+        payoutIsCreated: state.historyReducer.payoutIsCreated
     }
 }
 
@@ -240,7 +244,8 @@ function mapDispatchToProps(dispatch) {
         getLoans: (skip, search, status) => dispatch(getLoans(skip, search, status)),
         resetList: () => dispatch(resetList()),
         changeStatus: (status) => dispatch(changeStatus(status)),
-        createLoan: (data) => dispatch(createLoan(data))
+        createLoan: (data) => dispatch(createLoan(data)),
+        createPayout: (data) => dispatch(createPayout(data))
     }
 }
 

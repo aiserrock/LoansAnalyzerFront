@@ -13,11 +13,11 @@ import {updateLoan} from '../../store/loans/loansActions'
 import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
 import toaster from 'toasted-notes'
+import {deleteHistoryLoanById, getHistoryLoans, updateHistory} from '../../store/history/historyActions'
 
 class DetailsLoan extends Component {
     constructor() {
         super()
-
         const date = new Date()
         const startDate = date.getTime()
         this.state = {
@@ -28,50 +28,6 @@ class DetailsLoan extends Component {
             displayedTen: [],
             loan: {},
             client: null,
-            loansHistory: [
-                {
-                    id: 1,
-                    amount: 100,
-                    date: '01.07.2020',
-                    type: 'Долг',
-                    loans_id: 'loan1',
-                },
-                {
-                    id: 2,
-                    amount: 100,
-                    date: '01.07.2020',
-                    type: 'Долг',
-                    loans_id: 'loan1',
-                },
-                {
-                    id: 3,
-                    amount: 100,
-                    date: '01.07.2020',
-                    type: 'Долг',
-                    loans_id: 'loan1',
-                },
-                {
-                    id: 4,
-                    amount: 100,
-                    date: '01.07.2020',
-                    type: 'Долг',
-                    loans_id: 'loan1',
-                },
-                {
-                    id: 5,
-                    amount: 100,
-                    date: '01.07.2020',
-                    type: 'Долг',
-                    loans_id: 'loan1',
-                },
-                {
-                    id: 6,
-                    amount: 100,
-                    date: '01.07.2020',
-                    type: 'Долг',
-                    loans_id: 'loan1',
-                },
-            ],
         }
     }
 
@@ -82,6 +38,7 @@ class DetailsLoan extends Component {
 
         const loan = await LoansController.prototype.getLoanById(this.props.token, id)
         const client = await ClientController.prototype.getClientById(this.props.token, loan.clients_id)
+        await this.props.getHistoryLoans(id, 0)
 
         this.setState({
             loan, client, startDate: new Date(loan.issued_at).getTime(), endDate: new Date(loan.expiration_at).getTime()
@@ -110,7 +67,7 @@ class DetailsLoan extends Component {
         })
     }
 
-    deleteHandler = (payed) => {
+    deleteHandler = (id) => {
         confirmAlert({
             title: 'Подтвердите действие',
             message: 'Вы уверены, что хотите удалить выплату?',
@@ -118,6 +75,7 @@ class DetailsLoan extends Component {
                 {
                     label: 'Да',
                     onClick: () => {
+                        this.props.deleteHistoryLoanById(id)
                         toaster.notify('Выплата удалена', {
                             position: 'bottom-right',
                             duration: 3000,
@@ -133,10 +91,12 @@ class DetailsLoan extends Component {
         })
     }
 
-    interactWithPayout = (isOpen, paidItem) => {
+    interactWithPayout = (isOpen, loan) => {
         this.setState({
             payoutIsOpen: isOpen,
-            paidItem,
+            paidItem: {
+                loan, client: this.state.client
+            }
         })
     }
 
@@ -145,7 +105,6 @@ class DetailsLoan extends Component {
             <table className="table">
                 <thead className="thead">
                 <tr className={'table_dark'}>
-                    <th scope="col">#</th>
                     <th scope="col">Дата платежа</th>
                     <th scope="col">Сумма</th>
                     <th scope="col">Тип</th>
@@ -156,18 +115,17 @@ class DetailsLoan extends Component {
                 </thead>
                 <tbody>
                 {
-                    this.state.loansHistory.map((element, index) => (
+                    this.props.historyLoans.map((element) => (
                         <tr key={element.id}>
-                            <th scope="row">{index}</th>
-                            <td>{element.date}</td>
+                            <td>{new Date(element.date).toLocaleDateString()}</td>
                             <td>{element.amount}</td>
-                            <td>{element.type}</td>
+                            <td>{element.type === 'PROCENT' ? 'Проценты' : 'Долг'}</td>
                             <td>
                                 <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
                                    onClick={() => this.interactWithPayout(true, element)}
                                 />
                                 <i className="fa fa-trash-o fa-animate" aria-hidden="true"
-                                   onClick={() => this.deleteHandler(element)}/>
+                                   onClick={() => this.deleteHandler(element.id)}/>
                             </td>
                         </tr>
                     ))
@@ -248,8 +206,8 @@ class DetailsLoan extends Component {
                     </h2>
 
                     <Table
-                        data={this.state.loansHistory}
-                        getData={() => {}}
+                        data={this.props.historyLoans}
+                        getData={this.props.getHistoryLoans}
                         renderTableBody={this.renderTableBody}
                         changeDisplayTen={this.changeDisplayTen}
                         renderOptionButton={this.renderOptionButton}
@@ -260,6 +218,7 @@ class DetailsLoan extends Component {
                         payoutIsOpen={this.state.payoutIsOpen}
                         paidItem={this.state.paidItem}
                         interactWithPayout={this.interactWithPayout}
+                        updateHistory={this.props.updateHistory}
                     />
                 </div>
             )
@@ -271,13 +230,17 @@ class DetailsLoan extends Component {
 function mapStateToProps(state) {
     return {
         isAuth: state.authReducer.isAuth,
-        token: state.authReducer.data.access_token
+        token: state.authReducer.data.access_token,
+        historyLoans: state.historyReducer.historyLoans
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        updateLoan: (id, data) => dispatch(updateLoan(id, data))
+        updateLoan: (id, data) => dispatch(updateLoan(id, data)),
+        getHistoryLoans: (id, skip) => dispatch(getHistoryLoans(id, skip)),
+        updateHistory: (id, data) => dispatch(updateHistory(id, data)),
+        deleteHistoryLoanById: (id) => dispatch(deleteHistoryLoanById(id))
     }
 }
 

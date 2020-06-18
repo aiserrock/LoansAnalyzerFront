@@ -38,10 +38,10 @@ import {get, post, put, del} from "../http_client/LoansClient";
                         "Authorization": `Bearer ${token}`,
                     },
                 });
-
             return response.data;
         } catch (e) {
-            return e.response.status;
+            console.log(e)
+            //return e.response.status;
         }
     }
 

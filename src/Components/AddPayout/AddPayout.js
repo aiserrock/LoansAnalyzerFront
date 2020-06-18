@@ -17,6 +17,7 @@ export default class AddPayout extends Component {
     onClose = () => {
         this.props.interactWithPayout(false, null)
         this.setState({
+            currentWin: 'date',
             date: new Date().getTime(),
         })
     }
@@ -37,10 +38,13 @@ export default class AddPayout extends Component {
                 amount: this.amount.current.value,
                 type: this.selectId.current.value,
                 date: new Date(this.state.date),
-                loans_id: this.props.paidItem.loan.id
+                loans_id: this.props.paidItem.loan.id,
             }
-            await this.props.createPayout(data)
-            if(this.props.payoutIsCreated) {
+            if (this.props.isEdit)
+                await this.props.updateHistory(this.props.paidItem.loan.id, data)
+            else
+                await this.props.createPayout(data)
+            if (this.props.payoutIsCreated) {
                 this.onClose()
             }
         }
@@ -68,25 +72,29 @@ export default class AddPayout extends Component {
     renderInputs = () => {
         return (
             <>
-                <h4 className={'mb-4'}>Заёмщик {this.props.paidItem.client.name}</h4>
+                <h4 className={'mb-4'}>Заёмщик: {this.props.paidItem.client.name}</h4>
                 <div className={'input-section__input'}>
                     <label>Сумма</label>
                     <input
-                        className={`input-section__input ${!this.state.amountIsValid ? 'input-error': ''}`}
-                        defaultValue={this.props.isEdit ? this.props.paidItem.amount : null} ref={this.amount}
+                        className={`input-section__input ${!this.state.amountIsValid ? 'input-error' : ''}`}
+                        defaultValue={this.props.isEdit ? parseInt(this.props.paidItem.loan.amount) : null}
+                        ref={this.amount}
                         type="number"/>
                 </div>
                 <small className={this.state.amountIsValid ? 'hide mb-4' : 'error'}>Сумма не может быть пустой!</small>
                 <div className={'input-section__input'}>
                     <label>Тип платежа</label>
                     <div className={'select'}>
-                        <select ref={this.selectId} className="select__content">
+                        <select defaultValue={this.props.isEdit ? this.props.paidItem.loan.status : ''}
+                                ref={this.selectId}
+                                className="select__content">
                             <option value={'PROCENT'}>Проценты</option>
-                            <option value={'DEBT'}>Долг</option>
+                            <option value={'DEPT'}>Долг</option>
                         </select>
                     </div>
                 </div>
-                <small className={!this.props.payoutIsCreated ? 'hide mb-4' : 'error'}>Проверьте введённые данные!</small>
+                <small className={!this.props.payoutIsCreated ? 'hide mb-4' : 'error'}>Проверьте введённые
+                    данные!</small>
                 <div className={'button-section mt-4'}>
                     <button className={'btn btn-primary'} onClick={() => {
                         this.changeWindow('date')

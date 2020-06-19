@@ -8,12 +8,13 @@ import {confirmAlert} from 'react-confirm-alert'
 import AddPayout from '../../Components/AddPayout/AddPayout'
 import {NavLink, Redirect} from 'react-router-dom'
 import SelectUser from '../../Components/CreateLoan/SelectUser'
-import Table from '../../Components/Table/Table'
 import {updateLoan} from '../../store/loans/loansActions'
 import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
 import toaster from 'toasted-notes'
-import {deleteHistoryLoanById, getHistoryLoans, resetHistory, updateHistory} from '../../store/history/historyActions'
+import {deleteHistoryLoanById, updateHistory} from '../../store/history/historyActions'
+import HistoryController from '../../controllers/HistoryController'
+import Table from '../../Components/Table/Table'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -25,10 +26,17 @@ class DetailsLoan extends Component {
             endDate: new Date(startDate).setDate(date.getDate() + 6),
             payoutIsOpen: false,
             paidItem: null,
-            displayedTen: [],
             loan: {},
             client: null,
+            loansHistory: [],
+            displayedTen: [],
         }
+    }
+
+    changeDisplayTen = (displayedTen) => {
+        this.setState({
+            displayedTen,
+        })
     }
 
     onChange = (startDate, endDate) => this.setState({startDate, endDate})
@@ -38,14 +46,21 @@ class DetailsLoan extends Component {
 
         const loan = await LoansController.prototype.getLoanById(this.props.token, id)
         const client = await ClientController.prototype.getClientById(this.props.token, loan.clients_id)
-        await this.props.resetHistory()
-        await this.props.getHistoryLoans(id, 0)
 
-        this.setState({
+
+        await this.setState({
             loan,
             client,
             startDate: new Date(loan.issued_at).getTime(),
             endDate: new Date(loan.expiration_at).getTime(),
+        })
+    }
+
+    getHistoryLoans = async (skip) => {
+        const id = this.props.match.params.number
+        const loansHistory = await HistoryController.prototype.getAllHistoryLoansById(this.props.token, id, skip)
+        this.setState({
+            loansHistory,
         })
     }
 
@@ -63,12 +78,6 @@ class DetailsLoan extends Component {
 
     selectClient = (client) => {
         this.setState({clientInfo: client})
-    }
-
-    changeDisplayTen = (displayedTen) => {
-        this.setState({
-            displayedTen,
-        })
     }
 
     deleteHandler = (id) => {
@@ -119,7 +128,7 @@ class DetailsLoan extends Component {
                 </thead>
                 <tbody>
                 {
-                    this.props.historyLoans.map((element) => (
+                    this.state.displayedTen.map((element) => (
                         <tr key={element.id}>
                             <td>{new Date(element.date).toLocaleDateString()}</td>
                             <td>{element.amount}</td>
@@ -131,31 +140,13 @@ class DetailsLoan extends Component {
                                 <i className="fa fa-trash-o fa-animate" aria-hidden="true"
                                    onClick={() => this.deleteHandler(element.id)}/>
                             </td>
+
                         </tr>
                     ))
                 }
                 </tbody>
             </table>
         )
-    }
-
-    getLink = () => {
-        if (this.state.client && this.state.loan)
-            return `/extract/${JSON.stringify({
-                    creditor_name: '',
-                    debtor_name: this.state.client.name,
-                    amount: this.state.loan.amount,
-                    created_at: this.state.loan.created_at,
-                    expiration_at: this.state.loan.expiration_at,
-                    issued_at: this.state.loan.issued_at,
-                    rate: this.state.loan.rate,
-                    increased_rate: this.state.loan.increased_rate,
-                    status: this.state.loan.status,
-                    goal: this.state.loan.goal,
-                },
-            )}`
-        else
-            return '/'
     }
 
     render() {
@@ -170,7 +161,6 @@ class DetailsLoan extends Component {
                                 isEdit={true}
                                 loan={this.state.loan}
                             />
-
                             <SelectUser
                                 selectClient={this.selectClient}
                                 isEdit={true}
@@ -198,7 +188,7 @@ class DetailsLoan extends Component {
                         <div className="col-lg-6 col-md-8 col-10">
                             <div className={'links'}>
                                 <div className={'link'}>
-                                    <NavLink to={this.getLink}>
+                                    <NavLink to={`/extract/${this.state.loan.id}`}>
                                         <i className="fa fa-share-alt" aria-hidden="true"/>
                                         <span>Поделиться</span>
                                     </NavLink>
@@ -229,8 +219,8 @@ class DetailsLoan extends Component {
                     </h2>
 
                     <Table
-                        data={this.props.historyLoans}
-                        getData={this.props.getHistoryLoans}
+                        data={this.state.loansHistory}
+                        getData={this.getHistoryLoans}
                         renderTableBody={this.renderTableBody}
                         changeDisplayTen={this.changeDisplayTen}
                     />
@@ -241,6 +231,7 @@ class DetailsLoan extends Component {
                         paidItem={this.state.paidItem}
                         interactWithPayout={this.interactWithPayout}
                         updateHistory={this.props.updateHistory}
+                        payoutIsCreated={this.props.payoutIsCreated}
                     />
                 </div>
             )
@@ -253,17 +244,15 @@ function mapStateToProps(state) {
     return {
         isAuth: state.authReducer.isAuth,
         token: state.authReducer.data.access_token,
-        historyLoans: state.historyReducer.historyLoans,
+        payoutIsCreated: state.historyReducer.payoutIsCreated,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         updateLoan: (id, data) => dispatch(updateLoan(id, data)),
-        getHistoryLoans: (id, skip) => dispatch(getHistoryLoans(id, skip)),
         updateHistory: (id, data) => dispatch(updateHistory(id, data)),
         deleteHistoryLoanById: (id) => dispatch(deleteHistoryLoanById(id)),
-        resetHistory: () => dispatch(resetHistory()),
     }
 }
 

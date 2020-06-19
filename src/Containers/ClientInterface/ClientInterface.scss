@@ -13,6 +13,7 @@
       margin-bottom: 10px;
       position: relative;
       padding-left: 40px;
+      border-bottom: 1px solid lightgray;
 
       &:before {
         content: '';
@@ -22,7 +23,7 @@
         width: 10px;
         height: 10px;
         border-radius: 10px;
-        background-color: orangered;
+        background-color: gray;
       }
 
       & p {
@@ -33,6 +34,7 @@
 
       & span {
         flex: 2;
+
       }
 
     }

@@ -101,7 +101,7 @@ export default class AddPayout extends Component {
                         </select>
                     </div>
                 </div>
-                <small className={!this.props.payoutIsCreated ? 'hide mb-4' : 'error'}>Проверьте введённые
+                <small className={this.props.payoutIsCreated ? 'hide mb-4' : 'error'}>Проверьте введённые
                     данные!</small>
                 <div className={'button-section mt-4'}>
                     <button className={'btn btn-primary'} onClick={() => {

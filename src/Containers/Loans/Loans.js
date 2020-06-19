@@ -62,7 +62,7 @@ class Loans extends Component {
     // Поиск с задержкой при вводе в текстовое поле
     debounceClearFind = debounce(() => {
         this.clearFind();
-    }, 300)
+    }, 500)
 
     // Поиск с предварительной очисткой списка
     clearFind = async () => {
@@ -213,13 +213,13 @@ class Loans extends Component {
                         paidItem={this.state.paidItem}
                         interactWithPayout={this.interactWithPayout}
                         createPayout={this.props.createPayout}
+                        payoutIsCreated={this.props.payoutIsCreated}
                     />
                     <CreateLoan
                         interactWithCreateLoan={this.interactWithCreateLoan}
                         createLoanIsOpen={this.state.createLoanIsOpen}
                         changeSuccess={this.props.changeSuccess}
                         createLoan={this.props.createLoan}
-                        payoutIsCreated={this.props.payoutIsCreated}
                     />
                 </div>
             )

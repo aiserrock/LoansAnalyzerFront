@@ -8,7 +8,6 @@ export default class AuthController {
     // Если произошла ошибка, вернется null.
     async auth(password: string, login: string) {
         try {
-            console.log(password, login)
             let response = await post('/login', `username=${login}&password=${password}`,
                 {
                     headers: {

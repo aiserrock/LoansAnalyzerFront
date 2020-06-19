@@ -51,6 +51,7 @@ export default class Table extends Component {
                 displayedTen.push(this.props.data[i])
             else break
         }
+
         this.props.changeDisplayTen(displayedTen)
     }
 

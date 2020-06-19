@@ -4,7 +4,7 @@ import {get, post, put, del} from "../http_client/LoansClient";
 // !!! Если была получена ошибка, то методы будут возвращать её код
 // 400 - не найдено, 409 - конфликт (уже есть клиент в базе)
 // 401 - ошибка авторизации, 404 - отсутствует, 422 - ошибка парсинга
-    export default class HistoryController {
+export default class HistoryController {
     // Получение истории займа
     // @param token - токен авторизации пользователя
     // @param id - row id займа
@@ -30,7 +30,7 @@ import {get, post, put, del} from "../http_client/LoansClient";
     // @param skip - сколько записей пропустить, реализует пагинацию
     // @return Возвращает список займов из истории
     async getAllHistoryLoansById(token: string, id: string, skip) {
-        let skipStr =  skip === undefined || skip === null ? '' : `&skip=${skip}`;
+        let skipStr = skip === undefined || skip === null ? '' : `&skip=${skip}`;
         try {
             let response = await get(`/history_loans/?loans_id=${id}${skipStr}`,
                 {
@@ -96,6 +96,20 @@ import {get, post, put, del} from "../http_client/LoansClient";
                         "Authorization": `Bearer ${token}`,
                     },
                 });
+        } catch (e) {
+            return e.response.status;
+        }
+    }
+
+
+    // Получение выписки истории по идентификатору займа
+    // @param loanId - идентификатор займа, по которому надо сделать выписку
+    // @return - Возарвщает объект выписки
+    async getHistoryReport(loanId: string) {
+        try {
+            let response = await get(`/report/${loanId}`);
+
+            return response.data;
         } catch (e) {
             return e.response.status;
         }

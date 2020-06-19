@@ -9,13 +9,20 @@ export default class ClientController {
     // @param token - токен авторизации пользователя
     // @param skip - сколько записей пропустить, реализует пагинацию
     // @return Возвращает список найденных клиентов
-    async getClients(token: string, skip = 0) {
+    async getClients(token: string, skip = 0, needHotLoad: boolean = false) {
         try {
-            let param = '';
+            let param = {};
             if (skip !== 0 && skip !== null) {
-                param = `?skip=${skip}`;
+                param['skip'] = skip;
             }
-            let response = await get(`/clients/${param}`,
+            if (needHotLoad === true) {
+                param['search'] = '1';
+            }
+            let p = '';
+            if (Object.keys(param).length !== 0) {
+                p = `?${new URLSearchParams(param).toString()}`;
+            }
+            let response = await get(`/clients/${p}`,
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,

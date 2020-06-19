@@ -165,6 +165,9 @@ class DetailsLoan extends Component {
                                 selectClient={this.selectClient}
                                 isEdit={true}
                                 clientInfo={this.state.client}
+                                hotLoad={(name)=>{
+                                    console.log(name)
+                                }}
                             />
                         </div>
                         <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">

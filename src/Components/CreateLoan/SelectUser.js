@@ -31,11 +31,13 @@ export default class SelectUser extends Component {
     }
 
     findClient = () => {
-
+        if(this.name.current.value.length > 3)
+            this.props.hotLoad(this.name.current.value)
     }
 
     chooseClient = (client) => {
         this.props.selectClient(client)
+        this.name.current.value = client.name
     }
 
     render() {
@@ -46,10 +48,10 @@ export default class SelectUser extends Component {
                         className={'ml-0'}
                         onChange={this.findClient}
                         placeholder={'Начните вводить ФИО'}
-                        value={
+                        defaultValue={
                             this.props.clientInfo !== null
                                 ? this.props.clientInfo.name
-                                : ''
+                                : null
                         }
                         ref={this.name} type="text"/>
                 </div>

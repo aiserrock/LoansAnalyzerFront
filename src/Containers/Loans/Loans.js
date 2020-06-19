@@ -220,6 +220,9 @@ class Loans extends Component {
                         createLoanIsOpen={this.state.createLoanIsOpen}
                         changeSuccess={this.props.changeSuccess}
                         createLoan={this.props.createLoan}
+                        hotLoad={(name)=>{
+                            console.log(name)
+                        }}
                     />
                 </div>
             )

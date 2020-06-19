@@ -92,6 +92,7 @@ export default class CreateLoan extends Component {
                                                         changeWindow={this.changeWindow}
                                                         selectClient={this.selectClient}
                                                         clientInfo={this.state.clientInfo}
+                                                        hotLoad={this.props.hotLoad}
                                                         isEdit={false}
                                                     />
                                                 </div>

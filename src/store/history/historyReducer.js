@@ -1,7 +1,7 @@
 import {
     ERROR_CREATE_PAYOUT,
     GET_HISTORY_LOAN_ERROR,
-    GET_HISTORY_LOAN_SUCCESS,
+    GET_HISTORY_LOAN_SUCCESS, RESET_HISTORY,
     SUCCESS_CREATE_PAYOUT,
 } from './actionTypes'
 
@@ -28,6 +28,10 @@ export default function historyReducer(state = initialState, action) {
         case SUCCESS_CREATE_PAYOUT:
             return {
                 ...state ,payoutIsCreated: true
+            }
+        case RESET_HISTORY:
+            return {
+                ...state ,historyLoans: [],
             }
         default:
             return state

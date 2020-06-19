@@ -13,7 +13,7 @@ import {updateLoan} from '../../store/loans/loansActions'
 import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
 import toaster from 'toasted-notes'
-import {deleteHistoryLoanById, getHistoryLoans, updateHistory} from '../../store/history/historyActions'
+import {deleteHistoryLoanById, getHistoryLoans, resetHistory, updateHistory} from '../../store/history/historyActions'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -38,10 +38,14 @@ class DetailsLoan extends Component {
 
         const loan = await LoansController.prototype.getLoanById(this.props.token, id)
         const client = await ClientController.prototype.getClientById(this.props.token, loan.clients_id)
+        await this.props.resetHistory()
         await this.props.getHistoryLoans(id, 0)
 
         this.setState({
-            loan, client, startDate: new Date(loan.issued_at).getTime(), endDate: new Date(loan.expiration_at).getTime()
+            loan,
+            client,
+            startDate: new Date(loan.issued_at).getTime(),
+            endDate: new Date(loan.expiration_at).getTime(),
         })
     }
 
@@ -51,7 +55,7 @@ class DetailsLoan extends Component {
             created_at: new Date(),
             issued_at: this.state.startDate,
             expiration_at: this.state.endDate,
-            clients_id: this.state.client.id
+            clients_id: this.state.client.id,
         }
         //this.props.updateLoan(data)
     }
@@ -63,7 +67,7 @@ class DetailsLoan extends Component {
 
     changeDisplayTen = (displayedTen) => {
         this.setState({
-            displayedTen
+            displayedTen,
         })
     }
 
@@ -95,8 +99,8 @@ class DetailsLoan extends Component {
         this.setState({
             payoutIsOpen: isOpen,
             paidItem: {
-                loan, client: this.state.client
-            }
+                loan, client: this.state.client,
+            },
         })
     }
 
@@ -133,6 +137,25 @@ class DetailsLoan extends Component {
                 </tbody>
             </table>
         )
+    }
+
+    getLink = () => {
+        if (this.state.client && this.state.loan)
+            return `/extract/${JSON.stringify({
+                    creditor_name: '',
+                    debtor_name: this.state.client.name,
+                    amount: this.state.loan.amount,
+                    created_at: this.state.loan.created_at,
+                    expiration_at: this.state.loan.expiration_at,
+                    issued_at: this.state.loan.issued_at,
+                    rate: this.state.loan.rate,
+                    increased_rate: this.state.loan.increased_rate,
+                    status: this.state.loan.status,
+                    goal: this.state.loan.goal,
+                },
+            )}`
+        else
+            return '/'
     }
 
     render() {
@@ -175,7 +198,7 @@ class DetailsLoan extends Component {
                         <div className="col-lg-6 col-md-8 col-10">
                             <div className={'links'}>
                                 <div className={'link'}>
-                                    <NavLink to={'/extract/extract1'}>
+                                    <NavLink to={this.getLink}>
                                         <i className="fa fa-share-alt" aria-hidden="true"/>
                                         <span>Поделиться</span>
                                     </NavLink>
@@ -210,7 +233,6 @@ class DetailsLoan extends Component {
                         getData={this.props.getHistoryLoans}
                         renderTableBody={this.renderTableBody}
                         changeDisplayTen={this.changeDisplayTen}
-                        renderOptionButton={this.renderOptionButton}
                     />
 
                     <AddPayout
@@ -231,7 +253,7 @@ function mapStateToProps(state) {
     return {
         isAuth: state.authReducer.isAuth,
         token: state.authReducer.data.access_token,
-        historyLoans: state.historyReducer.historyLoans
+        historyLoans: state.historyReducer.historyLoans,
     }
 }
 
@@ -240,7 +262,8 @@ function mapDispatchToProps(dispatch) {
         updateLoan: (id, data) => dispatch(updateLoan(id, data)),
         getHistoryLoans: (id, skip) => dispatch(getHistoryLoans(id, skip)),
         updateHistory: (id, data) => dispatch(updateHistory(id, data)),
-        deleteHistoryLoanById: (id) => dispatch(deleteHistoryLoanById(id))
+        deleteHistoryLoanById: (id) => dispatch(deleteHistoryLoanById(id)),
+        resetHistory: () => dispatch(resetHistory()),
     }
 }
 

@@ -3,7 +3,7 @@ import {dispatchAction} from '../universalFunctions'
 import {
     ERROR_CREATE_PAYOUT,
     GET_HISTORY_LOAN_ERROR,
-    GET_HISTORY_LOAN_SUCCESS,
+    GET_HISTORY_LOAN_SUCCESS, RESET_HISTORY,
     SUCCESS_CREATE_PAYOUT,
 } from './actionTypes'
 
@@ -51,5 +51,11 @@ export function deleteHistoryLoanById(id) {
         const token = getState().authReducer.data.access_token
         const data = await HistoryController.prototype.deleteHistoryLoanById(token, id)
         console.log(data)
+    }
+}
+
+export function resetHistory() {
+    return (dispatch) => {
+        dispatch(dispatchAction(RESET_HISTORY, null))
     }
 }

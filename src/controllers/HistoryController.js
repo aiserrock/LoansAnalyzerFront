@@ -30,7 +30,7 @@ import {get, post, put, del} from "../http_client/LoansClient";
     // @param skip - сколько записей пропустить, реализует пагинацию
     // @return Возвращает список займов из истории
     async getAllHistoryLoansById(token: string, id: string, skip) {
-        let skipStr = skip === null || skip === undefined ? '' : `&skip=${skip}`;
+        let skipStr =  skip === undefined || skip === null ? '' : `&skip=${skip}`;
         try {
             let response = await get(`/history_loans/?loans_id=${id}${skipStr}`,
                 {
@@ -40,8 +40,7 @@ import {get, post, put, del} from "../http_client/LoansClient";
                 });
             return response.data;
         } catch (e) {
-            console.log(e)
-            //return e.response.status;
+            return e?.response?.status;
         }
     }
 

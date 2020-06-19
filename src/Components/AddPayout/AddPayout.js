@@ -7,11 +7,13 @@ export default class AddPayout extends Component {
         super()
         this.amount = React.createRef()
         this.selectId = React.createRef()
-        this.state = {
-            currentWin: 'date',
-            date: new Date().getTime(),
-            amountIsValid: true,
-        }
+    }
+
+    state = {
+        currentWin: 'date',
+        date: new Date().getTime(),
+        amountIsValid: true,
+        editing: false
     }
 
     onClose = () => {
@@ -19,6 +21,7 @@ export default class AddPayout extends Component {
         this.setState({
             currentWin: 'date',
             date: new Date().getTime(),
+            editing: false
         })
     }
 
@@ -51,14 +54,19 @@ export default class AddPayout extends Component {
     }
 
     onChange = (date) => {
-        this.setState({date})
+        this.setState({
+            date,
+            editing: this.props.isEdit
+        })
     }
 
     renderCalendar = () => {
         return (
             <>
                 <h4 className={'mb-4'}>Выберите дату платежа</h4>
-                <ReactLightCalendar startDate={this.state.date} onClickDate={this.onChange}/>
+                <ReactLightCalendar startDate={
+                   this.props.isEdit && !this.state.editing ? new Date(this.props.paidItem.loan.date).getTime() : this.state.date
+                } onClickDate={this.onChange}/>
                 <button className={'btn btn-primary mt-4'} disabled={this.props.clientInfo === null}
                         onClick={() => {
                             this.changeWindow('input')
@@ -85,7 +93,7 @@ export default class AddPayout extends Component {
                 <div className={'input-section__input'}>
                     <label>Тип платежа</label>
                     <div className={'select'}>
-                        <select defaultValue={this.props.isEdit ? this.props.paidItem.loan.status : ''}
+                        <select defaultValue={this.props.isEdit ? this.props.paidItem.loan.type : ''}
                                 ref={this.selectId}
                                 className="select__content">
                             <option value={'PROCENT'}>Проценты</option>

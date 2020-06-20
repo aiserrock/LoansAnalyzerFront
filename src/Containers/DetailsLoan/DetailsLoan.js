@@ -68,16 +68,17 @@ class DetailsLoan extends Component {
         data = {
             ...data,
             created_at: new Date(),
-            issued_at: this.state.startDate,
-            expiration_at: this.state.endDate,
+            issued_at: new Date(this.state.startDate),
+            expiration_at: new Date(this.state.endDate),
             clients_id: this.state.client.id,
         }
-        //this.props.updateLoan(data)
+        //console.log(data)
+        this.props.updateLoan(this.state.loan.id ,data)
     }
 
 
     selectClient = (client) => {
-        this.setState({clientInfo: client})
+        this.setState({client})
     }
 
     deleteHandler = (id) => {
@@ -157,17 +158,17 @@ class DetailsLoan extends Component {
 
                     <div className="row">
                         <div className="col-lg-7 col-12 order-lg-1  order-2">
-                            <InputsDetails
-                                isEdit={true}
-                                loan={this.state.loan}
-                            />
                             <SelectUser
                                 selectClient={this.selectClient}
                                 isEdit={true}
                                 clientInfo={this.state.client}
-                                hotLoad={(name)=>{
-                                    console.log(name)
-                                }}
+                                token={this.props.token}
+                            />
+                            <br/>
+                            <InputsDetails
+                                payed={this.saveChanged}
+                                isEdit={true}
+                                loan={this.state.loan}
                             />
                         </div>
                         <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">
@@ -180,10 +181,6 @@ class DetailsLoan extends Component {
                             </div>
                         </div>
                     </div>
-
-                    <button className={'btn btn-primary mt-4 mr-auto'} onClick={this.saveChanged}>
-                        Сохранить
-                    </button>
 
                     <hr/>
 

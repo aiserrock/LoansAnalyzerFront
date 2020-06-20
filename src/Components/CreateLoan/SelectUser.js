@@ -1,38 +1,52 @@
 import React, {Component} from 'react'
+import ClientController from '../../controllers/ClientController'
 
 export default class SelectUser extends Component {
     constructor() {
         super()
         this.name = React.createRef()
         this.state = {
-            clients: [
-                {
-                    id: 1,
-                    name: 'Вася',
-                    phone: '799999999999',
-                },
-                {
-                    id: 2,
-                    name: 'Вася',
-                    phone: '799999999999',
-                },
-                {
-                    id: 3,
-                    name: 'Вася',
-                    phone: '799999999999',
-                },
-                {
-                    id: 4,
-                    name: 'Вася',
-                    phone: '799999999999',
-                },
-            ],
+            clients: [],
         }
     }
 
-    findClient = () => {
-        if(this.name.current.value.length > 3)
-            this.props.hotLoad(this.name.current.value)
+    onScroll = async (e) => {
+        if (e.target.offsetHeight + e.target.scrollTop === e.target.scrollHeight) {
+            const skip = this.state.clients.length
+            if (this.name.current.value.length > 2)
+                if (this.props.clientInfo !== null && this.props.clientInfo.name === this.name.current.value)
+                    this.getClientsList(skip, '', true)
+                else
+                    this.getClientsList(skip, this.name.current.value, true)
+            else
+                this.getClientsList(skip, '', true)
+        }
+    }
+
+    getClientsList = async (skip, search, onScroll) => {
+        const clients = await ClientController.prototype.getClients(this.props.token, skip, search)
+        if (onScroll)
+            this.setState({
+                clients: this.state.clients.concat(clients),
+            })
+        else
+            this.setState({
+                clients,
+            })
+    }
+
+    componentDidMount = async () => {
+        this.setState({
+            clients: [],
+        })
+        this.getClientsList(0, '', false)
+    }
+
+    findClient = async () => {
+        if (this.name.current.value.length > 2)
+            this.getClientsList(0, this.name.current.value, false)
+        else if (this.name.current.value.length === 2)
+            this.getClientsList(0, '', false)
     }
 
     chooseClient = (client) => {
@@ -57,11 +71,11 @@ export default class SelectUser extends Component {
                 </div>
 
                 <div className="select__panel">
-                    <div className={'loans-list'}>
+                    <div className={'loans-list'} onScroll={this.onScroll}>
                         {
                             this.state.clients.map((client) => (
                                 <div key={client.id}
-                                     className={`loans-list__item ${this.props.clientInfo === client ? 'loans-list__item_active' : ''}`}
+                                     className={`loans-list__item ${this.props.clientInfo !== null && this.props.clientInfo.id === client.id ? 'loans-list__item_active' : ''}`}
                                      onClick={() => this.chooseClient(client)}>
                                     <div className="row non-click">
                                         <div className="col-md-7  col-xs-12"><b>{client.name}</b></div>

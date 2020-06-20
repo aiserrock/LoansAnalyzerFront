@@ -14,7 +14,7 @@ export default class InputsDetails extends Component {
             i_rateIsValid: true,
             rateIsValid: true,
             goalIsValid: true,
-            isValid: true
+            isValid: true,
         }
     }
 
@@ -27,17 +27,17 @@ export default class InputsDetails extends Component {
         })
 
         await this.setState({
-            isValid: this.state.amountIsValid && this.state.i_rateIsValid && this.state.rateIsValid && this.state.goalIsValid
+            isValid: this.state.amountIsValid && this.state.i_rateIsValid && this.state.rateIsValid && this.state.goalIsValid,
         })
 
-        if(this.state.isValid) {
-                this.props.payed({
-                    amount: this.amount.current.value,
-                    rate: this.rate.current.value,
-                    increased_rate: this.i_rate.current.value,
-                    goal: this.goal.current.value,
-                    status: 'ACTIVE',
-                })
+        if (this.state.isValid) {
+            this.props.payed({
+                amount: this.amount.current.value,
+                rate: this.rate.current.value,
+                increased_rate: this.i_rate.current.value,
+                goal: this.goal.current.value,
+                status: 'ACTIVE',
+            })
         }
     }
 
@@ -47,35 +47,35 @@ export default class InputsDetails extends Component {
                 <div className={`input-section__input`}>
                     <label>Сумма займа</label>
                     <input
-                        className={`${!this.state.amountIsValid ? 'input-error': ''}`}
-                        defaultValue={this.props.isEdit ? this.props.loan.amount  : null}
+                        className={`${!this.state.amountIsValid ? 'input-error' : ''}`}
+                        defaultValue={this.props.isEdit ? this.props.loan.amount : null}
                         ref={this.amount} type="number"/>
                 </div>
                 <div className={`input-section__input`}>
                     <label>Ставка</label>
                     <input
-                        className={`input-section__input ${!this.state.rateIsValid ? 'input-error': ''}`}
-                        defaultValue={this.props.isEdit ? this.props.loan.rate  : null}
+                        className={`input-section__input ${!this.state.rateIsValid ? 'input-error' : ''}`}
+                        defaultValue={this.props.isEdit ? this.props.loan.rate : null}
                         ref={this.rate} type="number"/>
                 </div>
                 <div className={`input-section__input`}>
                     <label>Ставка при просрочке</label>
                     <input
-                        className={`input-section__input ${!this.state.i_rateIsValid ? 'input-error': ''}`}
-                        defaultValue={this.props.isEdit ? this.props.loan.increased_rate  : null}
+                        className={`input-section__input ${!this.state.i_rateIsValid ? 'input-error' : ''}`}
+                        defaultValue={this.props.isEdit ? this.props.loan.increased_rate : null}
                         ref={this.i_rate} type="number"/>
                 </div>
                 <div className={`input-section__input`}>
                     <label>Цель займа</label>
                     <textarea
-                        className={`input-section__input ${!this.state.goalIsValid ? 'input-error': ''}`}
-                        defaultValue={this.props.isEdit ? this.props.loan.goal  : null}
+                        className={`input-section__input ${!this.state.goalIsValid ? 'input-error' : ''}`}
+                        defaultValue={this.props.isEdit ? this.props.loan.goal : null}
                         ref={this.goal} cols="30" rows="5">
                                     </textarea>
                 </div>
 
-                <small className={this.state.isValid ? 'hide': 'error'}>Все поля обязательны для заполнения!</small>
-                <small className={!this.props.changeSuccess ? 'hide': 'error'}>Проверьте введённые данные</small>
+                <small className={this.state.isValid ? 'hide' : 'error'}>Все поля обязательны для заполнения!</small>
+                <small className={!this.props.changeSuccess ? 'hide' : 'error'}>Проверьте введённые данные</small>
 
                 {
                     !this.props.isEdit
@@ -90,7 +90,9 @@ export default class InputsDetails extends Component {
                                 Создать займ<i className="fa fa-credit-card ml-3" aria-hidden="true"/>
                             </button>
                         </div>
-                        : null
+                        : <button className={'btn btn-primary mt-4 mr-auto'} onClick={this.checkCorrect}>
+                            Сохранить
+                        </button>
                 }
             </div>
         )

@@ -32,20 +32,20 @@ export function getLoans(skip, search, status) {
     }
 }
 
-export function createLoan(data) {
+export function createLoan(info) {
     return async (dispatch, getState) => {
         const token = getState().authReducer.data.access_token
-        const data = await LoansController.prototype.createLoan(token, data)
+        const data = await LoansController.prototype.createLoan(token, info)
         if (Object.prototype.toString.call(data) === '[object Object]') {
             dispatch(dispatchAction(SUCCESS_UPDATE_LOAN, data))
         } else dispatch(dispatchAction(ERROR_UPDATE_LOAN, null))
     }
 }
 
-export function updateLoan(id, data) {
+export function updateLoan(id, info) {
     return async (dispatch, getState) => {
         const token = getState().authReducer.data.access_token
-        const data = await LoansController.prototype.updateLoanById(token, id, data)
+        const data = await LoansController.prototype.updateLoanById(token, id, info)
         if (Object.prototype.toString.call(data) === '[object Object]') {
             dispatch(dispatchAction(SUCCESS_UPDATE_LOAN, data))
         } else dispatch(dispatchAction(ERROR_UPDATE_LOAN, null))

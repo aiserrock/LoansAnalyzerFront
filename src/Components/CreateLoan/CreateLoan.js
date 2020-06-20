@@ -44,7 +44,7 @@ export default class CreateLoan extends Component {
             expiration_at: new Date(this.state.endDate),
             clients_id: this.state.clientInfo.id
         }
-        //this.props.createLoan(data)
+        this.props.createLoan(data)
         this.onClose()
     }
 
@@ -92,7 +92,7 @@ export default class CreateLoan extends Component {
                                                         changeWindow={this.changeWindow}
                                                         selectClient={this.selectClient}
                                                         clientInfo={this.state.clientInfo}
-                                                        hotLoad={this.props.hotLoad}
+                                                        token={this.props.token}
                                                         isEdit={false}
                                                     />
                                                 </div>

@@ -220,9 +220,7 @@ class Loans extends Component {
                         createLoanIsOpen={this.state.createLoanIsOpen}
                         changeSuccess={this.props.changeSuccess}
                         createLoan={this.props.createLoan}
-                        hotLoad={(name)=>{
-                            console.log(name)
-                        }}
+                        token={this.props.token}
                     />
                 </div>
             )
@@ -238,7 +236,8 @@ function mapStateToProps(state) {
         isEndOfList: state.loansReducer.isEndOfList,
         status: state.loansReducer.status,
         changeSuccess: state.loansReducer.changeSuccess,
-        payoutIsCreated: state.historyReducer.payoutIsCreated
+        payoutIsCreated: state.historyReducer.payoutIsCreated,
+        token: state.authReducer.data.access_token,
     }
 }
 

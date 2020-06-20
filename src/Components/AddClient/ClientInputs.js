@@ -29,7 +29,7 @@ export default class ClientInput extends Component {
                     error: false,
                 })
                 this.props.onClose()
-                toaster.notify(`${this.props.isEdit ? 'Данные пользователя отредактированы' : 'Пользователь создан'}`, {
+                toaster.notify(`${this.props.isEdit ? 'Данные клиента отредактированы' : 'Клиент создан'}`, {
                     position: 'bottom-right',
                     duration: 3000,
                 })

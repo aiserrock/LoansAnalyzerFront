@@ -3,6 +3,7 @@ import './Auth.scss'
 import {connect} from 'react-redux'
 import {auth} from '../../store/auth/authActions'
 import {Redirect} from 'react-router-dom'
+import toaster from 'toasted-notes'
 
 class Auth extends Component {
     constructor() {
@@ -28,6 +29,11 @@ class Auth extends Component {
                 await this.validateUserData()
                 if (this.state.loginIsValid && this.state.passwordIsValid) {
                     await this.props.auth(this.login.current.value, this.password.current.value)
+                    if(this.props.isAuth)
+                        toaster.notify('Вы успешно авторизованы!', {
+                            position: 'bottom-right',
+                            duration: 3000,
+                        })
                 }
             }
         }

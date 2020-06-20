@@ -72,8 +72,11 @@ class DetailsLoan extends Component {
             expiration_at: new Date(this.state.endDate),
             clients_id: this.state.client.id,
         }
-        //console.log(data)
         this.props.updateLoan(this.state.loan.id ,data)
+        toaster.notify('Изменения сохранены!', {
+            position: 'bottom-right',
+            duration: 3000,
+        })
     }
 
 

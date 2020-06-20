@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './Header.scss'
 import img from '../../img/logo.png'
 import {NavLink} from 'react-router-dom'
+import toaster from 'toasted-notes'
 
 export default class Header extends Component {
     state = {
@@ -19,6 +20,14 @@ export default class Header extends Component {
         this.setState({
             activeTab: e.target.id,
         })
+    }
+
+    logout = () => {
+        toaster.notify('Пользователь удалён', {
+            position: 'bottom-right',
+            duration: 3000,
+        })
+        this.props.logout()
     }
 
     renderNavMenu = () => {
@@ -40,7 +49,7 @@ export default class Header extends Component {
                         to={'/clients'}>
                         Клиенты
                     </NavLink>
-                    <div className={'link'} onClick={this.props.logout}>
+                    <div className={'link'} onClick={this.logout}>
                         <i className="fa fa-sign-out" aria-hidden="true" ></i>
                         <span>Выйти</span>
                     </div>

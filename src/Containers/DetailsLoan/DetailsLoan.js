@@ -141,8 +141,33 @@ class DetailsLoan extends Component {
         const Id = this.state.loansHistory[index].id
         data.id = Id
         this.state.loansHistory[index] = data
-        console.log(this.state.loansHistory[index])
         this.changeDisplayedTen()
+    }
+
+    archived = () => {
+        confirmAlert({
+            title: 'Подтвердите действие',
+            message: 'Вы уверены, что хотите архивировать займ?',
+            buttons: [
+                {
+                    label: 'Да',
+                    onClick: () => {
+                        const data = this.state.loan
+                        data.status = 'archived'
+                        this.props.updateLoan(data.id, data)
+                        toaster.notify('Займ успешно архивирован!', {
+                            position: 'bottom-right',
+                            duration: 3000,
+                        })
+                    },
+                },
+                {
+                    label: 'Нет',
+                    onClick: () => {
+                    },
+                },
+            ],
+        })
     }
 
     renderTableBody = () => {
@@ -183,8 +208,6 @@ class DetailsLoan extends Component {
     }
 
     renderContent = () => {
-        //console.log(new Date(this.state.startDate), new Date(this.state.endDate))
-
         return (
             <>
                 <h1 className={'mb-5'}>Детали займа</h1>
@@ -196,10 +219,10 @@ class DetailsLoan extends Component {
                     />
                     <div className={'row mt-2'}>
                         <div className="col-lg-6 col-xs-12">
-                            Осталось
+                            Осталось дней:
                             <b className={'text-success ml-2 mr-2'}>
-                                {Math.ceil(Math.abs(this.state.endDate - this.state.startDate) / (1000 * 3600 * 24))}</b>
-                            дней
+                                {Math.ceil(Math.abs(new Date().getTime() - this.state.startDate) / (1000 * 3600 * 24))}
+                            </b>
                         </div>
                         <div className="col-lg-6 col-xs-12">
                             К возврату <b className={'text-primary ml-2 mr-2'}>4000</b> ₽
@@ -254,10 +277,12 @@ class DetailsLoan extends Component {
                                 </NavLink>
                             </div>
                             <div className={'link'}>
-                                <i className="fa fa-plus" aria-hidden="true"/>
-                                <span>Составить график выплат</span>
+                                <NavLink to={`/payment-schedule/${this.state.loan.id}`}>
+                                    <i className="fa fa-plus" aria-hidden="true"/>
+                                    <span>Составить график выплат</span>
+                                </NavLink>
                             </div>
-                            <div className={'link'}>
+                            <div className={'link'} onClick={this.archived}>
                                 <i className="fa fa-archive" aria-hidden="true"/>
                                 <span>Архивировать займ</span>
                             </div>

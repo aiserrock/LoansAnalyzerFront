@@ -14,7 +14,7 @@ export default class ClientInterface extends Component {
         })
     }
 
-    renderInfo = () => {
+    renderContent = () => {
         const endDate = new Date(this.state.data.issued_at),
             startDate = new Date(this.state.data.expiration_at)
 
@@ -111,7 +111,7 @@ export default class ClientInterface extends Component {
 
                 {
                     this.state && Object.keys(this.state.data).length !== 0
-                        ? this.renderInfo()
+                        ? this.renderContent()
                         : null
                 }
             </div>

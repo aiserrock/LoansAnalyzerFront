@@ -13,6 +13,8 @@ import Clients from './Containers/Clients/Clients'
 import ClientInterface from './Containers/ClientInterface/ClientInterface'
 import Auth from './Containers/Auth/Auth'
 import {autoLogin, logout} from './store/auth/authActions'
+import PaymentSchedule from './Containers/PaymentSchedule/PaymentSchedule'
+import Page404 from './Components/Page404/Page404'
 
 class App extends Component {
     componentDidMount =  () => {
@@ -34,6 +36,8 @@ class App extends Component {
                             <Route path='/clients' component={Clients}/>
                             <Route path='/details-loan/:number' component={DetailsLoan}/>
                             <Route path='/extract/:number' component={ClientInterface}/>
+                            <Route path={'/payment-schedule/:number'} component={PaymentSchedule}/>
+                            <Route component={Page404}/>
                         </Switch>
                     </div>
                 </div>

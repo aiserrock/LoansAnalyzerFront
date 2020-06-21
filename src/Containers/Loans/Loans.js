@@ -190,7 +190,7 @@ class Loans extends Component {
                             }
                         </div>
                     </div>
-                    <table className="table">
+                    <table className="table text-center">
                         <thead>
                         <tr className={'table'}>
                             <th scope="col">Полученный доход</th>

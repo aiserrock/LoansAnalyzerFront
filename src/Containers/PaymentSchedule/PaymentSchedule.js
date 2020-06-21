@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import './PaymentSchedule.scss'
 import HistoryController from '../../controllers/HistoryController'
+import toaster from 'toasted-notes'
 
 export default class PaymentSchedule extends Component {
     state: {
@@ -10,6 +11,14 @@ export default class PaymentSchedule extends Component {
     componentDidMount = async () => {
         this.setState({
             data: await HistoryController.prototype.getHistoryReport(this.props.match.params.number)
+        })
+    }
+
+    copyURL = () => {
+        navigator.clipboard.writeText(document.location)
+        toaster.notify('Ссылка скопирована!', {
+            position: 'bottom-right',
+            duration: 3000,
         })
     }
 
@@ -44,9 +53,7 @@ export default class PaymentSchedule extends Component {
             <div className={'payment-schedule'}>
                 <h1 className={'mb-5'}>
                     График выплат
-                    <i
-                        onClick={() => {navigator.clipboard.writeText(document.location)}}
-                        className="fa fa-files-o fa-animate ml-3" aria-hidden="true"></i>
+                    <i onClick={this.copyURL} className="fa fa-files-o fa-animate ml-3" aria-hidden="true"></i>
                 </h1>
 
                 {

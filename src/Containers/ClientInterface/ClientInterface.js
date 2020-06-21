@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './ClientInterface.scss'
 import HistoryController from '../../controllers/HistoryController'
 import {Progress} from 'react-sweet-progress'
+import toaster from 'toasted-notes'
 
 export default class ClientInterface extends Component {
     state: {
@@ -11,6 +12,14 @@ export default class ClientInterface extends Component {
     componentDidMount = async () => {
         this.setState({
             data: await HistoryController.prototype.getHistoryReport(this.props.match.params.number)
+        })
+    }
+
+    copyURL = () => {
+        navigator.clipboard.writeText(document.location)
+        toaster.notify('Ссылка скопирована!', {
+            position: 'bottom-right',
+            duration: 3000,
         })
     }
 
@@ -104,9 +113,7 @@ export default class ClientInterface extends Component {
             <div className={'client-interface'}>
                 <h1 className={'mb-5'}>
                     Выписка
-                    <i
-                        onClick={() => {navigator.clipboard.writeText(document.location)}}
-                        className="fa fa-files-o fa-animate ml-3" aria-hidden="true"></i>
+                    <i onClick={this.copyURL} className="fa fa-files-o fa-animate ml-3" aria-hidden="true"></i>
                 </h1>
 
                 {

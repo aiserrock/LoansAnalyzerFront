@@ -37,7 +37,7 @@ export default class LoansList extends Component {
                             </div>
                         ))
                         : <>
-                            <span className={'message'}>Укажите параметры и нажмите "Поиск"</span>
+                            <span className={'message'}>Ничего не найдено!</span>
                         </>
                 }
             </div>

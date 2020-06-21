@@ -14,7 +14,6 @@ import ClientInterface from './Containers/ClientInterface/ClientInterface'
 import Auth from './Containers/Auth/Auth'
 import {autoLogin, logout} from './store/auth/authActions'
 
-
 class App extends Component {
     componentDidMount =  () => {
         this.props.autoLogin()

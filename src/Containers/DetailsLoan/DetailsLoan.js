@@ -259,7 +259,7 @@ class DetailsLoan extends Component {
                     <div className="col-lg-6 col-md-4 col-1 link__question">
                         <Tooltip
                             customCss={`white-space: nowrap;`}
-                            content="Пояснялка">
+                            content="Генерирует график платежей в виде таблицы.">
                             <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"/>
                         </Tooltip>
                     </div>

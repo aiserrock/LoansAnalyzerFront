@@ -102,7 +102,12 @@ export default class ClientInterface extends Component {
     render() {
         return (
             <div className={'client-interface'}>
-                <h1 className={'mb-5'}>Выписка</h1>
+                <h1 className={'mb-5'}>
+                    Выписка
+                    <i
+                        onClick={() => {navigator.clipboard.writeText(document.location)}}
+                        className="fa fa-files-o fa-animate ml-3" aria-hidden="true"></i>
+                </h1>
 
                 {
                     this.state && Object.keys(this.state.data).length !== 0

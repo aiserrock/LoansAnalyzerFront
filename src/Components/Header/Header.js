@@ -10,6 +10,13 @@ export default class Header extends Component {
         menuIsOpen: false,
     }
 
+    componentDidMount(): void {
+        const activeTab = document.location.pathname.split('/')[1]
+        this.setState({
+            activeTab
+        })
+    }
+
     interactWithMenu = () => {
         this.setState({
             menuIsOpen: !this.state.menuIsOpen,

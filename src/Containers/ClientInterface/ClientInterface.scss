@@ -4,6 +4,11 @@
   padding: 30px;
   font-size: 18px;
 
+  & .fa {
+    opacity: 1 !important;
+    font-size: 30px;
+  }
+
   &__info {
     display: flex;
     flex-direction: column;

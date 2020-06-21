@@ -7,7 +7,6 @@ import Tooltip from 'react-simple-tooltip'
 import {confirmAlert} from 'react-confirm-alert'
 import AddPayout from '../../Components/AddPayout/AddPayout'
 import {NavLink, Redirect} from 'react-router-dom'
-import SelectUser from '../../Components/CreateLoan/SelectUser'
 import {updateLoan} from '../../store/loans/loansActions'
 import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
@@ -93,10 +92,6 @@ class DetailsLoan extends Component {
         })
     }
 
-    selectClient = (client) => {
-        this.setState({client})
-    }
-
     deleteHandler = (id) => {
         confirmAlert({
             title: 'Подтвердите действие',
@@ -114,7 +109,7 @@ class DetailsLoan extends Component {
                         const index = getIndexById(loans, id)
                         loans.splice(index, 1)
                         this.setState({
-                            loansHistory: loans
+                            loansHistory: loans,
                         })
                         this.changeDisplayedTen()
                     },
@@ -160,7 +155,7 @@ class DetailsLoan extends Component {
                 {
                     this.state.displayedTen.map((element, index) => (
                         <tr key={element.id}>
-                            <td>{this.state.activeTen * 10 + index + 1}</td>
+                            <td><b>{this.state.activeTen * 10 + index + 1}</b></td>
                             <td>{new Date(element.date).toLocaleDateString()}</td>
                             <td>{element.amount}</td>
                             <td>{element.type === 'PROCENT' ? 'Проценты' : 'Долг'}</td>
@@ -187,13 +182,16 @@ class DetailsLoan extends Component {
 
                     <div className="row">
                         <div className="col-lg-7 col-12 order-lg-1  order-2">
-                            <SelectUser
-                                selectClient={this.selectClient}
-                                isEdit={true}
-                                clientInfo={this.state.client}
-                                token={this.props.token}
-                            />
-                            <br/>
+                            <div className={'input-section'}>
+                                <div className={'input-section__input'}>
+                                    <label>ФИО заёмщика</label>
+                                    <span> {this.state.client?.name} </span>
+                                </div>
+                                <div className={'input-section__input'}>
+                                    <label>Номер заёмщика</label>
+                                    <span> {this.state.client?.phone} </span>
+                                </div>
+                            </div>
                             <InputsDetails
                                 payed={this.saveChanged}
                                 isEdit={true}
@@ -232,10 +230,11 @@ class DetailsLoan extends Component {
                                 </div>
                             </div>
                         </div>
+
                         <div className="col-lg-6 col-md-4 col-1 link__question">
                             <Tooltip
                                 customCss={`white-space: nowrap;`}
-                                content="Здесь что-то должно быть написано, но я хз, что">
+                                content="Пояснялка">
                                 <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"/>
                             </Tooltip>
                         </div>

@@ -96,7 +96,7 @@ class Clients extends Component {
                     this.state.displayedTen.map((element, index) => {
                         return (
                             <tr key={element.id}>
-                                <td>{this.state.activeTen * 10 + index + 1}</td>
+                                <td><b>{this.state.activeTen * 10 + index + 1}</b></td>
                                 <td>{element.name}</td>
                                 <td>{element.phone}</td>
                                 <td>

@@ -90,7 +90,7 @@ export default class HistoryController {
     // @return ничего не возвращает
     async deleteHistoryLoanById(token: string, id: string) {
         try {
-            let response = await del(`/history_loans/?history_loan_row_id=${id}`,
+            let response = await del(`/history_loans/${id}`,
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,

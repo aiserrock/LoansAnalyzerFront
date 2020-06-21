@@ -50,7 +50,6 @@ export function deleteHistoryLoanById(id) {
     return async (dispatch, getState) => {
         const token = getState().authReducer.data.access_token
         const data = await HistoryController.prototype.deleteHistoryLoanById(token, id)
-        console.log(data)
     }
 }
 

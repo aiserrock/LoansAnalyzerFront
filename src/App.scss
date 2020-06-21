@@ -25,6 +25,7 @@
   a {
     text-decoration: none !important;
     color: black;
+
     &:hover {
       color: black;
     }
@@ -195,11 +196,16 @@
     }
   }
 
- & .table {
-   & .fa-pencil-square-o {
-     font-size: 25px;
-   }
- }
+  & .payout-progress-bar {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .table {
+    & .fa-pencil-square-o {
+      font-size: 25px;
+    }
+  }
 
   & .link {
     cursor: pointer;
@@ -219,6 +225,7 @@
     &__question {
       display: flex;
       margin: auto 0 auto 0;
+
       .fa {
         margin-left: 0 !important;
       }
@@ -325,7 +332,7 @@
 
 @media (max-width: 950px) {
   .app__container {
-   flex-direction: column !important;
+    flex-direction: column !important;
   }
 
   .app__content {

@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import './App.scss'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'toasted-notes/src/styles.css'
+import "react-sweet-progress/lib/style.css"
 import '@lls/react-light-calendar/dist/index.css'
 import Header from './Components/Header/Header'
 import Loans from './Containers/Loans/Loans'

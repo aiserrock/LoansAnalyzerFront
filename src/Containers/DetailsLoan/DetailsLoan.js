@@ -15,6 +15,7 @@ import {deleteHistoryLoanById, updateHistory} from '../../store/history/historyA
 import HistoryController from '../../controllers/HistoryController'
 import Table from '../../Components/Table/Table'
 import {getIndexById} from '../../store/universalFunctions'
+import { Progress } from 'react-sweet-progress';
 
 class DetailsLoan extends Component {
     constructor() {
@@ -103,6 +104,13 @@ class DetailsLoan extends Component {
                             position: 'bottom-right',
                             duration: 3000,
                         })
+                        const loans = this.state.loansHistory
+                        const index = getIndexById(loans, id)
+                        loans.splice(index, 1)
+                        this.setState({
+                            loansHistory: loans,
+                        })
+                        this.changeDisplayedTen()
                     },
                 },
                 {
@@ -171,6 +179,27 @@ class DetailsLoan extends Component {
                 <div className={'details-loan'}>
                     <h1 className={'mb-5'}>Детали займа</h1>
 
+                    <div className="payout-progress-bar">
+                        <h2 className={'mb-4'}>Прогресс по погашению займа</h2>
+                        <Progress
+                            percent={69}
+                        />
+                        <div className={'row mt-2'}>
+                            <div className="col-lg-6 col-xs-12">
+                                Осталось
+                                <b className={'text-success ml-2 mr-2'}>{Math.ceil(Math.abs(this.state.endDate - this.state.startDate) / (1000 * 3600 * 24))}</b>
+                                дней
+                            </div>
+                            <div className="col-lg-6 col-xs-12">
+                                К возврату <b className={'text-primary ml-2 mr-2'}>4000</b> ₽
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <h2 className={'mb-5'}>Информация о займе</h2>
+
                     <div className="row">
                         <div className="col-lg-7 col-12 order-lg-1  order-2">
                             <div className={'input-section'}>
@@ -201,6 +230,8 @@ class DetailsLoan extends Component {
                     </div>
 
                     <hr/>
+
+                    <h2 className={'mb-4'}>Вы можете</h2>
 
                     <div className="row">
                         <div className="col-lg-6 col-md-8 col-10">
@@ -233,7 +264,7 @@ class DetailsLoan extends Component {
 
                     <hr/>
 
-                    <h2 className={'mb-4'}>
+                    <h2 className={'mb-5'}>
                         История платежей
                     </h2>
 

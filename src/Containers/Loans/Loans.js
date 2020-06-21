@@ -200,9 +200,9 @@ class Loans extends Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span className={'text-primary'}>10000</span></td>
-                            <td><span className={'text-success'}>+3500</span></td>
-                            <td><span className={'text-danger'}>10000</span></td>
+                            <td><span className={'text-primary'}><b>10000 ₽</b></span></td>
+                            <td><span className={'text-success'}><b>10000 ₽</b></span></td>
+                            <td><span className={'text-danger'}><b>10000 ₽</b></span></td>
                         </tr>
                         </tbody>
                     </table>

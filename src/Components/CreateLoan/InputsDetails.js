@@ -90,9 +90,12 @@ export default class InputsDetails extends Component {
                                 Создать займ<i className="fa fa-credit-card ml-3" aria-hidden="true"/>
                             </button>
                         </div>
-                        : <button className={'btn btn-primary mt-4 mr-auto'} onClick={this.checkCorrect}>
-                            Сохранить
-                        </button>
+                        : <>
+                        <small className={'message'}>Поля помеченные "*" недоступны для редактирования.</small>
+                            <button className={'btn btn-primary mt-4 mr-auto'} onClick={this.checkCorrect}>
+                                Сохранить
+                            </button>
+                        </>
                 }
             </div>
         )

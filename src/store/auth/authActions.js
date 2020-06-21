@@ -2,13 +2,15 @@ import {dispatchAction} from '../universalFunctions'
 import AuthController from '../../controllers/AuthController'
 import {AUTH_ERROR, AUTH_SUCCESS, AUTH_LOGOUT} from './actionTypes'
 
+console.log(new Date(new Date().getTime() + 3600 * 24000))
+
 export function auth(login, password) {
     return async (dispatch) => {
         try {
             const data = await AuthController.prototype.auth(password, login)
 
             if (data !== null) {
-                const expirationDate = new Date(new Date().getTime() + 3600 * 3000)
+                const expirationDate = new Date(new Date().getTime() + 3600 * 24000)
                 localStorage.setItem('expirationDate', expirationDate)
                 localStorage.setItem('data', JSON.stringify(data))
                 dispatch(dispatchAction(AUTH_SUCCESS, data))

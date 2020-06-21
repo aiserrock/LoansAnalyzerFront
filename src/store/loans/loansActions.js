@@ -25,6 +25,7 @@ export function getLoans(skip, search, status) {
                         allData.push({
                             client, loan,
                         })
+                    else console.log(loan.id)
                 }
                 dispatch(dispatchAction(FETCH_LIST_SUCCESS, allData))
             }

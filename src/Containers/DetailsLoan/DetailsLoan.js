@@ -103,13 +103,6 @@ class DetailsLoan extends Component {
                             position: 'bottom-right',
                             duration: 3000,
                         })
-                        const loans = this.state.loansHistory
-                        const index = getIndexById(loans, id)
-                        loans.splice(index, 1)
-                        this.setState({
-                            loansHistory: loans,
-                        })
-                        this.changeDisplayedTen()
                     },
                 },
                 {
@@ -182,11 +175,11 @@ class DetailsLoan extends Component {
                         <div className="col-lg-7 col-12 order-lg-1  order-2">
                             <div className={'input-section'}>
                                 <div className={'input-section__input'}>
-                                    <label>ФИО заёмщика</label>
+                                    <label>ФИО заёмщика*</label>
                                     <input type="text" defaultValue={this.state.client?.name} className={'non-click'}/>
                                 </div>
                                 <div className={'input-section__input'}>
-                                    <label>Номер заёмщика</label>
+                                    <label>Номер заёмщика*</label>
                                     <input type="text" defaultValue={this.state.client?.phone} className={'non-click'}/>
                                 </div>
                             </div>

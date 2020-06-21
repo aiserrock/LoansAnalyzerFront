@@ -95,7 +95,8 @@ export default class HistoryController {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                     },
-                });
+                })
+            return response.data
         } catch (e) {
             return e.response.status;
         }

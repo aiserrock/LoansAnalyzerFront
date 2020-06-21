@@ -1,8 +1,10 @@
 import {AUTH_ERROR, AUTH_LOGOUT, AUTH_SUCCESS} from './actionTypes'
 
+const data = localStorage.getItem('data') ? JSON.parse(localStorage.getItem('data')) : ''
+
 const initialState = {
     isError: false,
-    data: {},
+    data: data,
     isAuth: false,
 }
 

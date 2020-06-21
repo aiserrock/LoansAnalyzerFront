@@ -36,7 +36,6 @@ class DetailsLoan extends Component {
 
     componentDidMount = async () => {
         const id = this.props.match.params.number
-
         const loan = await LoansController.prototype.getLoanById(this.props.token, id)
         const client = await ClientController.prototype.getClientById(this.props.token, loan.clients_id)
 
@@ -83,7 +82,6 @@ class DetailsLoan extends Component {
             created_at: new Date(),
             issued_at: new Date(this.state.startDate),
             expiration_at: new Date(this.state.endDate),
-            clients_id: this.state.client.id,
         }
         this.props.updateLoan(this.state.loan.id, data)
         toaster.notify('Изменения сохранены!', {
@@ -185,11 +183,11 @@ class DetailsLoan extends Component {
                             <div className={'input-section'}>
                                 <div className={'input-section__input'}>
                                     <label>ФИО заёмщика</label>
-                                    <span> {this.state.client?.name} </span>
+                                    <input type="text" defaultValue={this.state.client?.name} className={'non-click'}/>
                                 </div>
                                 <div className={'input-section__input'}>
                                     <label>Номер заёмщика</label>
-                                    <span> {this.state.client?.phone} </span>
+                                    <input type="text" defaultValue={this.state.client?.phone} className={'non-click'}/>
                                 </div>
                             </div>
                             <InputsDetails

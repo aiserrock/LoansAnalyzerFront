@@ -1,14 +1,9 @@
 import {AUTH_ERROR, AUTH_LOGOUT, AUTH_SUCCESS} from './actionTypes'
 
-const data = localStorage.getItem('data') ? JSON.parse(localStorage.getItem('data')) : ''
-localStorage.setItem('data', JSON.stringify(data))
-const isAuth = data !== ''
-
-
 const initialState = {
     isError: false,
-    data: data,
-    isAuth: isAuth,
+    data: {},
+    isAuth: false,
 }
 
 export default function authReducer(state = initialState, action) {

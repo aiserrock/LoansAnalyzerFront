@@ -11,12 +11,16 @@ import DetailsLoan from './Containers/DetailsLoan/DetailsLoan'
 import Clients from './Containers/Clients/Clients'
 import ClientInterface from './Containers/ClientInterface/ClientInterface'
 import Auth from './Containers/Auth/Auth'
-import {logout} from './store/auth/authActions'
+import {autoLogin, logout} from './store/auth/authActions'
 
 
 class App extends Component {
-    render(){
-        return(
+    componentDidMount =  () => {
+        this.props.autoLogin()
+    }
+
+    render() {
+        return (
             <div className={'app'}>
                 <div className="app__container">
                     <div className={'app__menu'}>
@@ -39,15 +43,16 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-    return{
-        isAuth: state.authReducer.isAuth
+    return {
+        isAuth: state.authReducer.isAuth,
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    return{
+    return {
         logout: () => dispatch(logout()),
+        autoLogin: () => dispatch(autoLogin()),
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

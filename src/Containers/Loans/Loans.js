@@ -43,7 +43,8 @@ class Loans extends Component {
 
     // Делаем поиск при старте или авторизации
     componentDidMount() {
-        this.clearFind()
+        if(this.props.isAuth)
+            this.clearFind()
     }
 
     componentWillUnmount() {

@@ -15,6 +15,7 @@ import toaster from 'toasted-notes'
 import {deleteHistoryLoanById, updateHistory} from '../../store/history/historyActions'
 import HistoryController from '../../controllers/HistoryController'
 import Table from '../../Components/Table/Table'
+import {getIndexById} from '../../store/universalFunctions'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -30,23 +31,15 @@ class DetailsLoan extends Component {
             client: null,
             loansHistory: [],
             displayedTen: [],
+            activeTen: 0,
         }
     }
-
-    changeDisplayTen = (displayedTen) => {
-        this.setState({
-            displayedTen,
-        })
-    }
-
-    onChange = (startDate, endDate) => this.setState({startDate, endDate})
 
     componentDidMount = async () => {
         const id = this.props.match.params.number
 
         const loan = await LoansController.prototype.getLoanById(this.props.token, id)
         const client = await ClientController.prototype.getClientById(this.props.token, loan.clients_id)
-
 
         await this.setState({
             loan,
@@ -55,6 +48,27 @@ class DetailsLoan extends Component {
             endDate: new Date(loan.expiration_at).getTime(),
         })
     }
+
+    changeActiveTen = (activeTen) => {
+        this.setState({
+            activeTen: activeTen,
+        })
+    }
+
+    changeDisplayedTen = () => {
+        const num = this.state.activeTen * 10
+        const displayedTen = []
+        for (let i = num; i < num + 10; i++) {
+            if (this.state.loansHistory[i])
+                displayedTen.push(this.state.loansHistory[i])
+            else break
+        }
+        this.setState({
+            displayedTen,
+        })
+    }
+
+    onChange = (startDate, endDate) => this.setState({startDate, endDate})
 
     getHistoryLoans = async (skip) => {
         const id = this.props.match.params.number
@@ -72,13 +86,12 @@ class DetailsLoan extends Component {
             expiration_at: new Date(this.state.endDate),
             clients_id: this.state.client.id,
         }
-        this.props.updateLoan(this.state.loan.id ,data)
+        this.props.updateLoan(this.state.loan.id, data)
         toaster.notify('Изменения сохранены!', {
             position: 'bottom-right',
             duration: 3000,
         })
     }
-
 
     selectClient = (client) => {
         this.setState({client})
@@ -97,6 +110,13 @@ class DetailsLoan extends Component {
                             position: 'bottom-right',
                             duration: 3000,
                         })
+                        const loans = this.state.loansHistory
+                        const index = getIndexById(loans, id)
+                        loans.splice(index, 1)
+                        this.setState({
+                            loansHistory: loans
+                        })
+                        this.changeDisplayedTen()
                     },
                 },
                 {
@@ -117,11 +137,17 @@ class DetailsLoan extends Component {
         })
     }
 
+    updateHistory = (id, data) => {
+        this.props.updateHistory(id, data)
+        this.changeDisplayedTen()
+    }
+
     renderTableBody = () => {
         return (
             <table className="table">
                 <thead className="thead">
                 <tr className={'table_dark'}>
+                    <th scope="col">#</th>
                     <th scope="col">Дата платежа</th>
                     <th scope="col">Сумма</th>
                     <th scope="col">Тип</th>
@@ -132,8 +158,9 @@ class DetailsLoan extends Component {
                 </thead>
                 <tbody>
                 {
-                    this.state.displayedTen.map((element) => (
+                    this.state.displayedTen.map((element, index) => (
                         <tr key={element.id}>
+                            <td>{this.state.activeTen * 10 + index + 1}</td>
                             <td>{new Date(element.date).toLocaleDateString()}</td>
                             <td>{element.amount}</td>
                             <td>{element.type === 'PROCENT' ? 'Проценты' : 'Долг'}</td>
@@ -144,7 +171,6 @@ class DetailsLoan extends Component {
                                 <i className="fa fa-trash-o fa-animate" aria-hidden="true"
                                    onClick={() => this.deleteHandler(element.id)}/>
                             </td>
-
                         </tr>
                     ))
                 }
@@ -225,7 +251,9 @@ class DetailsLoan extends Component {
                         data={this.state.loansHistory}
                         getData={this.getHistoryLoans}
                         renderTableBody={this.renderTableBody}
-                        changeDisplayTen={this.changeDisplayTen}
+                        activeTen={this.state.activeTen}
+                        changeActiveTen={this.changeActiveTen}
+                        changeDisplayedTen={this.changeDisplayedTen}
                     />
 
                     <AddPayout
@@ -233,7 +261,7 @@ class DetailsLoan extends Component {
                         payoutIsOpen={this.state.payoutIsOpen}
                         paidItem={this.state.paidItem}
                         interactWithPayout={this.interactWithPayout}
-                        updateHistory={this.props.updateHistory}
+                        updateHistory={this.updateHistory}
                         payoutIsCreated={this.props.payoutIsCreated}
                     />
                 </div>

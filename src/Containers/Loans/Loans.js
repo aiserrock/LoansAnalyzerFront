@@ -63,7 +63,7 @@ class Loans extends Component {
     // Поиск с задержкой при вводе в текстовое поле
     debounceClearFind = debounce(() => {
         this.clearFind();
-    }, 500)
+    }, 800)
 
     // Поиск с предварительной очисткой списка
     clearFind = async () => {

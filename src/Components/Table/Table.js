@@ -2,57 +2,30 @@ import React, {Component} from 'react'
 import './Table.scss'
 
 export default class Table extends Component {
-    state = {
-        currentNumberOfItems: 0,
-        activeTen: 0,
-    }
-
     componentDidMount = async () => {
         if (this.props.data.length === 0)
             await this.props.getData(0)
-        else
-            this.setState({
-                currentNumberOfItems: Math.ceil(this.props.data.length / 10),
-            })
-        this.changeDisplayedTen()
+        this.props.changeDisplayedTen()
     }
 
-    backHandler = () => {
-        if (this.state.activeTen > 0) {
-            this.setState({
-                activeTen: --this.state.activeTen,
-            })
-            this.changeDisplayedTen()
+    backHandler = async () => {
+        if (this.props.activeTen > 0) {
+            await this.props.changeActiveTen(this.props.activeTen - 1)
+            this.props.changeDisplayedTen()
         }
     }
 
     forwardHandler = async () => {
-        const num = this.state.currentNumberOfItems * 10 + 10
-        if (this.state.activeTen === this.state.currentNumberOfItems && this.props.data.length >= num) {
+        const currentNumberOfItems = Math.ceil(this.props.data.length / 10) - 1
+        const num = Math.ceil(this.props.data.length / 10)  * 10
+        if (this.props.activeTen === currentNumberOfItems && this.props.data.length >= num) {
             await this.props.getData(num)
-            this.setState({
-                currentNumberOfItems: ++this.state.currentNumberOfItems,
-                activeTen: ++this.state.activeTen,
-            })
-        } else if (this.state.activeTen < this.state.currentNumberOfItems) {
-            this.setState({
-                activeTen: ++this.state.activeTen,
-            })
+            await this.props.changeActiveTen(this.props.activeTen + 1)
+        } else if (this.props.activeTen < currentNumberOfItems) {
+            await this.props.changeActiveTen(this.props.activeTen + 1)
         } else
             return null
-        this.changeDisplayedTen()
-    }
-
-    changeDisplayedTen = () => {
-        const num = this.state.activeTen * 10
-        const displayedTen = []
-        for (let i = num; i < num + 10; i++) {
-            if (this.props.data[i])
-                displayedTen.push(this.props.data[i])
-            else break
-        }
-
-        this.props.changeDisplayTen(displayedTen)
+        this.props.changeDisplayedTen()
     }
 
     render() {

@@ -21,9 +21,10 @@ export function getLoans(skip, search, status) {
 
                 for (let loan of data) {
                     const client = await ClientController.prototype.getClientById(token, loan.clients_id)
-                    allData.push({
-                        client, loan
-                    })
+                    if (Object.prototype.toString.call(client) === '[object Object]')
+                        allData.push({
+                            client, loan,
+                        })
                 }
                 dispatch(dispatchAction(FETCH_LIST_SUCCESS, allData))
             }

@@ -1,5 +1,5 @@
 import ClientController from '../../controllers/ClientController'
-import {dispatchAction} from '../universalFunctions'
+import {dispatchAction, getIndexById} from '../universalFunctions'
 import {ERROR_CHANGE_C, GET_CLIENTS_ERROR, GET_CLIENTS_SUCCESS, SUCCESS_CHANGE_C} from './actionTypes'
 
 export function getClients(skip) {
@@ -19,7 +19,8 @@ export function createClient(name, phone) {
         const token = getState().authReducer.data.access_token
         const data = await ClientController.prototype.createClient(token, name, phone)
         if (Object.prototype.toString.call(data) === '[object Object]') {
-            dispatch(dispatchAction(SUCCESS_CHANGE_C, null))
+            getState().clientReducer.clients.push(data)
+            dispatch(dispatchAction(SUCCESS_CHANGE_C, data))
         } else {
             dispatch(dispatchAction(ERROR_CHANGE_C, null))
         }
@@ -31,6 +32,11 @@ export function updateClient(id, info) {
         const token = getState().authReducer.data.access_token
         const data = await ClientController.prototype.updateClient(token, id, info)
         if (Object.prototype.toString.call(data) === '[object Object]') {
+            const clients = getState().clientReducer.clients
+            const index = getIndexById(clients, id)
+            const client = clients[index]
+            client.name = info.name
+            client.phone = info.phone
             dispatch(dispatchAction(SUCCESS_CHANGE_C, null))
         } else {
             dispatch(dispatchAction(ERROR_CHANGE_C, null))
@@ -41,7 +47,9 @@ export function updateClient(id, info) {
 export function deleteClient(id) {
     return async (dispatch, getState) => {
         const token = getState().authReducer.data.access_token
-        const data = await ClientController.prototype.deleteClient(token, id)
-        console.log(data)
+        await ClientController.prototype.deleteClient(token, id)
+        const clients = getState().clientReducer.clients
+        const index = getIndexById(clients, id)
+        clients.splice(index, 1)
     }
 }

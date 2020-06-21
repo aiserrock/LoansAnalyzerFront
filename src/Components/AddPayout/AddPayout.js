@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import './AddPayout.scss'
 import ReactLightCalendar from '@lls/react-light-calendar'
+import toaster from 'toasted-notes'
 
 export default class AddPayout extends Component {
     constructor() {
@@ -13,7 +14,7 @@ export default class AddPayout extends Component {
         currentWin: 'date',
         date: new Date().getTime(),
         amountIsValid: true,
-        editing: false
+        editing: false,
     }
 
     onClose = () => {
@@ -21,7 +22,7 @@ export default class AddPayout extends Component {
         this.setState({
             currentWin: 'date',
             date: new Date().getTime(),
-            editing: false
+            editing: false,
         })
     }
 
@@ -48,6 +49,15 @@ export default class AddPayout extends Component {
             else
                 await this.props.createPayout(data)
             if (this.props.payoutIsCreated) {
+                this.props.isEdit
+                    ? toaster.notify('Выплата отредактирована!', {
+                        position: 'bottom-right',
+                        duration: 3000,
+                    })
+                    : toaster.notify('Выплата добавлена!', {
+                        position: 'bottom-right',
+                        duration: 3000,
+                    })
                 this.onClose()
             }
         }
@@ -56,7 +66,7 @@ export default class AddPayout extends Component {
     onChange = (date) => {
         this.setState({
             date,
-            editing: this.props.isEdit
+            editing: this.props.isEdit,
         })
     }
 
@@ -65,7 +75,7 @@ export default class AddPayout extends Component {
             <>
                 <h4 className={'mb-4'}>Выберите дату платежа</h4>
                 <ReactLightCalendar startDate={
-                   this.props.isEdit && !this.state.editing ? new Date(this.props.paidItem.loan.date).getTime() : this.state.date
+                    this.props.isEdit && !this.state.editing ? new Date(this.props.paidItem.loan.date).getTime() : this.state.date
                 } onClickDate={this.onChange}/>
                 <button className={'btn btn-primary mt-4'} disabled={this.props.clientInfo === null}
                         onClick={() => {
@@ -110,7 +120,10 @@ export default class AddPayout extends Component {
                         Назад<i className="fa fa-arrow-left ml-3" aria-hidden="true"/>
                     </button>
                     <button className={'btn btn-success mr-0'} onClick={this.payed}>
-                        Добавить платёж<i className="fa fa-credit-card ml-3" aria-hidden="true"/>
+                        {
+                            this.props.isEdit ? 'Редактировать платёж' : 'Добавить платёж'
+                        }
+                        <i className="fa fa-credit-card ml-3" aria-hidden="true"/>
                     </button>
                 </div>
             </>

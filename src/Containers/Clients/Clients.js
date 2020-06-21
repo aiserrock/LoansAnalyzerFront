@@ -14,11 +14,26 @@ class Clients extends Component {
         clientEditIsOpen: false,
         editClient: null,
         displayedTen: [],
+        activeTen: 0,
     }
 
-    changeDisplayTen = (displayedTen) => {
+    changeActiveTen = (activeTen) => {
         this.setState({
-            displayedTen
+            activeTen: activeTen,
+        })
+    }
+
+    changeDisplayedTen = () => {
+        const num = this.state.activeTen * 10
+        const displayedTen = []
+        for (let i = num; i < num + 10; i++) {
+             if (this.props.clients[i])
+                 displayedTen.push(this.props.clients[i])
+             else break
+
+        }
+        this.setState({
+            displayedTen,
         })
     }
 
@@ -29,12 +44,13 @@ class Clients extends Component {
             buttons: [
                 {
                     label: 'Да',
-                    onClick: () => {
-                        this.props.deleteClient(id)
+                    onClick: async () => {
+                        await this.props.deleteClient(id)
                         toaster.notify('Пользователь удалён', {
                             position: 'bottom-right',
                             duration: 3000,
                         })
+                        this.changeDisplayedTen()
                     },
                 },
                 {
@@ -52,11 +68,22 @@ class Clients extends Component {
         })
     }
 
+    updateClient = async (id, data) => {
+        await this.props.updateClient(id, data)
+        this.changeDisplayedTen()
+    }
+
+    createClient = async (name, phone) => {
+        await this.props.createClient(name, phone)
+        this.changeDisplayedTen()
+    }
+
     renderTableBody = () => {
         return (
             <table className="table">
                 <thead className="thead">
                 <tr className={'table_dark'}>
+                    <th scope="col">#</th>
                     <th scope="col">ФИО</th>
                     <th scope="col">Телефон</th>
                     <th scope="col">
@@ -66,9 +93,10 @@ class Clients extends Component {
                 </thead>
                 <tbody>
                 {
-                    this.state.displayedTen.map((element) => {
+                    this.state.displayedTen.map((element, index) => {
                         return (
                             <tr key={element.id}>
+                                <td>{this.state.activeTen * 10 + index + 1}</td>
                                 <td>{element.name}</td>
                                 <td>{element.phone}</td>
                                 <td>
@@ -108,17 +136,19 @@ class Clients extends Component {
                         data={this.props.clients}
                         getData={this.props.getClients}
                         renderTableBody={this.renderTableBody}
-                        changeDisplayTen={this.changeDisplayTen}
                         renderOptionButton={this.renderOptionButton}
+                        activeTen={this.state.activeTen}
+                        changeActiveTen={this.changeActiveTen}
+                        changeDisplayedTen={this.changeDisplayedTen}
                     />
 
                     <AddClient
                         interactWithClient={this.interactWithClient}
                         clientEditIsOpen={this.state.clientEditIsOpen}
+                        createClient={this.createClient}
+                        updateClient={this.updateClient}
                         editClient={this.state.editClient}
-                        createClient={this.props.createClient}
                         successChanged={this.props.successChanged}
-                        updateClient={this.props.updateClient}
                     />
                 </div>
             )

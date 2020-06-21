@@ -70,7 +70,6 @@ export default class ClientController {
 
             return response.data;
         } catch (e) {
-            console.log(e.response)
             return e.response.status;
         }
     }
@@ -109,7 +108,6 @@ export default class ClientController {
 
             return response.data;
         } catch (e) {
-            console.log(e.response);
             return e.response.status;
         }
     }

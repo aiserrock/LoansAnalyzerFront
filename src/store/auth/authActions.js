@@ -8,7 +8,7 @@ export function auth(login, password) {
             const data = await AuthController.prototype.auth(password, login)
 
             if (data !== null) {
-                const expirationDate = new Date(new Date().getTime() + 3600 * 1000)
+                const expirationDate = new Date(new Date().getTime() + 3600 * 3000)
                 localStorage.setItem('expirationDate', expirationDate)
                 localStorage.setItem('data', JSON.stringify(data))
                 dispatch(dispatchAction(AUTH_SUCCESS, data))

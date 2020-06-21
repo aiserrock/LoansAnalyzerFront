@@ -44,7 +44,7 @@ export default class ClientInput extends Component {
         return (
             <div className={'input-section'}>
                 <div className={'input-section__input'}>
-                    <label>Имя</label>
+                    <label>ФИО</label>
                     <input ref={this.name} type="text" className={this.state.nameIsValid ? '' : 'input-error'}
                            defaultValue={this.props.isEdit ? this.props.editClient.name : null}
                     />

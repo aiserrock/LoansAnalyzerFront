@@ -3,6 +3,7 @@ import './CreateLoan.scss'
 import ReactLightCalendar from '@lls/react-light-calendar'
 import InputsDetails from './InputsDetails'
 import SelectUser from './SelectUser'
+import toaster from 'toasted-notes'
 
 export default class CreateLoan extends Component {
     constructor() {
@@ -37,15 +38,22 @@ export default class CreateLoan extends Component {
     }
 
     payed = (data) => {
+        const startDate = new Date(this.state.startDate),
+            endDate = new Date(this.state.endDate)
         data = {
            ...data,
             created_at: new Date(),
-            issued_at: new Date(this.state.startDate),
-            expiration_at: new Date(this.state.endDate),
+            issued_at: new Date(startDate.setMinutes(startDate.getMinutes() + 60)),
+            expiration_at: new Date(endDate.setMinutes(endDate.getMinutes() + 60)),
             clients_id: this.state.clientInfo.id
         }
-        this.props.createLoan(data)
-        this.onClose()
+        toaster.notify('Займ успешно создан!', {
+            position: 'bottom-right',
+            duration: 3000,
+        })
+        console.log(data)
+        // this.props.createLoan(data)
+        // this.onClose()
     }
 
     renderInputDate = () => {

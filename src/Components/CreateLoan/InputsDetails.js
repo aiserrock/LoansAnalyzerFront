@@ -75,7 +75,6 @@ export default class InputsDetails extends Component {
                 </div>
 
                 <small className={this.state.isValid ? 'hide' : 'error'}>Все поля обязательны для заполнения!</small>
-                <small className={!this.props.changeSuccess ? 'hide' : 'error'}>Проверьте введённые данные</small>
 
                 {
                     !this.props.isEdit

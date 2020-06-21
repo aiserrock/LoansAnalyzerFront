@@ -137,6 +137,11 @@ class DetailsLoan extends Component {
 
     updateHistory = (id, data) => {
         this.props.updateHistory(id, data)
+        const index = getIndexById(this.state.loansHistory, id)
+        const Id = this.state.loansHistory[index].id
+        data.id = Id
+        this.state.loansHistory[index] = data
+        console.log(this.state.loansHistory[index])
         this.changeDisplayedTen()
     }
 
@@ -178,6 +183,8 @@ class DetailsLoan extends Component {
     }
 
     renderContent = () => {
+        //console.log(new Date(this.state.startDate), new Date(this.state.endDate))
+
         return (
             <>
                 <h1 className={'mb-5'}>Детали займа</h1>
@@ -190,7 +197,8 @@ class DetailsLoan extends Component {
                     <div className={'row mt-2'}>
                         <div className="col-lg-6 col-xs-12">
                             Осталось
-                            <b className={'text-success ml-2 mr-2'}>{Math.ceil(Math.abs(this.state.endDate - this.state.startDate) / (1000 * 3600 * 24))}</b>
+                            <b className={'text-success ml-2 mr-2'}>
+                                {Math.ceil(Math.abs(this.state.endDate - this.state.startDate) / (1000 * 3600 * 24))}</b>
                             дней
                         </div>
                         <div className="col-lg-6 col-xs-12">

@@ -15,7 +15,8 @@ import {deleteHistoryLoanById, updateHistory} from '../../store/history/historyA
 import HistoryController from '../../controllers/HistoryController'
 import Table from '../../Components/Table/Table'
 import {getIndexById} from '../../store/universalFunctions'
-import { Progress } from 'react-sweet-progress';
+import {Progress} from 'react-sweet-progress'
+import BigPreloader from '../../Components/Preloaders/BigPreloader'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -32,6 +33,7 @@ class DetailsLoan extends Component {
             loansHistory: [],
             displayedTen: [],
             activeTen: 0,
+            loading: true,
         }
     }
 
@@ -40,12 +42,14 @@ class DetailsLoan extends Component {
         const loan = await LoansController.prototype.getLoanById(this.props.token, id)
         const client = await ClientController.prototype.getClientById(this.props.token, loan.clients_id)
 
-        await this.setState({
-            loan,
-            client,
-            startDate: new Date(loan.issued_at).getTime(),
-            endDate: new Date(loan.expiration_at).getTime(),
-        })
+        if (id && loan && client)
+            await this.setState({
+                loan,
+                client,
+                startDate: new Date(loan.issued_at).getTime(),
+                endDate: new Date(loan.expiration_at).getTime(),
+                loading: false,
+            })
     }
 
     changeActiveTen = (activeTen) => {
@@ -173,118 +177,130 @@ class DetailsLoan extends Component {
         )
     }
 
+    renderContent = () => {
+        return (
+            <>
+                <h1 className={'mb-5'}>Детали займа</h1>
+
+                <div className="payout-progress-bar">
+                    <h2 className={'mb-4'}>Прогресс по погашению займа</h2>
+                    <Progress
+                        percent={69}
+                    />
+                    <div className={'row mt-2'}>
+                        <div className="col-lg-6 col-xs-12">
+                            Осталось
+                            <b className={'text-success ml-2 mr-2'}>{Math.ceil(Math.abs(this.state.endDate - this.state.startDate) / (1000 * 3600 * 24))}</b>
+                            дней
+                        </div>
+                        <div className="col-lg-6 col-xs-12">
+                            К возврату <b className={'text-primary ml-2 mr-2'}>4000</b> ₽
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <h2 className={'mb-5'}>Информация о займе</h2>
+
+                <div className="row">
+                    <div className="col-lg-7 col-12 order-lg-1  order-2">
+                        <div className={'input-section'}>
+                            <div className={'input-section__input'}>
+                                <label>ФИО заёмщика*</label>
+                                <input type="text" defaultValue={this.state.client?.name} className={'non-click'}/>
+                            </div>
+                            <div className={'input-section__input'}>
+                                <label>Номер заёмщика*</label>
+                                <input type="text" defaultValue={this.state.client?.phone} className={'non-click'}/>
+                            </div>
+                        </div>
+                        <InputsDetails
+                            payed={this.saveChanged}
+                            isEdit={true}
+                            loan={this.state.loan}
+                        />
+                    </div>
+                    <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">
+                        <div className={'mb-3'}>
+                            <ReactLightCalendar
+                                startDate={this.state.startDate}
+                                endDate={this.state.endDate}
+                                onChange={this.onChange} range
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <h2 className={'mb-4'}>Вы можете</h2>
+
+                <div className="row">
+                    <div className="col-lg-6 col-md-8 col-10">
+                        <div className={'links'}>
+                            <div className={'link'}>
+                                <NavLink to={`/extract/${this.state.loan.id}`}>
+                                    <i className="fa fa-share-alt" aria-hidden="true"/>
+                                    <span>Поделиться</span>
+                                </NavLink>
+                            </div>
+                            <div className={'link'}>
+                                <i className="fa fa-plus" aria-hidden="true"/>
+                                <span>Составить график выплат</span>
+                            </div>
+                            <div className={'link'}>
+                                <i className="fa fa-archive" aria-hidden="true"/>
+                                <span>Архивировать займ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-lg-6 col-md-4 col-1 link__question">
+                        <Tooltip
+                            customCss={`white-space: nowrap;`}
+                            content="Пояснялка">
+                            <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"/>
+                        </Tooltip>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <h2 className={'mb-5'}>
+                    История платежей
+                </h2>
+
+                <Table
+                    data={this.state.loansHistory}
+                    getData={this.getHistoryLoans}
+                    renderTableBody={this.renderTableBody}
+                    activeTen={this.state.activeTen}
+                    changeActiveTen={this.changeActiveTen}
+                    changeDisplayedTen={this.changeDisplayedTen}
+                />
+
+                <AddPayout
+                    isEdit={true}
+                    payoutIsOpen={this.state.payoutIsOpen}
+                    paidItem={this.state.paidItem}
+                    interactWithPayout={this.interactWithPayout}
+                    updateHistory={this.updateHistory}
+                    payoutIsCreated={this.props.payoutIsCreated}
+                /></>
+        )
+    }
+
+
     render() {
         if (this.props.isAuth)
             return (
                 <div className={'details-loan'}>
-                    <h1 className={'mb-5'}>Детали займа</h1>
-
-                    <div className="payout-progress-bar">
-                        <h2 className={'mb-4'}>Прогресс по погашению займа</h2>
-                        <Progress
-                            percent={69}
-                        />
-                        <div className={'row mt-2'}>
-                            <div className="col-lg-6 col-xs-12">
-                                Осталось
-                                <b className={'text-success ml-2 mr-2'}>{Math.ceil(Math.abs(this.state.endDate - this.state.startDate) / (1000 * 3600 * 24))}</b>
-                                дней
-                            </div>
-                            <div className="col-lg-6 col-xs-12">
-                                К возврату <b className={'text-primary ml-2 mr-2'}>4000</b> ₽
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <h2 className={'mb-5'}>Информация о займе</h2>
-
-                    <div className="row">
-                        <div className="col-lg-7 col-12 order-lg-1  order-2">
-                            <div className={'input-section'}>
-                                <div className={'input-section__input'}>
-                                    <label>ФИО заёмщика*</label>
-                                    <input type="text" defaultValue={this.state.client?.name} className={'non-click'}/>
-                                </div>
-                                <div className={'input-section__input'}>
-                                    <label>Номер заёмщика*</label>
-                                    <input type="text" defaultValue={this.state.client?.phone} className={'non-click'}/>
-                                </div>
-                            </div>
-                            <InputsDetails
-                                payed={this.saveChanged}
-                                isEdit={true}
-                                loan={this.state.loan}
-                            />
-                        </div>
-                        <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">
-                            <div className={'mb-3'}>
-                                <ReactLightCalendar
-                                    startDate={this.state.startDate}
-                                    endDate={this.state.endDate}
-                                    onChange={this.onChange} range
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <h2 className={'mb-4'}>Вы можете</h2>
-
-                    <div className="row">
-                        <div className="col-lg-6 col-md-8 col-10">
-                            <div className={'links'}>
-                                <div className={'link'}>
-                                    <NavLink to={`/extract/${this.state.loan.id}`}>
-                                        <i className="fa fa-share-alt" aria-hidden="true"/>
-                                        <span>Поделиться</span>
-                                    </NavLink>
-                                </div>
-                                <div className={'link'}>
-                                    <i className="fa fa-plus" aria-hidden="true"/>
-                                    <span>Составить график выплат</span>
-                                </div>
-                                <div className={'link'}>
-                                    <i className="fa fa-archive" aria-hidden="true"/>
-                                    <span>Архивировать займ</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-6 col-md-4 col-1 link__question">
-                            <Tooltip
-                                customCss={`white-space: nowrap;`}
-                                content="Пояснялка">
-                                <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"/>
-                            </Tooltip>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <h2 className={'mb-5'}>
-                        История платежей
-                    </h2>
-
-                    <Table
-                        data={this.state.loansHistory}
-                        getData={this.getHistoryLoans}
-                        renderTableBody={this.renderTableBody}
-                        activeTen={this.state.activeTen}
-                        changeActiveTen={this.changeActiveTen}
-                        changeDisplayedTen={this.changeDisplayedTen}
-                    />
-
-                    <AddPayout
-                        isEdit={true}
-                        payoutIsOpen={this.state.payoutIsOpen}
-                        paidItem={this.state.paidItem}
-                        interactWithPayout={this.interactWithPayout}
-                        updateHistory={this.updateHistory}
-                        payoutIsCreated={this.props.payoutIsCreated}
-                    />
+                    {
+                        this.state.loading
+                            ? <BigPreloader/>
+                            : this.renderContent()
+                    }
                 </div>
             )
         else

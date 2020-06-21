@@ -23,7 +23,7 @@ export default class Header extends Component {
     }
 
     logout = () => {
-        toaster.notify('Пользователь удалён', {
+        toaster.notify('Вы вышли из системы', {
             position: 'bottom-right',
             duration: 3000,
         })

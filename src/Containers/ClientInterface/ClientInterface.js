@@ -29,8 +29,10 @@ export default class ClientInterface extends Component {
 
         return (
             <div className={'client-interface__info'}>
-
-                <ProgressBar endDate={endDate.getTime()}/>
+                <ProgressBar
+                    amount={this.state.data.amount}
+                    data={this.state.data.income_income_now_amount_of_dept}
+                    endDate={endDate.getTime()}/>
 
                 <h2 className={'mb-4 mt-5'}>Информация о займе</h2>
 
@@ -57,9 +59,6 @@ export default class ClientInterface extends Component {
                 </div>
                 <div className={'client-interface__info-item'}>
                     <p>Статус: </p> <span>{this.state.data.type === 'PROCENT' ? 'Проценты' : 'Долг'}</span>
-                </div>
-                <div className={'client-interface__info-item mb-5'}>
-                    <p>Проценты: </p> <span></span>
                 </div>
 
                 <h2 className={'mb-4'}>

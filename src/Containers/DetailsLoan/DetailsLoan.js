@@ -213,7 +213,10 @@ class DetailsLoan extends Component {
             <>
                 <h1 className={'mb-5'}>Детали займа</h1>
 
-                <ProgressBar endDate={this.state.endDate}/>
+                <ProgressBar
+                    amount={this.state.loan.amount}
+                    data={this.state.loan.income_income_now_amount_of_dept}
+                    endDate={this.state.endDate}/>
 
                 <hr/>
 
@@ -261,7 +264,7 @@ class DetailsLoan extends Component {
                                     <span>Поделиться</span>
                                 </NavLink>
                             </div>
-                            <div className={'link'} onClick={this.archived}>
+                            <div className={'link'}>
                                 <i className="fa fa-plus" aria-hidden="true"/>
                                 <span>Составить график выплат</span>
                             </div>

@@ -29,10 +29,10 @@ export function getLoans(skip, search, status) {
                         else
                             console.log(loan.id)
                     }
-                    else {
-                        dispatch(dispatchAction(INIT_STATUS_BAR, loan))
-                        break
-                    }
+                    // else {
+                    //     dispatch(dispatchAction(INIT_STATUS_BAR, loan))
+                    //     break
+                    // }
                 }
                 dispatch(dispatchAction(FETCH_LIST_SUCCESS, allData))
             }

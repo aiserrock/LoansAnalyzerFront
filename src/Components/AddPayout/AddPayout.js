@@ -71,11 +71,12 @@ export default class AddPayout extends Component {
     }
 
     renderCalendar = () => {
+        const date = new Date(this.props.paidItem.loan.date)
         return (
             <>
                 <h4 className={'mb-4'}>Выберите дату платежа</h4>
                 <ReactLightCalendar startDate={
-                    this.props.isEdit && !this.state.editing ? new Date(this.props.paidItem.loan.date).getTime() : this.state.date
+                    this.props.isEdit && !this.state.editing ? date.setDate(date.getDate() + 1) : this.state.date
                 } onClickDate={this.onChange}/>
                 <button className={'btn btn-primary mt-4'} disabled={this.props.clientInfo === null}
                         onClick={() => {

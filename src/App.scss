@@ -196,9 +196,12 @@
     }
   }
 
-  & .payout-progress-bar {
+  .rlc-days {
+    margin: 5px 0 10px 17px;
+  }
+
+  .rlc-days-label {
     display: flex;
-    flex-direction: column;
   }
 
   & .table {
@@ -360,13 +363,11 @@
 @media (max-width: 790px) {
   .app__content {
     margin: 10px 5px 10px 5px !important;
-    border-radius: 0;
   }
 
   .app__menu {
     margin: 5px 8px 0 5px;
     height: auto;
     flex: auto;
-    border-radius: 0;
   }
 }

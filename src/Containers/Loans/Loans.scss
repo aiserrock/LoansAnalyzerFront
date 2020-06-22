@@ -153,7 +153,6 @@
   }
 
   .loans-panel__search {
-    flex-direction: column;
     height: 110px;
 
     &-select {
@@ -169,7 +168,7 @@
   }
 
   .loans-panel {
-    width: 50vmax !important;
+    width: 500px !important;
   }
 }
 

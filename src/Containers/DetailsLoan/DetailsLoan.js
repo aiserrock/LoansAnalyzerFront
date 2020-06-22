@@ -15,8 +15,8 @@ import {deleteHistoryLoanById, updateHistory} from '../../store/history/historyA
 import HistoryController from '../../controllers/HistoryController'
 import Table from '../../Components/Table/Table'
 import {getIndexById} from '../../store/universalFunctions'
-import {Progress} from 'react-sweet-progress'
 import BigPreloader from '../../Components/Preloaders/BigPreloader'
+import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -208,27 +208,12 @@ class DetailsLoan extends Component {
     }
 
     renderContent = () => {
+        const startDate = new Date(this.state.startDate), endDate = new Date(this.state.endDate)
         return (
             <>
                 <h1 className={'mb-5'}>Детали займа</h1>
 
-                <div className="payout-progress-bar">
-                    <h2 className={'mb-4'}>Прогресс по погашению займа</h2>
-                    <Progress
-                        percent={69}
-                    />
-                    <div className={'row mt-2'}>
-                        <div className="col-lg-6 col-xs-12">
-                            Осталось дней:
-                            <b className={'text-success ml-2 mr-2'}>
-                                {Math.ceil(Math.abs(new Date().getTime() - this.state.startDate) / (1000 * 3600 * 24))}
-                            </b>
-                        </div>
-                        <div className="col-lg-6 col-xs-12">
-                            К возврату <b className={'text-primary ml-2 mr-2'}>4000</b> ₽
-                        </div>
-                    </div>
-                </div>
+                <ProgressBar endDate={this.state.endDate}/>
 
                 <hr/>
 
@@ -255,8 +240,8 @@ class DetailsLoan extends Component {
                     <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">
                         <div className={'mb-3'}>
                             <ReactLightCalendar
-                                startDate={this.state.startDate}
-                                endDate={this.state.endDate}
+                                startDate={startDate.setDate(startDate.getDate() + 1)}
+                                endDate={endDate.setDate(endDate.getDate() + 1)}
                                 onChange={this.onChange} range
                             />
                         </div>

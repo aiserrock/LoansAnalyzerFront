@@ -38,22 +38,19 @@ export default class CreateLoan extends Component {
     }
 
     payed = (data) => {
-        const startDate = new Date(this.state.startDate),
-            endDate = new Date(this.state.endDate)
         data = {
            ...data,
             created_at: new Date(),
-            issued_at: new Date(startDate.setMinutes(startDate.getMinutes() + 60)),
-            expiration_at: new Date(endDate.setMinutes(endDate.getMinutes() + 60)),
+            issued_at: new Date(this.state.startDate),
+            expiration_at: new Date(this.state.endDate),
             clients_id: this.state.clientInfo.id
         }
         toaster.notify('Займ успешно создан!', {
             position: 'bottom-right',
             duration: 3000,
         })
-        console.log(data)
-        // this.props.createLoan(data)
-        // this.onClose()
+        this.props.createLoan(data)
+        this.onClose()
     }
 
     renderInputDate = () => {

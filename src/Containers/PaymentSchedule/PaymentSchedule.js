@@ -48,7 +48,6 @@ export default class PaymentSchedule extends Component {
     }
 
     render(){
-        console.log(this.state)
         return(
             <div className={'payment-schedule'}>
                 <h1 className={'mb-5'}>

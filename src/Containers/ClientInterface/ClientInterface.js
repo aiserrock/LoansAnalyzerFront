@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import './ClientInterface.scss'
 import HistoryController from '../../controllers/HistoryController'
-import {Progress} from 'react-sweet-progress'
 import toaster from 'toasted-notes'
+import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 
 export default class ClientInterface extends Component {
     state: {
@@ -30,26 +30,9 @@ export default class ClientInterface extends Component {
         return (
             <div className={'client-interface__info'}>
 
-                <div className="payout-progress-bar mb-5">
-                    <h2 className={'mb-4'}>Прогресс по погашению займа</h2>
-                    <Progress
-                        percent={69}
-                    />
-                    <div className={'row mt-2'}>
-                        <div className="col-lg-6 col-xs-12">
-                            Осталось
-                            <b className={'text-success ml-2 mr-2'}>
-                                {Math.ceil(Math.abs(endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))}
-                            </b>
-                            дней
-                        </div>
-                        <div className="col-lg-6 col-xs-12">
-                            К возврату <b className={'text-primary ml-2 mr-2'}>4000</b> ₽
-                        </div>
-                    </div>
-                </div>
+                <ProgressBar endDate={endDate.getTime()}/>
 
-                <h2 className={'mb-4'}>Информация о займе</h2>
+                <h2 className={'mb-4 mt-5'}>Информация о займе</h2>
 
                 <div className={'client-interface__info-item'}>
                     <p>Кем:</p> <span>{this.state.data.client_name}</span>

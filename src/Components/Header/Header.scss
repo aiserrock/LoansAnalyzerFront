@@ -75,6 +75,10 @@
 
     flex-direction: row;
 
+    &__nav-bar {
+      align-items: center;
+    }
+
     &__content {
       flex-direction: row;
       width: 100%;
@@ -95,7 +99,6 @@
         max-height: 100px;
       }
     }
-
 
     & .link {
       margin: 0 0 0 auto;

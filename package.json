@@ -2,10 +2,6 @@
   "name": "loans-analyzer",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "v13.0.1",
-    "npm": "6.12.0"
-  },
   "dependencies": {
     "@lls/react-light-calendar": "^2.1.0",
     "@testing-library/jest-dom": "^4.2.4",

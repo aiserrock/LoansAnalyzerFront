@@ -2,6 +2,7 @@
   "name": "loans-analyzer",
   "version": "0.1.0",
   "private": true,
+  "main": "app.js",
   "engines": {
     "node": "v13.0.1",
     "npm": "6.12.0"

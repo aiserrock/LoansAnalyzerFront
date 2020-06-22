@@ -4,7 +4,7 @@ import {dispatchAction} from '../universalFunctions'
 import {
     CHANGE_STATUS, ERROR_UPDATE_LOAN, FETCH_LIST_END,
     FETCH_LIST_ERROR,
-    FETCH_LIST_SUCCESS, RESET_LIST,
+    FETCH_LIST_SUCCESS, INIT_STATUS_BAR, RESET_LIST,
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
 
@@ -20,12 +20,19 @@ export function getLoans(skip, search, status) {
                 const allData = []
 
                 for (let loan of data) {
-                    const client = await ClientController.prototype.getClientById(token, loan.clients_id)
-                    if (Object.prototype.toString.call(client) === '[object Object]')
-                        allData.push({
-                            client, loan,
-                        })
-                    else console.log(loan.id)
+                    if(loan.clients_id){
+                        const client = await ClientController.prototype.getClientById(token, loan.clients_id)
+                        if (Object.prototype.toString.call(client) === '[object Object]')
+                            allData.push({
+                                client, loan,
+                            })
+                        else
+                            console.log(loan.id)
+                    }
+                    else {
+                        dispatch(dispatchAction(INIT_STATUS_BAR, loan))
+                        break
+                    }
                 }
                 dispatch(dispatchAction(FETCH_LIST_SUCCESS, allData))
             }

@@ -200,9 +200,9 @@ class Loans extends Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span className={'text-primary'}><b>10000 ₽</b></span></td>
-                            <td><span className={'text-success'}><b>10000 ₽</b></span></td>
-                            <td><span className={'text-danger'}><b>10000 ₽</b></span></td>
+                            <td><span className={'text-primary'}><b>{Math.round(this.props.statusBar.all_my_income)} ₽</b></span></td>
+                            <td><span className={'text-success'}><b>{Math.round(this.props.statusBar.all_my_income_now)} ₽</b></span></td>
+                            <td><span className={'text-danger'}><b>{Math.round(this.props.statusBar.all_overdue_amount)} ₽</b></span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -239,6 +239,7 @@ function mapStateToProps(state) {
         changeSuccess: state.loansReducer.changeSuccess,
         payoutIsCreated: state.historyReducer.payoutIsCreated,
         token: state.authReducer.data.access_token,
+        statusBar: state.loansReducer.statusBar
     }
 }
 

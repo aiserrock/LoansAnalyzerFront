@@ -69,16 +69,17 @@ export default class ClientInterface extends Component {
                 <table className="table">
                     <thead className="thead">
                     <tr className={'table_dark'}>
+                        <th scope="col">#</th>
                         <th scope="col">Дата платежа</th>
                         <th scope="col">Сумма</th>
                         <th scope="col">Тип</th>
-
                     </tr>
                     </thead>
                     <tbody>
                     {
-                        this.state.data.history_loan.map((element) => (
+                        this.state.data.history_loan.map((element, index) => (
                             <tr key={element.id}>
+                                <td><b>{index + 1}</b></td>
                                 <td>{new Date(element.date).toLocaleDateString()}</td>
                                 <td>{element.amount}</td>
                                 <td>{element.type === 'PROCENT' ? 'Проценты' : 'Долг'}</td>

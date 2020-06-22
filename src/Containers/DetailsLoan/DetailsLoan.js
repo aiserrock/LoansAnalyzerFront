@@ -261,11 +261,9 @@ class DetailsLoan extends Component {
                                     <span>Поделиться</span>
                                 </NavLink>
                             </div>
-                            <div className={'link'}>
-                                <NavLink to={`/payment-schedule/${this.state.loan.id}`}>
-                                    <i className="fa fa-plus" aria-hidden="true"/>
-                                    <span>Составить график выплат</span>
-                                </NavLink>
+                            <div className={'link'} onClick={this.archived}>
+                                <i className="fa fa-plus" aria-hidden="true"/>
+                                <span>Составить график выплат</span>
                             </div>
                             <div className={'link'} onClick={this.archived}>
                                 <i className="fa fa-archive" aria-hidden="true"/>

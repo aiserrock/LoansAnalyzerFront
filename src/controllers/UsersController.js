@@ -17,7 +17,7 @@ export default class UsersController {
 
             return response.data;
         } catch (e) {
-            return e.response.status;
+            return e?.response?.status;
         }
     }
 
@@ -38,7 +38,7 @@ export default class UsersController {
 
             return response.data;
         } catch (e) {
-            return e.response.status;
+            return e?.response?.status;
         }
     }
 }

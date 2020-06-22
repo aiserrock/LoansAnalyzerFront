@@ -31,6 +31,7 @@ export default class LoansController {
             let response = await get(`/loans/${p}`,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });
@@ -49,6 +50,7 @@ export default class LoansController {
         try {
             let response = await post('/loans/', data, {
                 headers: {
+                    "Access-Control-Allow-Origin": "*",
                     "Content-Type": 'application/json',
                     "Authorization":
                         `Bearer ${token}`
@@ -70,7 +72,10 @@ export default class LoansController {
         try {
             let response = await get(
                 `/loans/${id}`, {
-                    headers: {"Authorization": `Bearer ${token}`},
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Access-Control-Allow-Origin": "*",
+                    },
                 });
 
             return response.data;
@@ -89,6 +94,7 @@ export default class LoansController {
             let response = await put(
                 `/loans/${id}`, data, {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": 'application/json',
                     },

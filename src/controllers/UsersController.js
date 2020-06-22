@@ -12,7 +12,10 @@ export default class UsersController {
         try {
             let response = await get(`/users/${id}`,
                 {
-                    headers: {"Authorization": `Bearer ${token}`},
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Access-Control-Allow-Origin": "*",
+                    },
                 });
 
             return response.data;
@@ -31,6 +34,7 @@ export default class UsersController {
             let response = await put(`/users/${id}`, data,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },

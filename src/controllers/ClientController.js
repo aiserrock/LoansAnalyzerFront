@@ -25,6 +25,7 @@ export default class ClientController {
             let response = await get(`/clients/${p}`,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });
@@ -45,6 +46,7 @@ export default class ClientController {
             let response = await post(`/clients/?name=${name}&phone=${phone}`,
                 null, {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });
@@ -64,6 +66,7 @@ export default class ClientController {
             let response = await get(`/clients/${id}`,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });
@@ -84,6 +87,7 @@ export default class ClientController {
             let response = await put(`/clients/${id}`, data,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });
@@ -102,6 +106,7 @@ export default class ClientController {
             let response = await del(`/clients/${id}`,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });

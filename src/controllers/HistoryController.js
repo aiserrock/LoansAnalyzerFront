@@ -14,6 +14,7 @@ export default class HistoryController {
             let response = await get(`/history_loans/${id}`,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });
@@ -35,6 +36,7 @@ export default class HistoryController {
             let response = await get(`/history_loans/?loans_id=${id}${skipStr}`,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });
@@ -54,6 +56,7 @@ export default class HistoryController {
             let response = await put(`/history_loans/${id}`, data,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });
@@ -73,6 +76,7 @@ export default class HistoryController {
             let response = await post(`/history_loans/`, data,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 });
@@ -93,6 +97,7 @@ export default class HistoryController {
             let response = await del(`/history_loans/${id}`,
                 {
                     headers: {
+                        "Access-Control-Allow-Origin": "*",
                         "Authorization": `Bearer ${token}`,
                     },
                 })

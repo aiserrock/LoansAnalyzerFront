@@ -11,7 +11,7 @@ const initialState = {
     isEndOfList: false,
     isError: false,
     changeSuccess: false,
-    status: 'active',
+    status: '',
     statusBar: {}
 }
 

@@ -8,10 +8,18 @@ import {
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
 
+export function getStatistics() {
+    return async (dispatch, getState) => {
+        const token = getState().authReducer.data.access_token
+        const data = await LoansController.prototype.getLoans(token, null, null, null, true)
+        dispatch(dispatchAction(INIT_STATUS_BAR, data))
+    }
+}
+
 export function getLoans(skip, search, status) {
     return async (dispatch, getState) => {
         const token = getState().authReducer.data.access_token
-        const data = await LoansController.prototype.getLoans(token, skip, search, status)
+        const data = await LoansController.prototype.getLoans(token, skip, search, status, false)
 
         if (Array.isArray(data)) {
             if (data.length === 0) {
@@ -20,19 +28,13 @@ export function getLoans(skip, search, status) {
                 const allData = []
 
                 for (let loan of data) {
-                    if(loan.clients_id){
+                    if (loan.clients_id) {
                         const client = await ClientController.prototype.getClientById(token, loan.clients_id)
                         if (Object.prototype.toString.call(client) === '[object Object]')
                             allData.push({
                                 client, loan,
                             })
-                        else
-                            console.log(loan.id)
                     }
-                    // else {
-                    //     dispatch(dispatchAction(INIT_STATUS_BAR, loan))
-                    //     break
-                    // }
                 }
                 dispatch(dispatchAction(FETCH_LIST_SUCCESS, allData))
             }

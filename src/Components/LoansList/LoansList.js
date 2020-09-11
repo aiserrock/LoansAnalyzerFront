@@ -18,14 +18,30 @@ export default class LoansList extends Component {
                         ? this.props.loans.map(element => (
                             <div key={element.loan.id} className={'loans-list__item'}>
                                 <div className="row">
-                                    <div className="col-md-7  col-xs-12 mb-2"><b>{element.client.name}</b></div>
-                                    <div className="col-md-5  col-xs-12 mb-2"><b>{element.client.phone}</b></div>
-                                    <div className="col-md-7 col-xs-12 mb-2">Выдан {new Date(element.loan.issued_at).toLocaleDateString()}</div>
-                                    <div className="col-md-5 col-xs-12 mb-2">До {new Date(element.loan.expiration_at).toLocaleDateString()}</div>
-                                    <div className="col-md-7  col-xs-12 mb-2">
+                                    <div className="col-sm-7  col-12 mb-2"><b>{element.client.name}</b></div>
+                                    <div className="col-sm-5  col-12 mb-2"><b>{element.client.phone}</b></div>
+                                    <div
+                                        className="col-sm-7 col-12 mb-2">Выдан {new Date(element.loan.issued_at).toLocaleDateString()}</div>
+                                    <div
+                                        className="col-sm-5 col-12 mb-2">До {new Date(element.loan.expiration_at).toLocaleDateString()}</div>
+                                    <div className="col-sm-7  col-12 mb-2">
                                         Сумма {element.loan.amount} ₽
                                     </div>
-                                    <div className="col-md-5  col-xs-12  mb-4">Ставка {element.loan.rate}%</div>
+                                    <div className="col-md-5  col-xs-12  mb-2">Ставка {element.loan.rate}%</div>
+                                    <div className="col-sm-7  col-12 mb-2">
+                                        Доход
+                                        <br/>
+                                        <b className={'text-success'}>
+                                            {Math.round(element.loan.my_income || 0)} ₽
+                                       </b>
+                                    </div>
+                                    <div className="col-md-5  col-xs-12  mb-4">
+                                        На сегодня
+                                        <br/>
+                                        <b className={'text-primary'}>
+                                            {Math.round(element.loan.my_income_now || 0)} ₽
+                                        </b>
+                                    </div>
                                 </div>
                                 <div className="button-section">
                                     <NavLink to={`/details-loan/${element.loan.id}`}

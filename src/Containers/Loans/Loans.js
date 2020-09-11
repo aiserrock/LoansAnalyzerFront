@@ -5,7 +5,7 @@ import LoansList from '../../Components/LoansList/LoansList'
 import AddPayout from '../../Components/AddPayout/AddPayout'
 import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 import {Redirect} from 'react-router-dom'
-import {changeStatus, createLoan, getLoans, resetList} from '../../store/loans/loansActions'
+import {changeStatus, createLoan, getLoans, getStatistics, resetList} from '../../store/loans/loansActions'
 import {debounce} from 'lodash'
 import {createPayout} from '../../store/history/historyActions'
 
@@ -19,6 +19,18 @@ class Loans extends Component {
             paidItem: null,
             menuIsOpen: false,
         }
+    }
+
+    // Делаем поиск при старте или авторизации
+    componentDidMount() {
+        if (this.props.isAuth) {
+            this.clearFind()
+            this.props.getStatistics()
+        }
+    }
+
+    componentWillUnmount() {
+        this.debounceClearFind.cancel()
     }
 
     //Обработчик, взаимодействует с окном выплат
@@ -41,28 +53,18 @@ class Loans extends Component {
         })
     }
 
-    // Делаем поиск при старте или авторизации
-    componentDidMount() {
-        if(this.props.isAuth)
-            this.clearFind()
-    }
-
-    componentWillUnmount() {
-        this.debounceClearFind.cancel()
-    }
-
     // Меняем статус займов по радио кнопкам
     changeStatus = async (e) => {
-        let status = e.target.id;
+        let status = e.target.id
         if (status === 'without_status')
-            status = null;
+            status = null
         await this.props.changeStatus(status)
         await this.clearFind()
     }
 
     // Поиск с задержкой при вводе в текстовое поле
     debounceClearFind = debounce(() => {
-        this.clearFind();
+        this.clearFind()
     }, 800)
 
     // Поиск с предварительной очисткой списка
@@ -200,12 +202,9 @@ class Loans extends Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span className={'text-primary'}><b>3000 ₽</b></span></td>
-                            <td><span className={'text-success'}><b>500 ₽</b></span></td>
-                            <td><span className={'text-danger'}><b>0 ₽</b></span></td>
-                            {/*<td><span className={'text-primary'}><b>{Math.round(this.props.statusBar.all_my_income)} ₽</b></span></td>*/}
-                            {/*<td><span className={'text-success'}><b>{Math.round(this.props.statusBar.all_my_income_now)} ₽</b></span></td>*/}
-                            {/*<td><span className={'text-danger'}><b>{Math.round(this.props.statusBar.all_overdue_amount)} ₽</b></span></td>*/}
+                            <td><span className={'text-primary'}><b>{Math.round(this.props.statusBar.all_my_income || 0)} ₽</b></span></td>
+                            <td><span className={'text-success'}><b>{Math.round(this.props.statusBar.all_my_income_now || 0)} ₽</b></span></td>
+                            <td><span className={'text-danger'}><b>{Math.round(this.props.statusBar.all_overdue_amount || 0)} ₽</b></span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -242,7 +241,7 @@ function mapStateToProps(state) {
         changeSuccess: state.loansReducer.changeSuccess,
         payoutIsCreated: state.historyReducer.payoutIsCreated,
         token: state.authReducer.data.access_token,
-        statusBar: state.loansReducer.statusBar
+        statusBar: state.loansReducer.statusBar,
     }
 }
 
@@ -252,7 +251,8 @@ function mapDispatchToProps(dispatch) {
         resetList: () => dispatch(resetList()),
         changeStatus: (status) => dispatch(changeStatus(status)),
         createLoan: (data) => dispatch(createLoan(data)),
-        createPayout: (data) => dispatch(createPayout(data))
+        createPayout: (data) => dispatch(createPayout(data)),
+        getStatistics: () => dispatch(getStatistics()),
     }
 }
 

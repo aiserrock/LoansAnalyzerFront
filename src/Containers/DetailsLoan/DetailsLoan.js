@@ -140,7 +140,11 @@ class DetailsLoan extends Component {
         const index = getIndexById(this.state.loansHistory, id)
         const Id = this.state.loansHistory[index].id
         data.id = Id
-        this.state.loansHistory[index] = data
+        const loansHistory = this.state.loansHistory
+        loansHistory[index]  = data
+        this.setState({
+            loansHistory
+        })
         this.changeDisplayedTen()
     }
 
@@ -208,16 +212,15 @@ class DetailsLoan extends Component {
     }
 
     renderContent = () => {
+        console.log(this.state.loan)
         const startDate = new Date(this.state.startDate), endDate = new Date(this.state.endDate)
         return (
             <>
                 <h1 className={'mb-5'}>Детали займа</h1>
 
                 <ProgressBar
-                    amount={this.state.loan.amount}
-                    data={this.state.loan.income_income_now_amount_of_dept}
+                    data={this.state.loan}
                     endDate={this.state.endDate}/>
-
                 <hr/>
 
                 <h2 className={'mb-5'}>Информация о займе</h2>

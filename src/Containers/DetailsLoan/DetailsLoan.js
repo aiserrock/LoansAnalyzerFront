@@ -17,6 +17,7 @@ import Table from '../../Components/Table/Table'
 import {getIndexById} from '../../store/universalFunctions'
 import BigPreloader from '../../Components/Preloaders/BigPreloader'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
+import {IMaskInput} from 'react-imask'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -141,9 +142,9 @@ class DetailsLoan extends Component {
         const Id = this.state.loansHistory[index].id
         data.id = Id
         const loansHistory = this.state.loansHistory
-        loansHistory[index]  = data
+        loansHistory[index] = data
         this.setState({
-            loansHistory
+            loansHistory,
         })
         this.changeDisplayedTen()
     }
@@ -229,11 +230,20 @@ class DetailsLoan extends Component {
                         <div className={'input-section'}>
                             <div className={'input-section__input'}>
                                 <label>ФИО заёмщика*</label>
-                                <input type="text" defaultValue={this.state.client?.name} className={'input-section__input non-click'}/>
+                                <input type="text" defaultValue={this.state.client?.name}
+                                       className={'input-section__input non-click'}/>
                             </div>
                             <div className={'input-section__input'}>
                                 <label>Номер заёмщика*</label>
-                                <input type="text" defaultValue={this.state.client?.phone} className={'input-section__input non-click'}/>
+                                <div className={'input-section__input non-click'}>
+
+                                    <IMaskInput
+                                        mask={'+{7}(000)000-00-00'}
+                                        unmask={false}
+                                        placeholder='+7 ('
+                                        value={this.state.client?.phone}
+                                    />
+                                </div>
                             </div>
                         </div>
                         <InputsDetails

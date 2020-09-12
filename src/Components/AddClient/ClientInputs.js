@@ -42,6 +42,13 @@ export default class ClientInput extends Component {
     }
 
     render() {
+        let phone
+        if (this.props.isEdit) {
+            phone = this.props.editClient.phone
+            this.number = phone
+        }
+        else
+            phone = this.number
         return (
             <div className={'input-section'}>
                 <div className={'input-section__input'}>
@@ -50,19 +57,20 @@ export default class ClientInput extends Component {
                            defaultValue={this.props.isEdit ? this.props.editClient.name : null}
                     />
                 </div>
-                <small className={!this.state.nameIsValid ? 'error mb-3' : 'hide'}>Имя не может быть пустым!</small>
+                <small className={!this.state.nameIsValid ? 'error mb-3' : 'hide'}>ФИО не может быть пустым!</small>
                 <div className={'input-section__input'}>
                     <label>Номер</label>
                     <div
-                        className={`number-block ${this.state.numberIsValid ? '' : 'input-error'}`}>
+                        className={`number-block `}>
                         <IMaskInput
                             mask={'+{7}(000)000-00-00'}
                             unmask={false}
                             onAccept={(value, mask) => {
                                 this.number = mask._unmaskedValue
                             }}
+                            className={this.state.numberIsValid ? '' : 'input-error'}
                             placeholder='+7 ('
-                            value={this.props.isEdit ? this.props.editClient.phone : this.number}
+                            value={phone}
                         />
                     </div>
                 </div>

@@ -3,7 +3,6 @@ import './DetailsLoan.scss'
 import {connect} from 'react-redux'
 import ReactLightCalendar from '@lls/react-light-calendar'
 import InputsDetails from '../../Components/CreateLoan/InputsDetails'
-import Tooltip from 'react-simple-tooltip'
 import {confirmAlert} from 'react-confirm-alert'
 import AddPayout from '../../Components/AddPayout/AddPayout'
 import {NavLink, Redirect} from 'react-router-dom'
@@ -276,10 +275,10 @@ class DetailsLoan extends Component {
                                     <span>Поделиться</span>
                                 </NavLink>
                             </div>
-                            <div className={'link'}>
-                                <i className="fa fa-plus" aria-hidden="true"/>
-                                <span>Составить график выплат</span>
-                            </div>
+                            {/*<div className={'link'}>*/}
+                            {/*    <i className="fa fa-plus" aria-hidden="true"/>*/}
+                            {/*    <span>Составить график выплат</span>*/}
+                            {/*</div>*/}
                             <div className={'link'} onClick={this.archived}>
                                 <i className="fa fa-archive" aria-hidden="true"/>
                                 <span>Архивировать займ</span>
@@ -287,13 +286,13 @@ class DetailsLoan extends Component {
                         </div>
                     </div>
 
-                    <div className="col-lg-6 col-md-4 col-1 link__question">
-                        <Tooltip
-                            customCss={`white-space: nowrap;`}
-                            content="Генерирует график платежей в виде таблицы.">
-                            <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"/>
-                        </Tooltip>
-                    </div>
+                    {/*<div className="col-lg-6 col-md-4 col-1 link__question">*/}
+                    {/*    <Tooltip*/}
+                    {/*        customCss={`white-space: nowrap;`}*/}
+                    {/*        content="Генерирует график платежей в виде таблицы.">*/}
+                    {/*        <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"/>*/}
+                    {/*    </Tooltip>*/}
+                    {/*</div>*/}
                 </div>
 
                 <hr/>

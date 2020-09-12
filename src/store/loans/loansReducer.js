@@ -1,7 +1,7 @@
 import {
     ERROR_UPDATE_LOAN, FETCH_LIST_END,
     FETCH_LIST_ERROR,
-    FETCH_LIST_SUCCESS, INIT_STATUS_BAR, RESET_LIST,
+    FETCH_LIST_SUCCESS, FETCH_LIST_SUCCESS_R, INIT_STATUS_BAR, RESET_LIST,
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
 
@@ -18,6 +18,10 @@ export default function loansReducer(state = initialState, action) {
         case FETCH_LIST_SUCCESS:
             return {
                 ...state, loans: state.loans.concat(action.item), isError: false,
+            }
+        case FETCH_LIST_SUCCESS_R:
+            return {
+                ...state, loans: action.item, isError: false,
             }
         case FETCH_LIST_END:
             return {

@@ -4,7 +4,7 @@ import {dispatchAction} from '../universalFunctions'
 import {
     ERROR_UPDATE_LOAN, FETCH_LIST_END,
     FETCH_LIST_ERROR,
-    FETCH_LIST_SUCCESS, INIT_STATUS_BAR, RESET_LIST,
+    FETCH_LIST_SUCCESS, FETCH_LIST_SUCCESS_R, INIT_STATUS_BAR, RESET_LIST,
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
 
@@ -16,7 +16,7 @@ export function getStatistics() {
     }
 }
 
-export function getLoans(skip, search, status) {
+export function getLoans(skip, search, status, reset) {
     return async (dispatch, getState) => {
         const token = getState().authReducer.data.access_token
         const data = await LoansController.prototype.getLoans(token, skip, search, status, false)
@@ -36,7 +36,10 @@ export function getLoans(skip, search, status) {
                             })
                     }
                 }
-                dispatch(dispatchAction(FETCH_LIST_SUCCESS, allData))
+                if (reset)
+                    dispatch(dispatchAction(FETCH_LIST_SUCCESS_R, allData))
+                else
+                    dispatch(dispatchAction(FETCH_LIST_SUCCESS, allData))
             }
         } else
             dispatch(dispatchAction(FETCH_LIST_ERROR, null))
@@ -64,7 +67,7 @@ export function updateLoan(id, info) {
 }
 
 export function resetList() {
-    return (dispatch) => {
-        dispatch(dispatchAction(RESET_LIST, null))
+    return async (dispatch) => {
+        await dispatch(dispatchAction(RESET_LIST, null))
     }
 }

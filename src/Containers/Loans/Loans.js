@@ -25,17 +25,13 @@ class Loans extends Component {
     // Делаем поиск при старте или авторизации
     componentDidMount() {
         if (this.props.isAuth) {
-            this.updateData()
+            this.clearFind()
+            this.props.getStatistics()
         }
     }
 
     componentWillUnmount() {
         this.debounceClearFind.cancel()
-    }
-
-    updateData = () => {
-        this.clearFind()
-        this.props.getStatistics()
     }
 
     //Обработчик, взаимодействует с окном выплат
@@ -74,27 +70,27 @@ class Loans extends Component {
 
     // Поиск с предварительной очисткой списка
     clearFind = async () => {
-        await this.props.resetList()
-        await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.state.status)
+        await this.props.getLoans(0, this.findLoan.current.value, this.state.status, true)
     }
 
     // Ведем поиск при прокрутке списка
     find = async () => {
-        await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.state.status)
+        await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.state.status, false)
     }
 
     createLoan = async (data) => {
         await this.props.createLoan(data)
         setTimeout(() => {
-            this.updateData()
-        }, 2000)
+            this.props.getLoans(0, this.findLoan.current.value, this.state.status, true)
+            this.props.getStatistics()
+        }, 1000)
     }
 
     createPayout = async (data) => {
         await this.props.createPayout(data)
         setTimeout(() => {
-            this.updateData()
-        }, 2000)
+            this.props.getStatistics()
+        }, 1000)
     }
 
     renderFilters = () => {
@@ -277,7 +273,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getLoans: (skip, search, status) => dispatch(getLoans(skip, search, status)),
+        getLoans: (skip, search, status, reset) => dispatch(getLoans(skip, search, status, reset)),
         resetList: () => dispatch(resetList()),
         createLoan: (data) => dispatch(createLoan(data)),
         createPayout: (data) => dispatch(createPayout(data)),

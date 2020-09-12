@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
 import toaster from 'toasted-notes'
+import {IMaskInput} from 'react-imask'
 
 export default class ClientInput extends Component {
     constructor() {
         super()
         this.name = React.createRef()
-        this.number = React.createRef()
+        this.number = ''
         this.state = {
             nameIsValid: true,
             numberIsValid: true,
@@ -14,7 +15,7 @@ export default class ClientInput extends Component {
     }
 
     checkCorrect = async () => {
-        const name = this.name.current.value, phone = this.number.current.value
+        const name = this.name.current.value, phone = this.number
         await this.setState({
             nameIsValid: name.replace(/\s+/g, '') !== '',
             numberIsValid: phone.replace(/\s+/g, '') !== '',
@@ -52,9 +53,18 @@ export default class ClientInput extends Component {
                 <small className={!this.state.nameIsValid ? 'error mb-3' : 'hide'}>Имя не может быть пустым!</small>
                 <div className={'input-section__input'}>
                     <label>Номер</label>
-                    <input ref={this.number} type="text" className={this.state.numberIsValid ? '' : 'input-error'}
-                           defaultValue={this.props.isEdit ? this.props.editClient.phone : null}
-                    />
+                    <div
+                        className={`number-block ${this.state.numberIsValid ? '' : 'input-error'}`}>
+                        <IMaskInput
+                            mask={'+{7}(000)000-00-00'}
+                            unmask={false}
+                            onAccept={(value, mask) => {
+                                this.number = mask._unmaskedValue
+                            }}
+                            placeholder='+7 ('
+                            value={this.props.isEdit ? this.props.editClient.phone : this.number}
+                        />
+                    </div>
                 </div>
                 <small className={!this.state.numberIsValid ? 'error mb-3' : 'hide'}>Номер не может быть пустым!</small>
                 <small className={this.state.error ? 'error mb-3' : 'hide'}>Проверте введённые данные!</small>

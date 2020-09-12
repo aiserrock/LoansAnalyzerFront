@@ -1,0 +1,10 @@
+.number-musk {
+  cursor: default;
+  pointer-events: none;
+
+  & input {
+    background-color: inherit !important;
+    width: auto;
+    border: none !important;
+  }
+}

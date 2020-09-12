@@ -1,4 +1,11 @@
 .payout-progress-bar {
   display: flex;
   flex-direction: column;
+
+  &.overdue {
+    .react-sweet-progress-symbol {
+      color: red !important;
+      font-weight: bold;
+    }
+  }
 }

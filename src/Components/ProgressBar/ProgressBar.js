@@ -6,9 +6,13 @@ export default class ProgressBar extends Component {
 
     render() {
         if (this.props.data) {
-            const percent = (this.props.data.amount - this.props.data.amount_of_dept) * 100 / this.props.data.amount ?? 0
+            const percent = Math.round((this.props.data.amount - this.props.data.amount_of_dept) * 100 / this.props.data.amount ?? 0)
+            const difference =  this.props.endDate - new Date().getTime()
+            const days = Math.ceil( difference < 0 ? 0 : difference / (1000 * 3600 * 24))
+            const overdue = days === 0 ? 'overdue' : ''
+
             return (
-                <div className="payout-progress-bar">
+                <div className={`payout-progress-bar ${overdue}`}>
                     <h2 className={'mb-4'}>Прогресс по погашению займа</h2>
                     <Progress
                         percent={percent}
@@ -16,8 +20,8 @@ export default class ProgressBar extends Component {
                     <div className={'row mt-2 mb-3'}>
                         <div className="col-lg-4 col-xs-12">
                             Осталось дней:
-                            <b className={'text-success ml-2'}>
-                                {Math.ceil(Math.abs(this.props.endDate - new Date().getTime()) / (1000 * 3600 * 24))}
+                            <b className={'text-danger ml-2'}>
+                                {days}
                             </b>
                         </div>
                         <div className="col-lg-4 col-xs-12">
@@ -25,7 +29,7 @@ export default class ProgressBar extends Component {
                             className={'text-primary ml-1'}>{Math.round(this.props.data?.amount_of_dept ?? 0)}</b> ₽
                         </div>
                         <div className="col-lg-4 col-xs-12">
-                            + <b className={'text-danger'}>{Math.round(this.props.data?.my_income_now ?? 0)}</b> ₽ на
+                            + <b className={'text-success'}>{Math.round(this.props.data?.my_income_now ?? 0)}</b> ₽ на
                             сегодня
                         </div>
                     </div>

@@ -2,7 +2,7 @@ import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
 import {dispatchAction} from '../universalFunctions'
 import {
-    CHANGE_STATUS, ERROR_UPDATE_LOAN, FETCH_LIST_END,
+    ERROR_UPDATE_LOAN, FETCH_LIST_END,
     FETCH_LIST_ERROR,
     FETCH_LIST_SUCCESS, INIT_STATUS_BAR, RESET_LIST,
     SUCCESS_UPDATE_LOAN,
@@ -66,11 +66,5 @@ export function updateLoan(id, info) {
 export function resetList() {
     return (dispatch) => {
         dispatch(dispatchAction(RESET_LIST, null))
-    }
-}
-
-export function changeStatus(status) {
-    return (dispatch) => {
-        dispatch(dispatchAction(CHANGE_STATUS, status))
     }
 }

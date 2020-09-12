@@ -5,7 +5,7 @@ import LoansList from '../../Components/LoansList/LoansList'
 import AddPayout from '../../Components/AddPayout/AddPayout'
 import CreateLoan from '../../Components/CreateLoan/CreateLoan'
 import {Redirect} from 'react-router-dom'
-import {changeStatus, createLoan, getLoans, getStatistics, resetList} from '../../store/loans/loansActions'
+import {createLoan, getLoans, getStatistics, resetList} from '../../store/loans/loansActions'
 import {debounce} from 'lodash'
 import {createPayout} from '../../store/history/historyActions'
 
@@ -18,19 +18,24 @@ class Loans extends Component {
             createLoanIsOpen: false,
             paidItem: null,
             menuIsOpen: false,
+            status: '',
         }
     }
 
     // Делаем поиск при старте или авторизации
     componentDidMount() {
         if (this.props.isAuth) {
-            this.clearFind()
-            this.props.getStatistics()
+            this.updateData()
         }
     }
 
     componentWillUnmount() {
         this.debounceClearFind.cancel()
+    }
+
+    updateData = () => {
+        this.clearFind()
+        this.props.getStatistics()
     }
 
     //Обработчик, взаимодействует с окном выплат
@@ -56,9 +61,9 @@ class Loans extends Component {
     // Меняем статус займов по радио кнопкам
     changeStatus = async (e) => {
         let status = e.target.id
-        if (status === 'without_status')
-            status = null
-        await this.props.changeStatus(status)
+        if (this.state.status === status)
+            status = ''
+        await this.setState({status})
         await this.clearFind()
     }
 
@@ -70,12 +75,26 @@ class Loans extends Component {
     // Поиск с предварительной очисткой списка
     clearFind = async () => {
         await this.props.resetList()
-        await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.props.status)
+        await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.state.status)
     }
 
     // Ведем поиск при прокрутке списка
     find = async () => {
-        await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.props.status)
+        await this.props.getLoans(this.props.loans.length, this.findLoan.current.value, this.state.status)
+    }
+
+    createLoan = async (data) => {
+        await this.props.createLoan(data)
+        setTimeout(() => {
+            this.updateData()
+        }, 2000)
+    }
+
+    createPayout = async (data) => {
+        await this.props.createPayout(data)
+        setTimeout(() => {
+            this.updateData()
+        }, 2000)
     }
 
     renderFilters = () => {
@@ -89,34 +108,37 @@ class Loans extends Component {
                     </div>
 
                     <label className="form-radio-hidden mt-4 mb-3">
-                        <input checked={this.props.status === 'active'}
+                        <input checked={this.state.status === 'active'}
                                id="active"
-                               onChange={this.changeStatus}
+                               onClick={this.changeStatus}
+                               onChange={() => {
+                               }}
                                type="radio"/>
                         <span className="radio"/>
                         <span className="text">Активные</span>
                     </label>
 
                     <label className="form-radio-hidden mb-3">
-                        <input checked={this.props.status === 'overdue'}
+                        <input checked={this.state.status === 'overdue'}
                                id="overdue"
-                               onChange={this.changeStatus}
+                               onClick={this.changeStatus}
+                               onChange={() => {
+                               }}
                                type="radio"/>
                         <span className="radio"/>
                         <span className="text">Просроченные</span>
                     </label>
 
                     <label className="form-radio-hidden">
-                        <input checked={this.props.status === 'archived'}
+                        <input checked={this.state.status === 'archived'}
                                id="archived"
-                               onChange={this.changeStatus}
+                               onClick={this.changeStatus}
+                               onChange={() => {
+                               }}
                                type="radio"/>
                         <span className="radio"/>
                         <span className="text">Возвращённые</span>
                     </label>
-                </div>
-                <div onClick={this.clearFind} className={'loans-panel__button'}>
-                    Поиск
                 </div>
             </div>
         )
@@ -136,60 +158,63 @@ class Loans extends Component {
         if (this.props.isAuth) {
             return (
                 <div className={'loans'}>
-                    <h1 className={'mb-5'}>Займы</h1>
+                    <h1 className={'mb-2'}>Займы</h1>
 
-                    <button
-                        className={'btn btn-outline-dark mr-auto'}
-                        onClick={this.interactWithCreateLoan}
-                    >
-                        Добавить займ
-                    </button>
 
                     <div className={'loans-panel'}>
-                        <div className={'loans-panel__main'}>
-                            <div className={'loans-panel__search'}>
-                                <div className={'loans-panel__search-string'}>
-                                    <input ref={this.findLoan} placeholder={'Поиск займа по ФИО или телефону'}
-                                           onChange={this.debounceClearFind} type="text"/>
-                                    <i className="fa fa-search fa-animate" aria-hidden="true" onClick={this.clearFind}/>
+                        <button
+                            className={'btn btn-outline-dark loans-panel__button'}
+                            onClick={this.interactWithCreateLoan}
+                        >
+                            Добавить займ
+                        </button>
+                        <div className={'loans-panel__main-content'}>
+                            <div className={'loans-panel__main'}>
+                                <div className={'loans-panel__search'}>
+                                    <div className={'loans-panel__search-string'}>
+                                        <input ref={this.findLoan} placeholder={'Поиск займа по ФИО или телефону'}
+                                               onChange={this.debounceClearFind} type="text"/>
+                                        <i className="fa fa-search fa-animate" aria-hidden="true"
+                                           onClick={this.clearFind}/>
+                                    </div>
+                                    <div className={'loans-panel__search-select'}>
+                                        <div
+                                            onClick={this.interactWithMenu}
+                                            className="toggle-menu d-block d-sm-none">
+                                            ☰
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className={'loans-panel__search-select'}>
-                                    <div
-                                        onClick={this.interactWithMenu}
-                                        className="toggle-menu d-block d-sm-none">
-                                        ☰
+                                <div className={`d-block d-sm-none`}>
+                                    <div className={this.state.menuIsOpen ? 'loans-panel__menu-mobile' : 'd-none'}>
+                                        {
+                                            this.renderFilters()
+                                        }
+                                    </div>
+                                    {
+                                        this.state.menuIsOpen
+                                            ? null
+                                            : <div className={'loans-panel__content'}>
+                                                {
+                                                    this.renderOrderList()
+                                                }
+                                            </div>
+                                    }
+                                </div>
+                                <div className={'d-none d-sm-block'}>
+                                    <div className={'loans-panel__content'}>
+                                        {
+                                            this.renderOrderList()
+                                        }
                                     </div>
                                 </div>
                             </div>
-                            <div className={`d-block d-sm-none`}>
-                                <div className={this.state.menuIsOpen ? 'loans-panel__menu-mobile' : 'd-none'}>
-                                    {
-                                        this.renderFilters()
-                                    }
-                                </div>
+
+                            <div className={'loans-panel__menu d-none d-sm-block'}>
                                 {
-                                    this.state.menuIsOpen
-                                        ? null
-                                        : <div className={'loans-panel__content'}>
-                                            {
-                                                this.renderOrderList()
-                                            }
-                                        </div>
+                                    this.renderFilters()
                                 }
                             </div>
-                            <div className={'d-none d-sm-block'}>
-                                <div className={'loans-panel__content'}>
-                                    {
-                                        this.renderOrderList()
-                                    }
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className={'loans-panel__menu d-none d-sm-block'}>
-                            {
-                                this.renderFilters()
-                            }
                         </div>
                     </div>
                     <table className="table text-center">
@@ -202,9 +227,15 @@ class Loans extends Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span className={'text-primary'}><b>{Math.round(this.props.statusBar.all_my_income || 0)} ₽</b></span></td>
-                            <td><span className={'text-success'}><b>{Math.round(this.props.statusBar.all_my_income_now || 0)} ₽</b></span></td>
-                            <td><span className={'text-danger'}><b>{Math.round(this.props.statusBar.all_overdue_amount || 0)} ₽</b></span></td>
+                            <td><span
+                                className={'text-primary'}><b>{Math.round(this.props.statusBar.all_my_income || 0)} ₽</b></span>
+                            </td>
+                            <td><span
+                                className={'text-success'}><b>{Math.round(this.props.statusBar.all_my_income_now || 0)} ₽</b></span>
+                            </td>
+                            <td><span
+                                className={'text-danger'}><b>{Math.round(this.props.statusBar.all_overdue_amount || 0)} ₽</b></span>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -215,14 +246,14 @@ class Loans extends Component {
                         payoutIsOpen={this.state.payoutIsOpen}
                         paidItem={this.state.paidItem}
                         interactWithPayout={this.interactWithPayout}
-                        createPayout={this.props.createPayout}
+                        createPayout={this.createPayout}
                         payoutIsCreated={this.props.payoutIsCreated}
                     />
                     <CreateLoan
                         interactWithCreateLoan={this.interactWithCreateLoan}
                         createLoanIsOpen={this.state.createLoanIsOpen}
                         changeSuccess={this.props.changeSuccess}
-                        createLoan={this.props.createLoan}
+                        createLoan={this.createLoan}
                         token={this.props.token}
                     />
                 </div>
@@ -237,7 +268,6 @@ function mapStateToProps(state) {
         isAuth: state.authReducer.isAuth,
         loans: state.loansReducer.loans,
         isEndOfList: state.loansReducer.isEndOfList,
-        status: state.loansReducer.status,
         changeSuccess: state.loansReducer.changeSuccess,
         payoutIsCreated: state.historyReducer.payoutIsCreated,
         token: state.authReducer.data.access_token,
@@ -249,7 +279,6 @@ function mapDispatchToProps(dispatch) {
     return {
         getLoans: (skip, search, status) => dispatch(getLoans(skip, search, status)),
         resetList: () => dispatch(resetList()),
-        changeStatus: (status) => dispatch(changeStatus(status)),
         createLoan: (data) => dispatch(createLoan(data)),
         createPayout: (data) => dispatch(createPayout(data)),
         getStatistics: () => dispatch(getStatistics()),

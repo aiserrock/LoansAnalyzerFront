@@ -157,7 +157,7 @@ class DetailsLoan extends Component {
                     label: 'Да',
                     onClick: () => {
                         const data = this.state.loan
-                        data.status = 'archived'
+                        data.status = 'ARCHIVED'
                         this.props.updateLoan(data.id, data)
                         toaster.notify('Займ успешно архивирован!', {
                             position: 'bottom-right',
@@ -212,7 +212,6 @@ class DetailsLoan extends Component {
     }
 
     renderContent = () => {
-        console.log(this.state.loan)
         const startDate = new Date(this.state.startDate), endDate = new Date(this.state.endDate)
         return (
             <>
@@ -230,11 +229,11 @@ class DetailsLoan extends Component {
                         <div className={'input-section'}>
                             <div className={'input-section__input'}>
                                 <label>ФИО заёмщика*</label>
-                                <input type="text" defaultValue={this.state.client?.name} className={'non-click'}/>
+                                <input type="text" defaultValue={this.state.client?.name} className={'input-section__input non-click'}/>
                             </div>
                             <div className={'input-section__input'}>
                                 <label>Номер заёмщика*</label>
-                                <input type="text" defaultValue={this.state.client?.phone} className={'non-click'}/>
+                                <input type="text" defaultValue={this.state.client?.phone} className={'input-section__input non-click'}/>
                             </div>
                         </div>
                         <InputsDetails

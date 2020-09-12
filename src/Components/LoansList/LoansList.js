@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import './LoansList.scss'
 import {NavLink} from 'react-router-dom'
+import NumberMusk from '../NumberMusk/NumberMusk'
 
 export default class LoansList extends Component {
     onScroll = (e) => {
@@ -19,7 +20,9 @@ export default class LoansList extends Component {
                             <div key={element.loan.id} className={'loans-list__item'}>
                                 <div className="row">
                                     <div className="col-sm-7  col-12 mb-2"><b>{element.client.name}</b></div>
-                                    <div className="col-sm-5  col-12 mb-2"><b>{element.client.phone}</b></div>
+                                    <div className="col-sm-5  col-12 mb-2">
+                                        <NumberMusk phone={element.client.phone}/>
+                                    </div>
                                     <div
                                         className="col-sm-7 col-12 mb-2">Выдан {new Date(element.loan.issued_at).toLocaleDateString()}</div>
                                     <div
@@ -33,7 +36,7 @@ export default class LoansList extends Component {
                                         <br/>
                                         <b className={'text-success'}>
                                             {Math.round(element.loan.my_income || 0)} ₽
-                                       </b>
+                                        </b>
                                     </div>
                                     <div className="col-md-5  col-xs-12  mb-4">
                                         На сегодня

@@ -16,13 +16,13 @@ export default class LoansController {
     async getLoans(token: string, skip = 0, search: string, status: string, statistics: boolean) {
         try {
             let param = {}
-            if (skip !== 0 && skip !== null) {
+            if (skip !== null) {
                 param['skip'] = skip
             }
-            if (search !== undefined && search !== null && search !== '') {
+            if (search !== undefined && search !== null) {
                 param['search'] = search
             }
-            if (status !== undefined && status !== null) {
+            if (status !== undefined && status !== null && status !== '') {
                 param['status'] = status.toUpperCase()
             }
             if (statistics !== undefined && statistics !== null) {

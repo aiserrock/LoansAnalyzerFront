@@ -9,7 +9,7 @@ eer database diagram:
 
 
 
-![alt text](https://github.com/aiserrock/LoansAnalyzer/blob/master/LoansAnalyzerDb.png)
+![alt text](https://github.com/aiserrock/LoansAnalyzer/blob/master/png/LoansAnalyzerDb.png)
 
 
 

@@ -14,8 +14,9 @@ Docs: https://loans-analyzer.herokuapp.com/docs#/
 ![alt text](https://github.com/aiserrock/LoansAnalyzer/blob/master/png/Screenshot_2.png)  
 ### About loan2  
 ![alt text](https://github.com/aiserrock/LoansAnalyzer/blob/master/png/Screenshot_3.png)  
+### and etc.
 ****
-eer database diagram:
+### Eer database diagram:
 
 
 

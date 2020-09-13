@@ -5,7 +5,7 @@ Deployed app: https://loans-analyzer-front.herokuapp.com/
 Prototype app: https://www.figma.com/file/c9LOZS7ICkOj1mwVfDlh8A/dev?node-id=0%3A1     
 Docs: https://loans-analyzer.herokuapp.com/docs#/  
 ****
-EER Db:
+eer database diagram:
 
 
 

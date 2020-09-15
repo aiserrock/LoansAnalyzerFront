@@ -2,16 +2,24 @@ import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
 import {dispatchAction} from '../universalFunctions'
 import {
-    CHANGE_STATUS, ERROR_UPDATE_LOAN, FETCH_LIST_END,
+    ERROR_UPDATE_LOAN, FETCH_LIST_END,
     FETCH_LIST_ERROR,
-    FETCH_LIST_SUCCESS, INIT_STATUS_BAR, RESET_LIST,
+    FETCH_LIST_SUCCESS, FETCH_LIST_SUCCESS_R, INIT_STATUS_BAR, RESET_LIST,
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
 
-export function getLoans(skip, search, status) {
+export function getStatistics() {
     return async (dispatch, getState) => {
         const token = getState().authReducer.data.access_token
-        const data = await LoansController.prototype.getLoans(token, skip, search, status)
+        const data = await LoansController.prototype.getLoans(token, null, null, null, true)
+        dispatch(dispatchAction(INIT_STATUS_BAR, data))
+    }
+}
+
+export function getLoans(skip, search, status, reset) {
+    return async (dispatch, getState) => {
+        const token = getState().authReducer.data.access_token
+        const data = await LoansController.prototype.getLoans(token, skip, search, status, false)
 
         if (Array.isArray(data)) {
             if (data.length === 0) {
@@ -20,21 +28,18 @@ export function getLoans(skip, search, status) {
                 const allData = []
 
                 for (let loan of data) {
-                    if(loan.clients_id){
+                    if (loan.clients_id) {
                         const client = await ClientController.prototype.getClientById(token, loan.clients_id)
                         if (Object.prototype.toString.call(client) === '[object Object]')
                             allData.push({
                                 client, loan,
                             })
-                        else
-                            console.log(loan.id)
                     }
-                    // else {
-                    //     dispatch(dispatchAction(INIT_STATUS_BAR, loan))
-                    //     break
-                    // }
                 }
-                dispatch(dispatchAction(FETCH_LIST_SUCCESS, allData))
+                if (reset)
+                    dispatch(dispatchAction(FETCH_LIST_SUCCESS_R, allData))
+                else
+                    dispatch(dispatchAction(FETCH_LIST_SUCCESS, allData))
             }
         } else
             dispatch(dispatchAction(FETCH_LIST_ERROR, null))
@@ -62,13 +67,7 @@ export function updateLoan(id, info) {
 }
 
 export function resetList() {
-    return (dispatch) => {
-        dispatch(dispatchAction(RESET_LIST, null))
-    }
-}
-
-export function changeStatus(status) {
-    return (dispatch) => {
-        dispatch(dispatchAction(CHANGE_STATUS, status))
+    return async (dispatch) => {
+        await dispatch(dispatchAction(RESET_LIST, null))
     }
 }

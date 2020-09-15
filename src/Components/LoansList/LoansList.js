@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import './LoansList.scss'
 import {NavLink} from 'react-router-dom'
+import NumberMusk from '../NumberMusk/NumberMusk'
 
 export default class LoansList extends Component {
     onScroll = (e) => {
@@ -15,29 +16,56 @@ export default class LoansList extends Component {
             <div className={'loans-list'} onScroll={this.onScroll}>
                 {
                     this.props.loans.length !== 0
-                        ? this.props.loans.map(element => (
-                            <div key={element.loan.id} className={'loans-list__item'}>
-                                <div className="row">
-                                    <div className="col-md-7  col-xs-12 mb-2"><b>{element.client.name}</b></div>
-                                    <div className="col-md-5  col-xs-12 mb-2"><b>{element.client.phone}</b></div>
-                                    <div className="col-md-7 col-xs-12 mb-2">Выдан {new Date(element.loan.issued_at).toLocaleDateString()}</div>
-                                    <div className="col-md-5 col-xs-12 mb-2">До {new Date(element.loan.expiration_at).toLocaleDateString()}</div>
-                                    <div className="col-md-7  col-xs-12 mb-2">
-                                        Сумма {element.loan.amount} ₽
+                        ? this.props.loans.map(element => {
+                            const difference = new Date(element.loan.expiration_at) - new Date().getTime()
+                            const days = Math.ceil(difference < 0 ? 0 : difference / (1000 * 3600 * 24))
+                            const overdue = days === 0
+                            return (
+                                <div key={element.loan.id} className={'loans-list__item'}>
+                                    <div className="row">
+                                        <div className="col-sm-7  col-12 mb-2"><b>{element.client.name}</b></div>
+                                        <div className="col-sm-5  col-12 mb-2">
+                                            <NumberMusk phone={element.client.phone}/>
+                                        </div>
+                                        <div
+                                            className="col-sm-7 col-12 mb-2">Выдан {new Date(element.loan.issued_at).toLocaleDateString()}</div>
+                                        <div
+                                            className="col-sm-5 col-12 mb-2">До {new Date(element.loan.expiration_at).toLocaleDateString()}</div>
+                                        <div className="col-sm-7  col-12 mb-2">
+                                            Сумма {element.loan.amount} ₽
+                                        </div>
+                                        <div className="col-md-5  col-xs-12  mb-2">Ставка {overdue
+                                            ? <b className={'text-danger'}>
+                                                { element.loan.increased_rate}%
+                                            </b>
+                                            :  element.loan.rate + '%'}</div>
+                                        <div className="col-sm-7  col-12 mb-2">
+                                            Доход
+                                            <br/>
+                                            <b className={'text-success'}>
+                                                {Math.round(element.loan.my_income || 0)} ₽
+                                            </b>
+                                        </div>
+                                        <div className="col-md-5  col-xs-12  mb-4">
+                                            На сегодня
+                                            <br/>
+                                            <b className={'text-primary'}>
+                                                {Math.round(element.loan.my_income_now || 0)} ₽
+                                            </b>
+                                        </div>
                                     </div>
-                                    <div className="col-md-5  col-xs-12  mb-4">Ставка {element.loan.rate}%</div>
+                                    <div className="button-section">
+                                        <NavLink to={`/details-loan/${element.loan.id}`}
+                                                 className="btn btn-outline-dark">Подробности</NavLink>
+                                        <button className="btn btn-outline-dark"
+                                                onClick={() => this.props.interactWithPayout(true, element)}
+                                        >
+                                            Добавить выплату
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="button-section">
-                                    <NavLink to={`/details-loan/${element.loan.id}`}
-                                             className="btn btn-outline-dark">Подробности</NavLink>
-                                    <button className="btn btn-outline-dark"
-                                            onClick={() => this.props.interactWithPayout(true, element)}
-                                    >
-                                        Добавить выплату
-                                    </button>
-                                </div>
-                            </div>
-                        ))
+                            )
+                        })
                         : <>
                             <span className={'message'}>Ничего не найдено!</span>
                         </>

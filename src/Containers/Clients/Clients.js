@@ -8,6 +8,7 @@ import {Redirect} from 'react-router-dom'
 import {createClient, updateClient, getClients, deleteClient} from '../../store/client/clientActions'
 import toaster from 'toasted-notes'
 import Table from '../../Components/Table/Table'
+import NumberMusk from '../../Components/NumberMusk/NumberMusk'
 
 class Clients extends Component {
     state = {
@@ -27,9 +28,9 @@ class Clients extends Component {
         const num = this.state.activeTen * 10
         const displayedTen = []
         for (let i = num; i < num + 10; i++) {
-             if (this.props.clients[i])
-                 displayedTen.push(this.props.clients[i])
-             else break
+            if (this.props.clients[i])
+                displayedTen.push(this.props.clients[i])
+            else break
 
         }
         this.setState({
@@ -98,7 +99,9 @@ class Clients extends Component {
                             <tr key={element.id}>
                                 <td><b>{this.state.activeTen * 10 + index + 1}</b></td>
                                 <td>{element.name}</td>
-                                <td>{element.phone}</td>
+                                <td>
+                                    <NumberMusk phone={element.phone}/>
+                                </td>
                                 <td>
                                     <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
                                        onClick={() => this.interactWithClient(true, element)}

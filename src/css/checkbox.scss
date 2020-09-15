@@ -159,7 +159,6 @@ $green: #06842c;
 .form-radio-hidden input:checked + .radio{
   background-color: #343a40;
   box-shadow: inset 1px 2px 3px 0 rgba(0,0,0,0.1);
-  cursor: default;
 }
 .form-radio-hidden:hover .radio::before, .form-radio-hidden input:checked + .radio::before{
   content: '';
@@ -183,5 +182,4 @@ $green: #06842c;
 }
 .form-radio-hidden input:checked + .radio + .text{
   color: black;
-  cursor: default;
 }

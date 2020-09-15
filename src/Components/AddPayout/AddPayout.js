@@ -99,6 +99,7 @@ export default class AddPayout extends Component {
                         defaultValue={this.props.isEdit ? parseInt(this.props.paidItem.loan.amount) : null}
                         ref={this.amount}
                         type="number"/>
+                        <span className={'input-section__unit'}>₽</span>
                 </div>
                 <small className={this.state.amountIsValid ? 'hide mb-4' : 'error'}>Сумма не может быть пустой!</small>
                 <div className={'input-section__input'}>

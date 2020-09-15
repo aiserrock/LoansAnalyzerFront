@@ -52,7 +52,7 @@ export default class PaymentSchedule extends Component {
             <div className={'payment-schedule'}>
                 <h1 className={'mb-5'}>
                     График выплат
-                    <i onClick={this.copyURL} className="fa fa-files-o fa-animate ml-3" aria-hidden="true"></i>
+                    <i onClick={this.copyURL} className="fa fa-files-o fa-animate ml-3" aria-hidden="true"/>
                 </h1>
 
                 {

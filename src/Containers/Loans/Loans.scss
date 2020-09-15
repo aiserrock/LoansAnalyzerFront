@@ -17,11 +17,21 @@
 
   &-panel {
     width: 650px;
-    height: 550px;
     display: flex;
-    flex-direction: row;
-    border: 1px solid lightgray;
+    flex-direction: column;
     background-color: white;
+
+    &__button {
+      border: 1px solid lightgray;
+      border-radius: 0 !important;
+    }
+
+    &__main-content {
+      height: 550px;
+      display: flex;
+      flex-direction: row;
+      border: 1px solid lightgray;
+    }
 
     & input {
       border: none;
@@ -84,7 +94,6 @@
     &__content {
       width: 100%;
       height: 120%;
-      padding: 5px 0 10px 0px;
     }
 
     &__panel {

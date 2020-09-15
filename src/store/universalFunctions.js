@@ -3,6 +3,7 @@ export function dispatchAction(type, item) {
         type, item,
     }
 }
+
 export function getIndexById(arr, id) {
     return arr.findIndex(x => x.id === id)
 }

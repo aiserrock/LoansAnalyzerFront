@@ -47,9 +47,10 @@ export default class InputsDetails extends Component {
                 <div className={`input-section__input`}>
                     <label>Сумма займа</label>
                     <input
-                        className={`${!this.state.amountIsValid ? 'input-error' : ''}`}
+                        className={`input-section__input ${!this.state.amountIsValid ? 'input-error' : ''}`}
                         defaultValue={this.props.isEdit ? this.props.loan.amount : null}
                         ref={this.amount} type="number"/>
+                    <span className={'input-section__unit'}>₽</span>
                 </div>
                 <div className={`input-section__input`}>
                     <label>Ставка</label>
@@ -57,6 +58,7 @@ export default class InputsDetails extends Component {
                         className={`input-section__input ${!this.state.rateIsValid ? 'input-error' : ''}`}
                         defaultValue={this.props.isEdit ? this.props.loan.rate : null}
                         ref={this.rate} type="number"/>
+                    <span className={'input-section__unit'}>%</span>
                 </div>
                 <div className={`input-section__input`}>
                     <label>Ставка при просрочке</label>
@@ -64,6 +66,7 @@ export default class InputsDetails extends Component {
                         className={`input-section__input ${!this.state.i_rateIsValid ? 'input-error' : ''}`}
                         defaultValue={this.props.isEdit ? this.props.loan.increased_rate : null}
                         ref={this.i_rate} type="number"/>
+                    <span className={'input-section__unit'}>%</span>
                 </div>
                 <div className={`input-section__input`}>
                     <label>Цель займа</label>

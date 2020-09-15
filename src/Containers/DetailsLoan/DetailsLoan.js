@@ -3,7 +3,6 @@ import './DetailsLoan.scss'
 import {connect} from 'react-redux'
 import ReactLightCalendar from '@lls/react-light-calendar'
 import InputsDetails from '../../Components/CreateLoan/InputsDetails'
-import Tooltip from 'react-simple-tooltip'
 import {confirmAlert} from 'react-confirm-alert'
 import AddPayout from '../../Components/AddPayout/AddPayout'
 import {NavLink, Redirect} from 'react-router-dom'
@@ -17,6 +16,7 @@ import Table from '../../Components/Table/Table'
 import {getIndexById} from '../../store/universalFunctions'
 import BigPreloader from '../../Components/Preloaders/BigPreloader'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
+import {IMaskInput} from 'react-imask'
 
 class DetailsLoan extends Component {
     constructor() {
@@ -140,7 +140,11 @@ class DetailsLoan extends Component {
         const index = getIndexById(this.state.loansHistory, id)
         const Id = this.state.loansHistory[index].id
         data.id = Id
-        this.state.loansHistory[index] = data
+        const loansHistory = this.state.loansHistory
+        loansHistory[index] = data
+        this.setState({
+            loansHistory,
+        })
         this.changeDisplayedTen()
     }
 
@@ -153,7 +157,7 @@ class DetailsLoan extends Component {
                     label: 'Да',
                     onClick: () => {
                         const data = this.state.loan
-                        data.status = 'archived'
+                        data.status = 'ARCHIVED'
                         this.props.updateLoan(data.id, data)
                         toaster.notify('Займ успешно архивирован!', {
                             position: 'bottom-right',
@@ -214,10 +218,8 @@ class DetailsLoan extends Component {
                 <h1 className={'mb-5'}>Детали займа</h1>
 
                 <ProgressBar
-                    amount={this.state.loan.amount}
-                    data={this.state.loan.income_income_now_amount_of_dept}
+                    data={this.state.loan}
                     endDate={this.state.endDate}/>
-
                 <hr/>
 
                 <h2 className={'mb-5'}>Информация о займе</h2>
@@ -227,11 +229,20 @@ class DetailsLoan extends Component {
                         <div className={'input-section'}>
                             <div className={'input-section__input'}>
                                 <label>ФИО заёмщика*</label>
-                                <input type="text" defaultValue={this.state.client?.name} className={'non-click'}/>
+                                <input type="text" defaultValue={this.state.client?.name}
+                                       className={'input-section__input non-click'}/>
                             </div>
                             <div className={'input-section__input'}>
                                 <label>Номер заёмщика*</label>
-                                <input type="text" defaultValue={this.state.client?.phone} className={'non-click'}/>
+                                <div className={'input-section__input non-click'}>
+
+                                    <IMaskInput
+                                        mask={'+{7}(000)000-00-00'}
+                                        unmask={false}
+                                        placeholder='+7 ('
+                                        value={this.state.client?.phone}
+                                    />
+                                </div>
                             </div>
                         </div>
                         <InputsDetails
@@ -264,10 +275,10 @@ class DetailsLoan extends Component {
                                     <span>Поделиться</span>
                                 </NavLink>
                             </div>
-                            <div className={'link'}>
-                                <i className="fa fa-plus" aria-hidden="true"/>
-                                <span>Составить график выплат</span>
-                            </div>
+                            {/*<div className={'link'}>*/}
+                            {/*    <i className="fa fa-plus" aria-hidden="true"/>*/}
+                            {/*    <span>Составить график выплат</span>*/}
+                            {/*</div>*/}
                             <div className={'link'} onClick={this.archived}>
                                 <i className="fa fa-archive" aria-hidden="true"/>
                                 <span>Архивировать займ</span>
@@ -275,13 +286,13 @@ class DetailsLoan extends Component {
                         </div>
                     </div>
 
-                    <div className="col-lg-6 col-md-4 col-1 link__question">
-                        <Tooltip
-                            customCss={`white-space: nowrap;`}
-                            content="Генерирует график платежей в виде таблицы.">
-                            <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"/>
-                        </Tooltip>
-                    </div>
+                    {/*<div className="col-lg-6 col-md-4 col-1 link__question">*/}
+                    {/*    <Tooltip*/}
+                    {/*        customCss={`white-space: nowrap;`}*/}
+                    {/*        content="Генерирует график платежей в виде таблицы.">*/}
+                    {/*        <i className="fa fa-question-circle-o fa-animate" aria-hidden="true"/>*/}
+                    {/*    </Tooltip>*/}
+                    {/*</div>*/}
                 </div>
 
                 <hr/>

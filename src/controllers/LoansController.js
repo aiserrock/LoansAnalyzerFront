@@ -1,4 +1,4 @@
-import {get, post, put} from "../http_client/LoansClient";
+import {get, post, put} from '../http_client/LoansClient'
 
 // Контроллер, который обрабатывает запросы замймов
 // !!! Если была получена ошибка, то методы будут возвращать её код
@@ -9,36 +9,40 @@ export default class LoansController {
     // @param skip - сколько записей пропустить, реализует пагинацию
     // @param search - строка поиска, если производится поиск, параметр опционален
     // @param status - строка статуса займа, если нужна фильтрация, параметр опционален
+    // @param statistics - если этот параметр true, то метод get_loans возвращает статистику
     // @return Возвращает список найденных займов
     // Чтобы сделать отступ, указываем первые два параметра
     // Чтобы сделать поиск, указываем три параметра, при этом skip=null
-    async getLoans(token: string, skip = 0, search: string, status: string) {
+    async getLoans(token: string, skip = 0, search: string, status: string, statistics: boolean) {
         try {
-            let param = {};
-            if (skip !== 0 && skip !== null) {
-                param['skip'] = skip;
+            let param = {}
+            if (skip !== null) {
+                param['skip'] = skip
             }
-            if (search !== undefined && search !== null && search !== '') {
-                param['search'] = search;
+            if (search !== undefined && search !== null) {
+                param['search'] = search
             }
-            if (status !== undefined && status !== null) {
-                param['status'] = status.toUpperCase();
+            if (status !== undefined && status !== null && status !== '') {
+                param['status'] = status.toUpperCase()
             }
-            let p = '';
+            if (statistics !== undefined && statistics !== null) {
+                param['statistics'] = statistics
+            }
+            let p = ''
             if (Object.keys(param).length !== 0) {
-                p = `?${new URLSearchParams(param).toString()}`;
+                p = `?${new URLSearchParams(param).toString()}`
             }
             let response = await get(`/loans/${p}`,
                 {
                     headers: {
-                        "Access-Control-Allow-Origin": "*",
-                        "Authorization": `Bearer ${token}`,
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': `Bearer ${token}`,
                     },
-                });
+                })
 
-            return response.data;
+            return response.data
         } catch (e) {
-            return e?.response?.status;
+            return e?.response?.status
         }
     }
 
@@ -50,17 +54,17 @@ export default class LoansController {
         try {
             let response = await post('/loans/', data, {
                 headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": 'application/json',
-                    "Authorization":
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                    'Authorization':
                         `Bearer ${token}`
                     ,
                 },
-            });
+            })
 
-            return response.data;
+            return response.data
         } catch (e) {
-            return e?.response?.status;
+            return e?.response?.status
         }
     }
 
@@ -73,14 +77,14 @@ export default class LoansController {
             let response = await get(
                 `/loans/${id}`, {
                     headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Access-Control-Allow-Origin": "*",
+                        'Authorization': `Bearer ${token}`,
+                        'Access-Control-Allow-Origin': '*',
                     },
-                });
+                })
 
-            return response.data;
+            return response.data
         } catch (e) {
-            return e?.response?.status;
+            return e?.response?.status
         }
     }
 
@@ -94,15 +98,15 @@ export default class LoansController {
             let response = await put(
                 `/loans/${id}`, data, {
                     headers: {
-                        "Access-Control-Allow-Origin": "*",
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
                     },
-                });
+                })
 
-            return response.data;
+            return response.data
         } catch (e) {
-            return e?.response?.status;
+            return e?.response?.status
         }
     }
 }

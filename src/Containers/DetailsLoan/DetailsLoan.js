@@ -12,7 +12,7 @@ import toaster from 'toasted-notes'
 import {createPayout, deleteHistoryLoanById, updateHistory} from '../../store/history/historyActions'
 import HistoryController from '../../controllers/HistoryController'
 import Table from '../../Components/Table/Table'
-import {getDate, getFullDate} from '../../store/universalFunctions'
+import {getDate, getFullDate, getSum} from '../../store/universalFunctions'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 import {IMaskInput} from 'react-imask'
 import Page404 from '../../Components/Page404/Page404'
@@ -186,7 +186,7 @@ class DetailsLoan extends Component {
                         <tr key={element.id}>
                             <td><b>{this.state.activeTen * 10 + index + 1}</b></td>
                             <td>{getDate(element.date)}</td>
-                            <td>{element.amount} ₽</td>
+                            <td>{getSum(element.amount)} ₽</td>
                             <td>{element.type === 'PROCENT' ? 'Проценты' : 'Долг'}</td>
                             <td>
                                 <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"

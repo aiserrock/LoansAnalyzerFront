@@ -3,7 +3,7 @@ import './ClientInterface.scss'
 import HistoryController from '../../controllers/HistoryController'
 import toaster from 'toasted-notes'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
-import {getDate} from '../../store/universalFunctions'
+import {getDate, getSum} from '../../store/universalFunctions'
 
 export default class ClientInterface extends Component {
     state: {
@@ -49,7 +49,7 @@ export default class ClientInterface extends Component {
                     <p>Дата возврата:</p> <span>{getDate(endDate)}</span>
                 </div>
                 <div className={'client-interface__info-item'}>
-                    <p>Сумма займа: </p> <span>{this.state.data.amount} ₽</span>
+                    <p>Сумма займа: </p> <span>{getSum(this.state.data.amount)} ₽</span>
                 </div>
                 <div className={'client-interface__info-item'}>
                     <p>Ставка: </p> <span>{this.state.data.rate} %</span>
@@ -80,7 +80,7 @@ export default class ClientInterface extends Component {
                             <tr key={element.id}>
                                 <td><b>{index + 1}</b></td>
                                 <td>{new Date(element.date).toLocaleDateString()}</td>
-                                <td>{element.amount}</td>
+                                <td>{getSum(element.amount)}</td>
                                 <td>{element.type === 'PROCENT' ? 'Проценты' : 'Долг'}</td>
                             </tr>
                         ))

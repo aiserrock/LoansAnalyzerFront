@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import './LoansList.scss'
 import {NavLink} from 'react-router-dom'
 import NumberMusk from '../NumberMusk/NumberMusk'
-import {getDate} from '../../store/universalFunctions'
+import {getDate, getSum} from '../../store/universalFunctions'
 
 export default class LoansList extends Component {
     onScroll = (e) => {
@@ -33,7 +33,7 @@ export default class LoansList extends Component {
                                         <div
                                             className="col-sm-5 col-12 mb-2">До {getDate(element.loan.expiration_at)}</div>
                                         <div className="col-sm-7  col-12 mb-2">
-                                            Сумма {element.loan.amount} ₽
+                                            Сумма {getSum(element.loan.amount)} ₽
                                         </div>
                                         <div className="col-md-5  col-xs-12  mb-2">Ставка {overdue
                                             ? <b className={'text-danger'}>
@@ -44,14 +44,14 @@ export default class LoansList extends Component {
                                             Полученный доход
                                             <br/>
                                             <b className={'text-success'}>
-                                                {Math.round(element.loan.my_income || 0)} ₽
+                                                {getSum(element.loan.my_income || 0)} ₽
                                             </b>
                                         </div>
                                         <div className="col-md-5  col-xs-12  mb-4">
                                             Ожидаемый доход на сегодня
                                             <br/>
                                             <b className={'text-primary'}>
-                                                {Math.round(element.loan.my_income_now || 0)} ₽
+                                                {getSum(element.loan.my_income_now || 0)} ₽
                                             </b>
                                         </div>
                                     </div>

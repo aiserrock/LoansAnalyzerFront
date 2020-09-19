@@ -69,6 +69,7 @@ export default class CreateLoan extends Component {
                 }}>
                     Далее<i className="fa fa-arrow-right ml-3" aria-hidden="true"/>
                 </button>
+
             </>
         )
     }

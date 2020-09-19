@@ -91,7 +91,7 @@ Loans Analyzer позволяет работать с займами из люб
   
 - Docs: https://loans-analyzer.herokuapp.com/docs#/  
 - Deployed app: https://loans-analyzer-front.herokuapp.com/    
-- Backend-side source code: https://github.com/aiserrock/LoansAnalyzerFront  
+- Backend-side source code: https://github.com/aiserrock/LoansAnalyzerBack  
 - Prototype app: https://www.figma.com/file/c9LOZS7ICkOj1mwVfDlh8A/dev?node-id=0%3A1     
 
 ## Authorization   

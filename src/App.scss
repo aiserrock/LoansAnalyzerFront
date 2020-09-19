@@ -2,6 +2,10 @@
 @import "css/mixins";
 @import "css/checkbox";
 
+.react-confirm-alert-overlay {
+  background: rgba(41, 41, 41, 0.9) !important;
+  }
+
 .app {
   background-color: #ededed;
   display: flex;
@@ -52,8 +56,9 @@
     margin: 20px;
     overflow-y: scroll;
     height: 95vh;
-    min-width: 45vmax;
+    min-width: 570px;
     border-radius: 15px;
+    display: flex;
   }
 
   & .message {
@@ -231,6 +236,7 @@
     color: #343a40 !important;
     @include animate();
     opacity: 0.8;
+    width: content-box;
 
     & a {
       opacity: 0.8;

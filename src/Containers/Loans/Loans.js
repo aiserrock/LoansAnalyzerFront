@@ -8,6 +8,8 @@ import {Redirect} from 'react-router-dom'
 import {createLoan, getLoans, getStatistics, resetList} from '../../store/loans/loansActions'
 import {debounce} from 'lodash'
 import {createPayout} from '../../store/history/historyActions'
+import MiniPreloader from '../../Components/Preloaders/MiniPreloader'
+import {getSum} from '../../store/universalFunctions'
 
 class Loans extends Component {
     constructor() {
@@ -192,7 +194,9 @@ class Loans extends Component {
                                             ? null
                                             : <div className={'loans-panel__content'}>
                                                 {
-                                                    this.renderOrderList()
+                                                    this.props.loading
+                                                        ? <MiniPreloader/>
+                                                        : this.renderOrderList()
                                                 }
                                             </div>
                                     }
@@ -200,7 +204,9 @@ class Loans extends Component {
                                 <div className={'d-none d-sm-block'}>
                                     <div className={'loans-panel__content'}>
                                         {
-                                            this.renderOrderList()
+                                            this.props.loading
+                                                ? <MiniPreloader/>
+                                                : this.renderOrderList()
                                         }
                                     </div>
                                 </div>
@@ -224,13 +230,13 @@ class Loans extends Component {
                         <tbody>
                         <tr>
                             <td><span
-                                className={'text-primary'}><b>{Math.round(this.props.statusBar.all_my_income || 0)} ₽</b></span>
+                                className={'text-primary'}><b>{getSum(this.props.statusBar.all_my_income || 0)} ₽</b></span>
                             </td>
                             <td><span
-                                className={'text-success'}><b>{Math.round(this.props.statusBar.all_my_income_now || 0)} ₽</b></span>
+                                className={'text-success'}><b>{getSum(this.props.statusBar.all_my_income_now || 0)} ₽</b></span>
                             </td>
                             <td><span
-                                className={'text-danger'}><b>{Math.round(this.props.statusBar.all_overdue_amount || 0)} ₽</b></span>
+                                className={'text-danger'}><b>{getSum(this.props.statusBar.all_overdue_amount || 0)} ₽</b></span>
                             </td>
                         </tr>
                         </tbody>
@@ -268,6 +274,7 @@ function mapStateToProps(state) {
         payoutIsCreated: state.historyReducer.payoutIsCreated,
         token: state.authReducer.data.access_token,
         statusBar: state.loansReducer.statusBar,
+        loading: state.loansReducer.loading,
     }
 }
 

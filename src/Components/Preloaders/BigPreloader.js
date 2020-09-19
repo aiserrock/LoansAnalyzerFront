@@ -1,23 +1,23 @@
 import React from 'react'
 import './preloaders.scss'
 
-const BigPreloader = () =>{
+const MiniPreloader = () =>{
     return (
-        <div className="holder">
-            <div className="preloader">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
+        <div className="lds-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
     )
 }
 
-export default BigPreloader
+export default MiniPreloader

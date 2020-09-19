@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './AddPayout.scss'
 import ReactLightCalendar from '@lls/react-light-calendar'
 import toaster from 'toasted-notes'
+import {getFullDate} from '../../store/universalFunctions'
 
 export default class AddPayout extends Component {
     constructor() {
@@ -18,7 +19,7 @@ export default class AddPayout extends Component {
     }
 
     onClose = () => {
-        this.props.interactWithPayout(false, null)
+        this.props.interactWithPayout(false, null, false)
         this.setState({
             currentWin: 'date',
             date: new Date().getTime(),
@@ -34,7 +35,7 @@ export default class AddPayout extends Component {
 
     payed = async () => {
         await this.setState({
-            amountIsValid: this.amount.current.value.replace(/\s+/g, '') !== '',
+            amountIsValid: this.amount.current.value > 0,
         })
 
         if (this.state.amountIsValid) {
@@ -71,13 +72,22 @@ export default class AddPayout extends Component {
     }
 
     renderCalendar = () => {
-        const date = new Date(this.props.paidItem.loan.date)
+        let date
+        if (this.props.isEdit && !this.state.editing) {
+            date = getFullDate(this.props.paidItem.loan.date)
+        } else {
+            date = this.state.date
+        }
         return (
             <>
                 <h4 className={'mb-4'}>Выберите дату платежа</h4>
-                <ReactLightCalendar startDate={
-                    this.props.isEdit && !this.state.editing ? date.setDate(date.getDate() + 1) : this.state.date
-                } onClickDate={this.onChange}/>
+                <ReactLightCalendar
+                    startDate={date}
+                    onClickDate={this.onChange}
+                    monthLabels={['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
+                        'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']}
+                    dayLabels={['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']}
+                />
                 <button className={'btn btn-primary mt-4'} disabled={this.props.clientInfo === null}
                         onClick={() => {
                             this.changeWindow('input')
@@ -99,7 +109,7 @@ export default class AddPayout extends Component {
                         defaultValue={this.props.isEdit ? parseInt(this.props.paidItem.loan.amount) : null}
                         ref={this.amount}
                         type="number"/>
-                        <span className={'input-section__unit'}>₽</span>
+                    <span className={'input-section__unit'}>₽</span>
                 </div>
                 <small className={this.state.amountIsValid ? 'hide mb-4' : 'error'}>Сумма не может быть пустой!</small>
                 <div className={'input-section__input'}>
@@ -110,6 +120,8 @@ export default class AddPayout extends Component {
                                 className="select__content">
                             <option value={'PROCENT'}>Проценты</option>
                             <option value={'DEPT'}>Долг</option>
+                            <option value={'RETURN_DEPT'}>Возврат долга</option>
+                            <option value={'RETURN_PROCENT'}>Возврат процентов</option>
                         </select>
                     </div>
                 </div>

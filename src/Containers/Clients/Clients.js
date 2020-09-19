@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import './Clients.scss'
 import {connect} from 'react-redux'
-import {confirmAlert} from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import AddClient from '../../Components/AddClient/AddClient'
 import {Redirect} from 'react-router-dom'
@@ -9,6 +8,7 @@ import {createClient, updateClient, getClients, deleteClient} from '../../store/
 import toaster from 'toasted-notes'
 import Table from '../../Components/Table/Table'
 import NumberMusk from '../../Components/NumberMusk/NumberMusk'
+import {confirm} from '../../Components/Confirm/Confirm'
 
 class Clients extends Component {
     state = {
@@ -39,28 +39,15 @@ class Clients extends Component {
     }
 
     deleteHandler = (id) => {
-        confirmAlert({
-            title: 'Подтвердите действие',
-            message: 'Вы уверены, что хотите удалить клиента?',
-            buttons: [
-                {
-                    label: 'Да',
-                    onClick: async () => {
-                        await this.props.deleteClient(id)
-                        toaster.notify('Пользователь удалён', {
-                            position: 'bottom-right',
-                            duration: 3000,
-                        })
-                        this.changeDisplayedTen()
-                    },
-                },
-                {
-                    label: 'Нет',
-                    onClick: () => {
-                    },
-                },
-            ],
-        })
+        const yesF = async () => {
+            await this.props.deleteClient(id)
+            toaster.notify('Пользователь удалён', {
+                position: 'bottom-right',
+                duration: 3000,
+            })
+            this.changeDisplayedTen()
+        }
+        confirm('Вы уверены, что хотите удалить клиента?', yesF)
     }
 
     interactWithClient = (isOpen, editClient) => {

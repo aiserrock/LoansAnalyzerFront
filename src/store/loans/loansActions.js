@@ -3,7 +3,7 @@ import ClientController from '../../controllers/ClientController'
 import {dispatchAction} from '../universalFunctions'
 import {
     ERROR_UPDATE_LOAN, FETCH_LIST_END,
-    FETCH_LIST_ERROR,
+    FETCH_LIST_ERROR, FETCH_LIST_START,
     FETCH_LIST_SUCCESS, FETCH_LIST_SUCCESS_R, INIT_STATUS_BAR, RESET_LIST,
     SUCCESS_UPDATE_LOAN,
 } from './actionTypes'
@@ -20,6 +20,8 @@ export function getLoans(skip, search, status, reset) {
     return async (dispatch, getState) => {
         const token = getState().authReducer.data.access_token
         const data = await LoansController.prototype.getLoans(token, skip, search, status, false)
+
+        dispatch(dispatchAction(FETCH_LIST_START, null))
 
         if (Array.isArray(data)) {
             if (data.length === 0) {

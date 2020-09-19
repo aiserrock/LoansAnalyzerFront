@@ -1,4 +1,5 @@
-# LoansAnalyzer by LoansAnalyzer team
+# LoansAnalyzer  
+_by LoansAnalyzer team
 ## Open source progect for free use, more details here: 
 <details>
 <summary>Expand</summary>

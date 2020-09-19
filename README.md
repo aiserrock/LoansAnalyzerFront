@@ -1,4 +1,4 @@
-# LoansAnalyzerAPI by LoansAnalyzer team
+# LoansAnalyzer by LoansAnalyzer team
 ## Open source progect for free use, more details here: 
 <details>
 <summary>Expand</summary>

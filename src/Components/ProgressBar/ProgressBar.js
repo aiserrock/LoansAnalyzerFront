@@ -27,7 +27,7 @@ export default class ProgressBar extends Component {
                                     ? <>
                                         Просрочен на:
                                         <b className={'text-danger ml-2'}>
-                                            {-days} день
+                                            {-days} д
                                         </b>
                                     </>
                                     : <>
@@ -39,8 +39,7 @@ export default class ProgressBar extends Component {
                             }
                         </div>
                         <div className="col-lg-4 col-xs-12">
-                            К возврату <b
-                            className={'text-primary ml-1'}>{Math.round(this.props.data?.amount_of_dept ?? 0)}</b> ₽
+                            К возврату <b className={'text-primary ml-1'}>{Math.round(this.props.data?.amount_of_dept ?? 0)}</b> ₽
                         </div>
                         <div className="col-lg-4 col-xs-12">
                             {my_income_now > 0 ? '+' : ''} <b className={'text-success'}>{my_income_now}</b> ₽ на

@@ -3,6 +3,7 @@ import './ClientInterface.scss'
 import HistoryController from '../../controllers/HistoryController'
 import toaster from 'toasted-notes'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
+import {getDate} from '../../store/universalFunctions'
 
 export default class ClientInterface extends Component {
     state: {
@@ -24,8 +25,8 @@ export default class ClientInterface extends Component {
     }
 
     renderContent = () => {
-        const endDate = new Date(this.state.data.issued_at),
-            startDate = new Date(this.state.data.expiration_at)
+        const endDate = new Date(this.state.data.expiration_at),
+            startDate = new Date(this.state.data.issued_at)
 
         return (
             <div className={'client-interface__info'}>
@@ -42,10 +43,10 @@ export default class ClientInterface extends Component {
                     <p>Кому: </p> <span>{this.state.data.user_name}</span>
                 </div>
                 <div className={'client-interface__info-item'}>
-                    <p>Дата выдачи:</p> <span>{startDate.toLocaleDateString()}</span>
+                    <p>Дата выдачи:</p> <span>{getDate(startDate)}</span>
                 </div>
                 <div className={'client-interface__info-item'}>
-                    <p>Дата возврата:</p> <span>{endDate.toLocaleDateString()}</span>
+                    <p>Дата возврата:</p> <span>{getDate(endDate)}</span>
                 </div>
                 <div className={'client-interface__info-item'}>
                     <p>Сумма займа: </p> <span>{this.state.data.amount} ₽</span>

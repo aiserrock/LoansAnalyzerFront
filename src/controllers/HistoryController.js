@@ -7,7 +7,7 @@ import {get, post, put, del} from "../http_client/LoansClient";
 export default class HistoryController {
     // Получение истории займа
     // @param token - токен авторизации пользователя
-    // @param id - row id займа
+    // @param id - id займа
     // @return Возвращает запись истории
     async getHistoryLoanById(token: string, id: string) {
         try {
@@ -33,7 +33,7 @@ export default class HistoryController {
     async getAllHistoryLoansById(token: string, id: string, skip) {
         let skipStr = skip === undefined || skip === null ? '' : `&skip=${skip}`;
         try {
-            let response = await get(`/history_loans/?loans_id=${id}${skipStr}`,
+            let response = await get(`/history_loans/${id}?${skipStr}`,
                 {
                     headers: {
                         "Access-Control-Allow-Origin": "*",

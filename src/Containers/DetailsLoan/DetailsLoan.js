@@ -10,33 +10,35 @@ import {updateLoan} from '../../store/loans/loansActions'
 import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
 import toaster from 'toasted-notes'
-import {deleteHistoryLoanById, updateHistory} from '../../store/history/historyActions'
+import {createPayout, deleteHistoryLoanById, updateHistory} from '../../store/history/historyActions'
 import HistoryController from '../../controllers/HistoryController'
 import Table from '../../Components/Table/Table'
-import {getIndexById} from '../../store/universalFunctions'
+import {getDate, getFullDate, getIndexById} from '../../store/universalFunctions'
 import BigPreloader from '../../Components/Preloaders/BigPreloader'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 import {IMaskInput} from 'react-imask'
 import Page404 from '../../Components/Page404/Page404'
 
 class DetailsLoan extends Component {
-    constructor() {
-        super()
-        this.state = {
-            startDate: '',
-            endDate: '',
-            payoutIsOpen: false,
-            paidItem: null,
-            loan: {},
-            client: null,
-            loansHistory: [],
-            displayedTen: [],
-            activeTen: 0,
-            loading: true,
-        }
+    state = {
+        startDate: '',
+        endDate: '',
+        payoutIsOpen: false,
+        paidItem: null,
+        loan: {},
+        client: null,
+        loansHistory: [],
+        displayedTen: [],
+        activeTen: 0,
+        loading: true,
+        paidIsEdit: false,
     }
 
     componentDidMount = async () => {
+        await this.updateLoanData()
+    }
+
+    updateLoanData = async () => {
         const id = this.props.match.params.number
         const loan = await LoansController.prototype.getLoanById(this.props.token, id)
         const client = await ClientController.prototype.getClientById(this.props.token, loan.clients_id)
@@ -83,14 +85,6 @@ class DetailsLoan extends Component {
         })
     }
 
-    getHistoryLoans = async (skip) => {
-        const id = this.props.match.params.number
-        const loansHistory = await HistoryController.prototype.getAllHistoryLoansById(this.props.token, id, skip)
-        this.setState({
-            loansHistory,
-        })
-    }
-
     saveChanged = (data) => {
         data = {
             ...data,
@@ -105,57 +99,14 @@ class DetailsLoan extends Component {
         })
     }
 
-    deleteHandler = (id) => {
-        confirmAlert({
-            title: 'Подтвердите действие',
-            message: 'Вы уверены, что хотите удалить выплату?',
-            buttons: [
-                {
-                    label: 'Да',
-                    onClick: () => {
-                        this.props.deleteHistoryLoanById(id)
-                        toaster.notify('Выплата удалена', {
-                            position: 'bottom-right',
-                            duration: 3000,
-                        })
-                        const loans = this.state.loansHistory
-                        const index = getIndexById(loans, id)
-                        loans.splice(index, 1)
-                        this.setState({
-                            loansHistory: loans,
-                        })
-                        this.changeDisplayedTen()
-                    },
-                },
-                {
-                    label: 'Нет',
-                    onClick: () => {
-                    },
-                },
-            ],
-        })
-    }
-
-    interactWithPayout = (isOpen, loan) => {
+    interactWithPayout = (isOpen, loan, paidIsEdit) => {
         this.setState({
             payoutIsOpen: isOpen,
+            paidIsEdit,
             paidItem: {
                 loan, client: this.state.client,
             },
         })
-    }
-
-    updateHistory = (id, data) => {
-        this.props.updateHistory(id, data)
-        const index = getIndexById(this.state.loansHistory, id)
-        const Id = this.state.loansHistory[index].id
-        data.id = Id
-        const loansHistory = this.state.loansHistory
-        loansHistory[index] = data
-        this.setState({
-            loansHistory,
-        })
-        this.changeDisplayedTen()
     }
 
     archived = () => {
@@ -184,6 +135,68 @@ class DetailsLoan extends Component {
         })
     }
 
+    getHistoryLoans = async (skip) => {
+        const id = this.props.match.params.number
+        const loansHistory = await HistoryController.prototype.getAllHistoryLoansById(this.props.token, id, skip)
+        this.setState({
+            loansHistory,
+        })
+    }
+
+    updateHistoryLoan = async () => {
+        await this.getHistoryLoans(0)
+        this.changeDisplayedTen()
+    }
+
+    deleteHandler = (id) => {
+        confirmAlert({
+            title: 'Подтвердите действие',
+            message: 'Вы уверены, что хотите удалить выплату?',
+            buttons: [
+                {
+                    label: 'Да',
+                    onClick: async () => {
+                        await this.props.deleteHistoryLoanById(id)
+                        toaster.notify('Выплата удалена', {
+                            position: 'bottom-right',
+                            duration: 3000,
+                        })
+                        await this.updateHistoryLoan()
+                        await this.updateLoanData()
+                    },
+                },
+                {
+                    label: 'Нет',
+                    onClick: () => {
+                    },
+                },
+            ],
+        })
+    }
+
+    updateHistoryHandler = async (id, data) => {
+        await this.props.updateHistory(id, data)
+        await this.updateHistoryLoan()
+        await this.updateLoanData()
+    }
+
+    createPayoutHandler = async (data) => {
+        await this.props.createPayout(data)
+        await this.updateHistoryLoan()
+        await this.updateLoanData()
+    }
+
+    renderOptionButton = () => {
+        return (
+            <button
+                className={'btn btn-secondary mr-auto ml-auto'}
+                onClick={() => this.interactWithPayout(true, this.state.loan, false)}
+            >
+                Добавить выплату
+            </button>
+        )
+    }
+
     renderTableBody = () => {
         return (
             <table className="table">
@@ -203,12 +216,12 @@ class DetailsLoan extends Component {
                     this.state.displayedTen.map((element, index) => (
                         <tr key={element.id}>
                             <td><b>{this.state.activeTen * 10 + index + 1}</b></td>
-                            <td>{new Date(element.date).toLocaleDateString()}</td>
+                            <td>{getDate(element.date)}</td>
                             <td>{element.amount}</td>
                             <td>{element.type === 'PROCENT' ? 'Проценты' : 'Долг'}</td>
                             <td>
                                 <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
-                                   onClick={() => this.interactWithPayout(true, element)}
+                                   onClick={() => this.interactWithPayout(true, element, true)}
                                 />
                                 <i className="fa fa-trash-o fa-animate" aria-hidden="true"
                                    onClick={() => this.deleteHandler(element.id)}/>
@@ -230,6 +243,13 @@ class DetailsLoan extends Component {
                 <ProgressBar
                     data={this.state.loan}
                     endDate={this.state.endDate}/>
+
+                <button
+                    className={'btn btn-primary mr-auto mt-4'}
+                    onClick={() => this.interactWithPayout(true, this.state.loan, false)}
+                >
+                    Добавить выплату
+                </button>
                 <hr/>
 
                 <h2 className={'mb-5'}>Информация о займе</h2>
@@ -267,9 +287,12 @@ class DetailsLoan extends Component {
                     <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">
                         <div className={'mb-3'}>
                             <ReactLightCalendar
-                                startDate={startDate.setDate(startDate.getDate())}
-                                endDate={endDate.setDate(endDate.getDate())}
+                                startDate={getFullDate(startDate.setDate(startDate.getDate()))}
+                                endDate={getFullDate(endDate.setDate(endDate.getDate()))}
                                 onChange={this.onChange} range
+                                monthLabels={['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
+                                    'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']}
+                                dayLabels={['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']}
                             />
                         </div>
                     </div>
@@ -321,16 +344,19 @@ class DetailsLoan extends Component {
                     activeTen={this.state.activeTen}
                     changeActiveTen={this.changeActiveTen}
                     changeDisplayedTen={this.changeDisplayedTen}
+                    renderOptionButton={this.renderOptionButton}
                 />
 
                 <AddPayout
-                    isEdit={true}
+                    isEdit={this.state.paidIsEdit}
                     payoutIsOpen={this.state.payoutIsOpen}
                     paidItem={this.state.paidItem}
                     interactWithPayout={this.interactWithPayout}
-                    updateHistory={this.updateHistory}
+                    updateHistory={this.updateHistoryHandler}
                     payoutIsCreated={this.props.payoutIsCreated}
-                /></>
+                    createPayout={this.createPayoutHandler}
+                />
+            </>
         )
     }
 
@@ -364,6 +390,7 @@ function mapDispatchToProps(dispatch) {
         updateLoan: (id, data) => dispatch(updateLoan(id, data)),
         updateHistory: (id, data) => dispatch(updateHistory(id, data)),
         deleteHistoryLoanById: (id) => dispatch(deleteHistoryLoanById(id)),
+        createPayout: (data) => dispatch(createPayout(data)),
     }
 }
 

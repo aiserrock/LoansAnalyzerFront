@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import './LoansList.scss'
 import {NavLink} from 'react-router-dom'
 import NumberMusk from '../NumberMusk/NumberMusk'
+import {getDate} from '../../store/universalFunctions'
 
 export default class LoansList extends Component {
     onScroll = (e) => {
@@ -28,26 +29,26 @@ export default class LoansList extends Component {
                                             <NumberMusk phone={element.client.phone}/>
                                         </div>
                                         <div
-                                            className="col-sm-7 col-12 mb-2">Выдан {new Date(element.loan.issued_at).toLocaleDateString()}</div>
+                                            className="col-sm-7 col-12 mb-2">Выдан {getDate(element.loan.issued_at)}</div>
                                         <div
-                                            className="col-sm-5 col-12 mb-2">До {new Date(element.loan.expiration_at).toLocaleDateString()}</div>
+                                            className="col-sm-5 col-12 mb-2">До {getDate(element.loan.expiration_at)}</div>
                                         <div className="col-sm-7  col-12 mb-2">
                                             Сумма {element.loan.amount} ₽
                                         </div>
                                         <div className="col-md-5  col-xs-12  mb-2">Ставка {overdue
                                             ? <b className={'text-danger'}>
-                                                { element.loan.increased_rate}%
+                                                {element.loan.increased_rate}%
                                             </b>
-                                            :  element.loan.rate + '%'}</div>
+                                            : element.loan.rate + '%'}</div>
                                         <div className="col-sm-7  col-12 mb-2">
-                                            Доход
+                                            Полученный доход
                                             <br/>
                                             <b className={'text-success'}>
                                                 {Math.round(element.loan.my_income || 0)} ₽
                                             </b>
                                         </div>
                                         <div className="col-md-5  col-xs-12  mb-4">
-                                            На сегодня
+                                            Ожидаемый доход на сегодня
                                             <br/>
                                             <b className={'text-primary'}>
                                                 {Math.round(element.loan.my_income_now || 0)} ₽

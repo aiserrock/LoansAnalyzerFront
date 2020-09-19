@@ -14,7 +14,7 @@ export default class CreateLoan extends Component {
             currentWin: 'date',
             startDate,
             endDate: new Date(startDate).setDate(date.getDate() + 6),
-            clientInfo: null
+            clientInfo: null,
         }
     }
 
@@ -39,11 +39,11 @@ export default class CreateLoan extends Component {
 
     payed = (data) => {
         data = {
-           ...data,
+            ...data,
             created_at: new Date(),
             issued_at: new Date(this.state.startDate),
             expiration_at: new Date(this.state.endDate),
-            clients_id: this.state.clientInfo.id
+            clients_id: this.state.clientInfo.id,
         }
         toaster.notify('Займ успешно создан!', {
             position: 'bottom-right',
@@ -57,8 +57,13 @@ export default class CreateLoan extends Component {
         return (
             <>
                 <h4 className={'mb-4'}>Укажите период займа</h4>
-                <ReactLightCalendar startDate={this.state.startDate} endDate={this.state.endDate}
-                                    onChange={this.onChange} range/>
+                <ReactLightCalendar startDate={this.state.startDate}
+                                    endDate={this.state.endDate}
+                                    onChange={this.onChange} range
+                                    monthLabels={['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
+                                        'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']}
+                                    dayLabels={['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']}
+                />
                 <button className={'btn btn-primary mt-4'} onClick={() => {
                     this.changeWindow('select')
                 }}>
@@ -79,29 +84,29 @@ export default class CreateLoan extends Component {
                                 this.state.currentWin === 'date'
                                     ? this.renderInputDate()
                                     : this.state.currentWin === 'input'
+                                    ?
+                                    <>
+                                        <h4 className={'mb-4'}>Укажите подробности</h4>
+                                        <InputsDetails
+                                            payed={this.payed}
+                                            changeWindow={this.changeWindow}
+                                            isEdit={false}
+                                            changeSuccess={this.props.changeSuccess}
+                                        />
+                                    </>
+                                    : this.state.currentWin === 'select'
                                         ?
-                                            <>
-                                                <h4 className={'mb-4'}>Укажите подробности</h4>
-                                                <InputsDetails
-                                                    payed={this.payed}
-                                                    changeWindow={this.changeWindow}
-                                                    isEdit={false}
-                                                    changeSuccess={this.props.changeSuccess}
-                                                />
-                                            </>
-                                            : this.state.currentWin === 'select'
-                                                ?
-                                                <div className={'create-loan__select'}>
-                                                    <h4 className={'mb-4'}>Выберите заёмщика</h4>
-                                                    <SelectUser
-                                                        changeWindow={this.changeWindow}
-                                                        selectClient={this.selectClient}
-                                                        clientInfo={this.state.clientInfo}
-                                                        token={this.props.token}
-                                                        isEdit={false}
-                                                    />
-                                                </div>
-                                                : null
+                                        <div className={'create-loan__select'}>
+                                            <h4 className={'mb-4'}>Выберите заёмщика</h4>
+                                            <SelectUser
+                                                changeWindow={this.changeWindow}
+                                                selectClient={this.selectClient}
+                                                clientInfo={this.state.clientInfo}
+                                                token={this.props.token}
+                                                isEdit={false}
+                                            />
+                                        </div>
+                                        : null
                             }
                         </div>
                     </div>

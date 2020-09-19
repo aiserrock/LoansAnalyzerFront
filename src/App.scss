@@ -231,6 +231,7 @@
     color: #343a40 !important;
     @include animate();
     opacity: 0.8;
+    width: content-box;
 
     & a {
       opacity: 0.8;

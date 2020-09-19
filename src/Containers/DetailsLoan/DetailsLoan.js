@@ -3,7 +3,6 @@ import './DetailsLoan.scss'
 import {connect} from 'react-redux'
 import ReactLightCalendar from '@lls/react-light-calendar'
 import InputsDetails from '../../Components/CreateLoan/InputsDetails'
-import {confirmAlert} from 'react-confirm-alert'
 import AddPayout from '../../Components/AddPayout/AddPayout'
 import {NavLink} from 'react-router-dom'
 import {updateLoan} from '../../store/loans/loansActions'
@@ -13,11 +12,12 @@ import toaster from 'toasted-notes'
 import {createPayout, deleteHistoryLoanById, updateHistory} from '../../store/history/historyActions'
 import HistoryController from '../../controllers/HistoryController'
 import Table from '../../Components/Table/Table'
-import {getDate, getFullDate, getIndexById} from '../../store/universalFunctions'
-import BigPreloader from '../../Components/Preloaders/BigPreloader'
+import {getDate, getFullDate} from '../../store/universalFunctions'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 import {IMaskInput} from 'react-imask'
 import Page404 from '../../Components/Page404/Page404'
+import BigPreloader from '../../Components/Preloaders/BigPreloader'
+import {confirm} from '../../Components/Confirm/Confirm'
 
 class DetailsLoan extends Component {
     state = {
@@ -74,11 +74,6 @@ class DetailsLoan extends Component {
     }
 
     onChange = (startDate, endDate) => {
-        // console.log(new Date(startDate), new Date(endDate))
-        // this.setState({
-        //     startDate: startDate !== null ? startDate : this.state.startDate,
-        //     endDate: endDate !== null ? endDate : this.state.endDate
-        // })
         this.setState({
             startDate: startDate,
             endDate: endDate,
@@ -110,29 +105,16 @@ class DetailsLoan extends Component {
     }
 
     archived = () => {
-        confirmAlert({
-            title: 'Подтвердите действие',
-            message: 'Вы уверены, что хотите архивировать займ?',
-            buttons: [
-                {
-                    label: 'Да',
-                    onClick: () => {
-                        const data = this.state.loan
-                        data.status = 'ARCHIVED'
-                        this.props.updateLoan(data.id, data)
-                        toaster.notify('Займ успешно архивирован!', {
-                            position: 'bottom-right',
-                            duration: 3000,
-                        })
-                    },
-                },
-                {
-                    label: 'Нет',
-                    onClick: () => {
-                    },
-                },
-            ],
-        })
+        const yesF = async () => {
+            const data = this.state.loan
+            data.status = 'ARCHIVED'
+            this.props.updateLoan(data.id, data)
+            toaster.notify('Займ успешно архивирован!', {
+                position: 'bottom-right',
+                duration: 3000,
+            })
+        }
+        confirm('Вы уверены, что хотите архивировать займ?', yesF)
     }
 
     getHistoryLoans = async (skip) => {
@@ -149,29 +131,16 @@ class DetailsLoan extends Component {
     }
 
     deleteHandler = (id) => {
-        confirmAlert({
-            title: 'Подтвердите действие',
-            message: 'Вы уверены, что хотите удалить выплату?',
-            buttons: [
-                {
-                    label: 'Да',
-                    onClick: async () => {
-                        await this.props.deleteHistoryLoanById(id)
-                        toaster.notify('Выплата удалена', {
-                            position: 'bottom-right',
-                            duration: 3000,
-                        })
-                        await this.updateHistoryLoan()
-                        await this.updateLoanData()
-                    },
-                },
-                {
-                    label: 'Нет',
-                    onClick: () => {
-                    },
-                },
-            ],
-        })
+        const yesF = async () => {
+            await this.props.deleteHistoryLoanById(id)
+            toaster.notify('Выплата удалена', {
+                position: 'bottom-right',
+                duration: 3000,
+            })
+            await this.updateHistoryLoan()
+            await this.updateLoanData()
+        }
+        confirm('Вы уверены, что хотите удалить выплату', yesF)
     }
 
     updateHistoryHandler = async (id, data) => {
@@ -237,7 +206,7 @@ class DetailsLoan extends Component {
     renderContent = () => {
         const startDate = new Date(this.state.startDate), endDate = new Date(this.state.endDate)
         return (
-            <>
+            <div className={'details-loan'}>
                 <h1 className={'mb-5'}>Детали займа</h1>
 
                 <ProgressBar
@@ -356,7 +325,7 @@ class DetailsLoan extends Component {
                     payoutIsCreated={this.props.payoutIsCreated}
                     createPayout={this.createPayoutHandler}
                 />
-            </>
+            </div>
         )
     }
 
@@ -364,13 +333,13 @@ class DetailsLoan extends Component {
     render() {
         if (this.props.isAuth)
             return (
-                <div className={'details-loan'}>
+                <>
                     {
                         this.state.loading
                             ? <BigPreloader/>
                             : this.renderContent()
                     }
-                </div>
+                </>
             )
         else
             return <Page404/>

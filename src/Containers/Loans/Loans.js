@@ -8,6 +8,7 @@ import {Redirect} from 'react-router-dom'
 import {createLoan, getLoans, getStatistics, resetList} from '../../store/loans/loansActions'
 import {debounce} from 'lodash'
 import {createPayout} from '../../store/history/historyActions'
+import MiniPreloader from '../../Components/Preloaders/MiniPreloader'
 
 class Loans extends Component {
     constructor() {
@@ -192,7 +193,9 @@ class Loans extends Component {
                                             ? null
                                             : <div className={'loans-panel__content'}>
                                                 {
-                                                    this.renderOrderList()
+                                                    this.props.loading
+                                                        ? <MiniPreloader/>
+                                                        : this.renderOrderList()
                                                 }
                                             </div>
                                     }
@@ -200,7 +203,9 @@ class Loans extends Component {
                                 <div className={'d-none d-sm-block'}>
                                     <div className={'loans-panel__content'}>
                                         {
-                                            this.renderOrderList()
+                                            this.props.loading
+                                                ? <MiniPreloader/>
+                                                : this.renderOrderList()
                                         }
                                     </div>
                                 </div>
@@ -268,6 +273,7 @@ function mapStateToProps(state) {
         payoutIsCreated: state.historyReducer.payoutIsCreated,
         token: state.authReducer.data.access_token,
         statusBar: state.loansReducer.statusBar,
+        loading: state.loansReducer.loading,
     }
 }
 

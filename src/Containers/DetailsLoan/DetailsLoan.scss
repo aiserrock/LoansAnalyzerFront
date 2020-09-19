@@ -17,6 +17,13 @@
   & .calendar-loan {
     margin: auto;
   }
+
+
+  &__inputs {
+    & .input-section__input {
+
+    }
+  }
 }
 
 @media (max-width: 730px){

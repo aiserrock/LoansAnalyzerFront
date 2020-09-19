@@ -5,7 +5,7 @@ import ReactLightCalendar from '@lls/react-light-calendar'
 import InputsDetails from '../../Components/CreateLoan/InputsDetails'
 import {confirmAlert} from 'react-confirm-alert'
 import AddPayout from '../../Components/AddPayout/AddPayout'
-import {NavLink, Redirect} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {updateLoan} from '../../store/loans/loansActions'
 import LoansController from '../../controllers/LoansController'
 import ClientController from '../../controllers/ClientController'
@@ -17,15 +17,14 @@ import {getIndexById} from '../../store/universalFunctions'
 import BigPreloader from '../../Components/Preloaders/BigPreloader'
 import ProgressBar from '../../Components/ProgressBar/ProgressBar'
 import {IMaskInput} from 'react-imask'
+import Page404 from '../../Components/Page404/Page404'
 
 class DetailsLoan extends Component {
     constructor() {
         super()
-        const date = new Date()
-        const startDate = date.getTime()
         this.state = {
-            startDate,
-            endDate: new Date(startDate).setDate(date.getDate() + 6),
+            startDate: '',
+            endDate: '',
             payoutIsOpen: false,
             paidItem: null,
             loan: {},
@@ -41,6 +40,7 @@ class DetailsLoan extends Component {
         const id = this.props.match.params.number
         const loan = await LoansController.prototype.getLoanById(this.props.token, id)
         const client = await ClientController.prototype.getClientById(this.props.token, loan.clients_id)
+
 
         if (id && loan && client)
             await this.setState({
@@ -71,7 +71,17 @@ class DetailsLoan extends Component {
         })
     }
 
-    onChange = (startDate, endDate) => this.setState({startDate, endDate})
+    onChange = (startDate, endDate) => {
+        // console.log(new Date(startDate), new Date(endDate))
+        // this.setState({
+        //     startDate: startDate !== null ? startDate : this.state.startDate,
+        //     endDate: endDate !== null ? endDate : this.state.endDate
+        // })
+        this.setState({
+            startDate: startDate,
+            endDate: endDate,
+        })
+    }
 
     getHistoryLoans = async (skip) => {
         const id = this.props.match.params.number
@@ -226,36 +236,39 @@ class DetailsLoan extends Component {
 
                 <div className="row">
                     <div className="col-lg-7 col-12 order-lg-1  order-2">
-                        <div className={'input-section'}>
-                            <div className={'input-section__input'}>
-                                <label>ФИО заёмщика*</label>
-                                <input type="text" defaultValue={this.state.client?.name}
-                                       className={'input-section__input non-click'}/>
-                            </div>
-                            <div className={'input-section__input'}>
-                                <label>Номер заёмщика*</label>
-                                <div className={'input-section__input non-click'}>
+                        <div className={'details-loan__inputs'}>
+                            <div className={'input-section'}>
+                                <div className={'input-section__input'}>
+                                    <label>ФИО заёмщика*</label>
+                                    <input type="text" defaultValue={this.state.client?.name}
+                                           className={'input-section__input non-click'}/>
+                                </div>
+                                <div className={'input-section__input'}>
+                                    <label>Номер заёмщика*</label>
+                                    <div className={'input-section__input non-click'}>
 
-                                    <IMaskInput
-                                        mask={'+{7}(000)000-00-00'}
-                                        unmask={false}
-                                        placeholder='+7 ('
-                                        value={this.state.client?.phone}
-                                    />
+                                        <IMaskInput
+                                            mask={'+{7}(000)000-00-00'}
+                                            unmask={false}
+                                            placeholder='+7 ('
+                                            value={this.state.client?.phone}
+                                        />
+                                    </div>
                                 </div>
                             </div>
+                            <InputsDetails
+                                payed={this.saveChanged}
+                                isEdit={true}
+                                loan={this.state.loan}
+                            />
                         </div>
-                        <InputsDetails
-                            payed={this.saveChanged}
-                            isEdit={true}
-                            loan={this.state.loan}
-                        />
                     </div>
+
                     <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">
                         <div className={'mb-3'}>
                             <ReactLightCalendar
-                                startDate={startDate.setDate(startDate.getDate() + 1)}
-                                endDate={endDate.setDate(endDate.getDate() + 1)}
+                                startDate={startDate.setDate(startDate.getDate())}
+                                endDate={endDate.setDate(endDate.getDate())}
                                 onChange={this.onChange} range
                             />
                         </div>
@@ -334,7 +347,7 @@ class DetailsLoan extends Component {
                 </div>
             )
         else
-            return <Redirect to={'/'}/>
+            return <Page404/>
     }
 }
 

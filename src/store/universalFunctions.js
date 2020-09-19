@@ -20,3 +20,7 @@ export function getFullDate(date) {
     startDate.setHours(hours + 12 - hours)
     return new Date(startDate).getTime()
 }
+
+export function getSum(sum) {
+    return Math.round((sum)).toLocaleString('ru')
+}

@@ -186,7 +186,7 @@ class DetailsLoan extends Component {
                         <tr key={element.id}>
                             <td><b>{this.state.activeTen * 10 + index + 1}</b></td>
                             <td>{getDate(element.date)}</td>
-                            <td>{element.amount}</td>
+                            <td>{element.amount} ₽</td>
                             <td>{element.type === 'PROCENT' ? 'Проценты' : 'Долг'}</td>
                             <td>
                                 <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"

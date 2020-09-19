@@ -120,6 +120,8 @@ export default class AddPayout extends Component {
                                 className="select__content">
                             <option value={'PROCENT'}>Проценты</option>
                             <option value={'DEPT'}>Долг</option>
+                            <option value={'RETURN_DEPT'}>Возврат долга</option>
+                            <option value={'RETURN_PROCENT'}>Возврат процентов</option>
                         </select>
                     </div>
                 </div>

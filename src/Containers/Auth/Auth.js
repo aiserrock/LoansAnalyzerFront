@@ -23,7 +23,8 @@ class Auth extends Component {
         })
     }
 
-    tryToAuth = async () => {
+    tryToAuth = async (e) => {
+        e.preventDefault()
         if (this.password && this.login) {
             {
                 await this.validateUserData()
@@ -43,7 +44,7 @@ class Auth extends Component {
         if (!this.props.isAuth) {
             const isValid = !this.props.isError && this.state.loginIsValid && this.state.passwordIsValid
             return(
-                <div className={'auth'}>
+                <form onSubmit={event => event.preventDefault()} className={'auth'}>
                     <div className="auth__content">
                         <h2 className={'mb-5'}>
                             Авторизуйтесь
@@ -58,12 +59,12 @@ class Auth extends Component {
                                 <input ref={this.password} type="password"/>
                             </div>
                             <small className={!isValid ? 'error' : 'hide'}>Неверный логин или пароль!</small>
-                            <button className={'btn btn-success mt-4 mr-auto'} onClick={this.tryToAuth}>
+                            <button type={'submit'} className={'btn btn-success mt-4 mr-auto'} onClick={this.tryToAuth}>
                                 Войти
                             </button>
                         </div>
                     </div>
-                </div>
+                </form>
             )
         }
         else

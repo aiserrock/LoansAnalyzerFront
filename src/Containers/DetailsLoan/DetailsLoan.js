@@ -204,7 +204,8 @@ class DetailsLoan extends Component {
     }
 
     renderContent = () => {
-        const startDate = new Date(this.state.startDate), endDate = new Date(this.state.endDate)
+        const startDate = this.state.startDate ? getFullDate(this.state.startDate) : this.state.startDate,
+            endDate = this.state.endDate ? getFullDate(this.state.endDate) : this.state.endDate
         return (
             <div className={'details-loan'}>
                 <h1 className={'mb-5'}>Детали займа</h1>
@@ -256,8 +257,8 @@ class DetailsLoan extends Component {
                     <div className="col-lg-5 col-12 order-lg-2 order-1 d-flex">
                         <div className={'mb-3'}>
                             <ReactLightCalendar
-                                startDate={getFullDate(startDate.setDate(startDate.getDate()))}
-                                endDate={getFullDate(endDate.setDate(endDate.getDate()))}
+                                startDate={startDate}
+                                endDate={endDate}
                                 onChange={this.onChange} range
                                 monthLabels={['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август',
                                     'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']}

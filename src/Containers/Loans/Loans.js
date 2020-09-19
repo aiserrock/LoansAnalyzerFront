@@ -8,7 +8,7 @@ import {Redirect} from 'react-router-dom'
 import {createLoan, getLoans, getStatistics, resetList} from '../../store/loans/loansActions'
 import {debounce} from 'lodash'
 import {createPayout} from '../../store/history/historyActions'
-import MiniPreloader from '../../Components/Preloaders/MiniPreloader'
+import BigPreloader from '../../Components/Preloaders/BigPreloader'
 import {getSum} from '../../store/universalFunctions'
 
 class Loans extends Component {
@@ -195,7 +195,7 @@ class Loans extends Component {
                                             : <div className={'loans-panel__content'}>
                                                 {
                                                     this.props.loading
-                                                        ? <MiniPreloader/>
+                                                        ? <BigPreloader/>
                                                         : this.renderOrderList()
                                                 }
                                             </div>
@@ -205,7 +205,7 @@ class Loans extends Component {
                                     <div className={'loans-panel__content'}>
                                         {
                                             this.props.loading
-                                                ? <MiniPreloader/>
+                                                ? <BigPreloader/>
                                                 : this.renderOrderList()
                                         }
                                     </div>

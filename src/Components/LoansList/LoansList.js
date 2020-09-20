@@ -21,6 +21,7 @@ export default class LoansList extends Component {
                             const difference = new Date(element.loan.expiration_at) - new Date().getTime()
                             const days = Math.ceil(difference < 0 ? 0 : difference / (1000 * 3600 * 24))
                             const overdue = days === 0
+                            //console.log(this.props.loans)
                             return (
                                 <div key={element.loan.id} className={'loans-list__item'}>
                                     <div className="row">
@@ -51,7 +52,7 @@ export default class LoansList extends Component {
                                             Ожидаемый доход на сегодня
                                             <br/>
                                             <b className={'text-primary'}>
-                                                {Math.round(Math.abs(element.loan.my_income_now) < 1 ? 0 : getSum(element.loan.my_income_now || 0))} ₽
+                                                  {Math.abs(element.loan.my_income_now) < 1 ? 0 : getSum(element.loan.my_income_now || 0)} ₽
                                             </b>
                                         </div>
                                     </div>

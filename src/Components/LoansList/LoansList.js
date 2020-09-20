@@ -51,7 +51,7 @@ export default class LoansList extends Component {
                                             Ожидаемый доход на сегодня
                                             <br/>
                                             <b className={'text-primary'}>
-                                                {getSum(element.loan.my_income_now || 0)} ₽
+                                                {Math.round(Math.abs(element.loan.my_income_now) < 1 ? 0 : getSum(element.loan.my_income_now || 0))} ₽
                                             </b>
                                         </div>
                                     </div>

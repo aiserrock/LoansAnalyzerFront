@@ -8,7 +8,7 @@ export default class ProgressBar extends Component {
     render() {
         if (this.props.data) {
             const
-                my_income_now = Math.round(this.props.data?.my_income_now ?? 0),
+                my_income_now = Math.round(Math.abs(this.props.data.my_income_now) < 1 ? 0 : this.props.data.my_income_now),
                 el1 = this.props.data.amount + my_income_now, el2= this.props.data.amount - this.props.data.amount_of_dept,
                 percent = Math.floor(el2 * 100 / el1),
                 difference = this.props.endDate - new Date().getTime(),

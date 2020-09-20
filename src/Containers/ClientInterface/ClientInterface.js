@@ -12,7 +12,7 @@ export default class ClientInterface extends Component {
 
     componentDidMount = async () => {
         this.setState({
-            data: await HistoryController.prototype.getHistoryReport(this.props.match.params.number)
+            data: await HistoryController.prototype.getHistoryReport(this.props.match.params.number),
         })
     }
 
@@ -41,6 +41,9 @@ export default class ClientInterface extends Component {
                 </div>
                 <div className={'client-interface__info-item'}>
                     <p>Кому: </p> <span>{this.state.data.user_name}</span>
+                </div>
+                <div className={'client-interface__info-item'}>
+                    <p>Цель: </p> <span>{this.state.data.goal}</span>
                 </div>
                 <div className={'client-interface__info-item'}>
                     <p>Дата выдачи:</p> <span>{getDate(startDate)}</span>

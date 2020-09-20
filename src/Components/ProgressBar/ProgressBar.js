@@ -9,8 +9,8 @@ export default class ProgressBar extends Component {
         if (this.props.data) {
             const
                 my_income_now = Math.round(this.props.data?.my_income_now ?? 0),
-                percent = Math.round(
-                    (this.props.data.amount - this.props.data.amount_of_dept) * 100 / (this.props.data.amount + my_income_now) ?? 0),
+                el1 = this.props.data.amount + my_income_now, el2= this.props.data.amount - this.props.data.amount_of_dept,
+                percent = Math.floor(el2 * 100 / el1),
                 difference = this.props.endDate - new Date().getTime(),
                 days = Math.ceil(difference / (1000 * 3600 * 24)),
                 overdue = days === 0 ? 'overdue' : ''

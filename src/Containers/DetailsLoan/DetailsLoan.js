@@ -187,7 +187,11 @@ class DetailsLoan extends Component {
                             <td><b>{this.state.activeTen * 10 + index + 1}</b></td>
                             <td>{getDate(element.date)}</td>
                             <td>{getSum(element.amount)} ₽</td>
-                            <td>{element.type === 'PROCENT' ? 'Проценты' : 'Долг'}</td>
+                            <td>{
+                                element.type === 'PROCENT' ? 'Проценты' : element.type === 'DEPT' ? 'Долг'
+                                    : element.type === 'RETURN_DEPT' ? 'Возврат долга' : element.type === 'RETURN_PROCENT'
+                                        ? 'Возврат процентов' : ''
+                            }</td>
                             <td>
                                 <i className="fa fa-pencil fa-animate mr-3" aria-hidden="true"
                                    onClick={() => this.interactWithPayout(true, element, true)}

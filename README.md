@@ -96,7 +96,7 @@ Loans Analyzer позволяет работать с займами из люб
 
 ## Authorization   
 login: `test`  
-password: `qwerty
+password: `qwerty`
    
 ****
 ## app screenshots:  
